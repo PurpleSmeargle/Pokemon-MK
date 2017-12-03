@@ -35,7 +35,9 @@ namespace PokemonKitEngine
             ret = ret.Remove(ret.Length - 1);
             Directory.SetCurrentDirectory(ret);
 
-            MapInterpreter.ParseMap(1);
+            Map Map001 = MapInterpreter.ParseMap(1);
+
+            MessageBox.Show(Map001.General.Name);
         }
     }
 }

@@ -28,7 +28,8 @@ data = {
 	general: {
 		width: 10,
 		height: 10,
-		tileset: "outside"
+		tileset: "outside",
+		name: "Route 1"
 	}
 }
 

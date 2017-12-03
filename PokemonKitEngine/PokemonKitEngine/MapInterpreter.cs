@@ -12,12 +12,12 @@ namespace PokemonKitEngine
 {
     public class MapInterpreter
     {
-        public static Dictionary<string, dynamic> ParseMap(int id)
+        public static Map ParseMap(int id)
         {
             
-            Dictionary<string, dynamic> data = new Dictionary<string, dynamic>();
-            data["layers"] = new List<dynamic>();
-            data["general"] = new Dictionary<string, dynamic>();
+            Dictionary<string, dynamic> Data = new Dictionary<string, dynamic>();
+            Data["layers"] = new List<List<dynamic>>();
+            Data["general"] = new General();
 
             ScriptEngine engine = Ruby.CreateEngine();
             dynamic ret = engine.Execute($@"
@@ -40,7 +40,6 @@ return New
 
             // Parses the Layer data to C# objects (in Lists instead of Arrays)
             dynamic[] _layers = ret["layers"].ToArray();
-            List<List<dynamic>> Layers = new List<List<dynamic>>();
             for (int i = 0; i < _layers.Length; i++)
             {
                 List<dynamic> Layer = new List<dynamic>();
@@ -53,8 +52,8 @@ return New
                         List<dynamic> Tile = new List<dynamic>();
                         for (int k = 0; k < _tile.Length; k++)
                         {
-                            int Data = Convert.ToInt32(_tile[k].ToString());
-                            Tile.Add(Data);
+                            int TileData = Convert.ToInt32(_tile[k].ToString());
+                            Tile.Add(TileData);
                         }
                         Layer.Add(Tile);
                     }
@@ -63,20 +62,27 @@ return New
                         Layer.Add(Convert.ToInt32(_layer[j].ToString()));
                     }
                 }
-                Layers.Add(Layer);
+                Data["layers"].Add(Layer);
             }
 
-            return data;
+            Data["general"].Width = Convert.ToInt32(ret["general"]["width"].ToString());
+            Data["general"].Height = Convert.ToInt32(ret["general"]["height"].ToString());
+            Data["general"].Tileset = ret["general"]["tileset"].ToString();
+            Data["general"].Name = ret["general"]["name"].ToString();
+
+            return new Map(id, Data["layers"], Data["general"]);
         }
     }
 
     public class Map
     {
+        public int ID { get; set; }
         public List<List<dynamic>> Layers { get; set; }
         public General General { get; set; }
 
-        public Map(List<List<dynamic>> Layers, General General)
+        public Map(int ID, List<List<dynamic>> Layers, General General)
         {
+            this.ID = ID;
             this.Layers = Layers;
             this.General = General;
         }
@@ -87,5 +93,6 @@ return New
         public int Width { get; set; }
         public int Height { get; set; }
         public string Tileset { get; set; }
+        public string Name { get; set; }
     }
 }
