@@ -38,7 +38,6 @@
             this.mainMapPanel = new System.Windows.Forms.Panel();
             this.mapPanel = new System.Windows.Forms.Panel();
             this.mapBoxPanel = new System.Windows.Forms.Panel();
-            this.mapBox = new System.Windows.Forms.PictureBox();
             this.mapWhite = new System.Windows.Forms.PictureBox();
             this.mapBlack = new System.Windows.Forms.PictureBox();
             this.rightPanel = new System.Windows.Forms.Panel();
@@ -57,8 +56,6 @@
             this.mapsTab.SuspendLayout();
             this.mainMapPanel.SuspendLayout();
             this.mapPanel.SuspendLayout();
-            this.mapBoxPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mapBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapWhite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapBlack)).BeginInit();
             this.rightPanel.SuspendLayout();
@@ -161,19 +158,10 @@
             // 
             // mapBoxPanel
             // 
-            this.mapBoxPanel.Controls.Add(this.mapBox);
             this.mapBoxPanel.Location = new System.Drawing.Point(6, 2);
             this.mapBoxPanel.Name = "mapBoxPanel";
             this.mapBoxPanel.Size = new System.Drawing.Size(695, 741);
             this.mapBoxPanel.TabIndex = 2;
-            // 
-            // mapBox
-            // 
-            this.mapBox.Location = new System.Drawing.Point(0, 0);
-            this.mapBox.Name = "mapBox";
-            this.mapBox.Size = new System.Drawing.Size(695, 741);
-            this.mapBox.TabIndex = 0;
-            this.mapBox.TabStop = false;
             // 
             // mapWhite
             // 
@@ -322,8 +310,6 @@
             this.mapsTab.ResumeLayout(false);
             this.mainMapPanel.ResumeLayout(false);
             this.mapPanel.ResumeLayout(false);
-            this.mapBoxPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.mapBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapWhite)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapBlack)).EndInit();
             this.rightPanel.ResumeLayout(false);
@@ -365,7 +351,6 @@
         private System.Windows.Forms.PictureBox mapWhite;
         private System.Windows.Forms.PictureBox mapBlack;
         private System.Windows.Forms.Panel mapBoxPanel;
-        private System.Windows.Forms.PictureBox mapBox;
     }
 }
 
