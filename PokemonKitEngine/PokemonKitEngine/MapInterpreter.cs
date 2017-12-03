@@ -12,9 +12,11 @@ namespace PokemonKitEngine
 {
     public class MapInterpreter
     {
-        public static Map ParseMap(int id)
+        /// <summary>
+        /// Loads a map data file based on ID and parses it to C# object.
+        /// </summary>
+        public static Map Parse(int id)
         {
-            
             Dictionary<string, dynamic> Data = new Dictionary<string, dynamic>();
             Data["layers"] = new List<List<dynamic>>();
             Data["general"] = new General();
@@ -76,6 +78,9 @@ return New
 
     public class Map
     {
+        /// <summary>
+        /// Isn't stored in the map data file itself, but uses the filename to determine its ID.
+        /// </summary>
         public int ID { get; set; }
         public List<List<dynamic>> Layers { get; set; }
         public General General { get; set; }

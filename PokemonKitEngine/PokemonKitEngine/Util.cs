@@ -8,6 +8,9 @@ namespace PokemonKitEngine
 {
     public class Util
     {
+        /// <summary>
+        /// Ensures your number to have at least _digits_ digits
+        /// </summary>
         public static string Digits(int integer, int digits = 3)
         {
             if (integer.ToString().Length >= digits) return integer.ToString();

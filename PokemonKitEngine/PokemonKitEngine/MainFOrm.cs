@@ -22,6 +22,7 @@ namespace PokemonKitEngine
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Setting the working directory to the root folder instead of this application's
             List<string> Path = Application.StartupPath.Split('\\').ToList();
             Path.RemoveAt(Path.Count - 1);
             Path.RemoveAt(Path.Count - 1);
@@ -35,9 +36,11 @@ namespace PokemonKitEngine
             ret = ret.Remove(ret.Length - 1);
             Directory.SetCurrentDirectory(ret);
 
-            Map Map001 = MapInterpreter.ParseMap(1);
-
-            MessageBox.Show(Map001.General.Name);
+            Map CurrentMap = MapInterpreter.Parse(1);
+            tilesetBox.Image = Image.FromFile($@"Graphics\Tilesets\{CurrentMap.General.Tileset}.png");
+            tilesetBox.Width = tilesetBox.Image.Width;
+            tilesetBox.Height = tilesetBox.Image.Height;
+            tilesetPanel.Width = tilesetBox.Width + 20;
         }
     }
 }
