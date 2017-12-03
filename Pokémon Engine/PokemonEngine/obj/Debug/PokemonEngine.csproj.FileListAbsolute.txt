@@ -1,0 +1,14 @@
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\bin\Debug\PokemonKitEngine.exe.config
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\obj\Debug\PokemonKitEngine.exe
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\obj\Debug\PokemonKitEngine.pdb
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\bin\Debug\PokemonKitEngine.exe
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\bin\Debug\PokemonKitEngine.pdb
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\bin\Debug\IronRuby.dll
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\bin\Debug\IronRuby.Libraries.dll
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\bin\Debug\Microsoft.Scripting.dll
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\bin\Debug\Microsoft.Scripting.Metadata.dll
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\bin\Debug\Microsoft.Dynamic.dll
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\obj\Debug\PokemonEngine.csprojResolveAssemblyReference.cache
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\obj\Debug\PokemonEngine.MainForm.resources
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\obj\Debug\PokemonKitEngine.Properties.Resources.resources
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\obj\Debug\PokemonEngine.csproj.GenerateResource.Cache

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using IronRuby;
 using System.IO;
-using static PokemonKitEngine.Util;
+using static PokemonEngine.Util;
 
-namespace PokemonKitEngine
+namespace PokemonEngine
 {
     public partial class MainForm : Form
     {
@@ -36,11 +36,27 @@ namespace PokemonKitEngine
             ret = ret.Remove(ret.Length - 1);
             Directory.SetCurrentDirectory(ret);
 
+
             Map CurrentMap = MapInterpreter.Parse(1);
+
             tilesetBox.Image = Image.FromFile($@"Graphics\Tilesets\{CurrentMap.General.Tileset}.png");
-            tilesetBox.Width = tilesetBox.Image.Width;
-            tilesetBox.Height = tilesetBox.Image.Height;
-            tilesetPanel.Width = tilesetBox.Width + 20;
+            tilesetBox.SizeMode = PictureBoxSizeMode.AutoSize;
+            tilesetPanel.Width = tilesetBox.Image.Width + 20;
+            tilesetBlack.Width = tilesetBox.Image.Width + 20;
+            tilesetWhite.Width = tilesetBox.Image.Width + 18;
+            tilesetBoxPanel.Width = tilesetBox.Image.Width + 17;
+
+            mapBox.Image = (Image) tilesetBox.Image.Clone();
+
+            UpdatePanels();
+        }
+
+        /// <summary>
+        /// Resizes all panels and boxes according to the screensize.
+        /// </summary>
+        public void UpdatePanels()
+        {
+            // Make it work with all screensizes
         }
     }
 }

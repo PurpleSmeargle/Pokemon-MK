@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using IronRuby;
 using Microsoft.Scripting.Hosting;
-using static PokemonKitEngine.Util;
+using static PokemonEngine.Util;
 using System.IO;
 
-namespace PokemonKitEngine
+namespace PokemonEngine
 {
     public class MapInterpreter
     {
