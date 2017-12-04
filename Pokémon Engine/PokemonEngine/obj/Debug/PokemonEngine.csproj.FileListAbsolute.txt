@@ -26,3 +26,5 @@ C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\P
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.MainForm.resources
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonKitEngine.Properties.Resources.resources
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.csproj.GenerateResource.Cache
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\FastColoredTextBox.dll
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\FastColoredTextBox.xml

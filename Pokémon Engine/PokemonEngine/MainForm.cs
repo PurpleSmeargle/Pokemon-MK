@@ -10,11 +10,14 @@ using System.Windows.Forms;
 using IronRuby;
 using System.IO;
 using static PokemonEngine.Util;
+using FastColoredTextBoxNS;
+using System.Text.RegularExpressions;
 
 namespace PokemonEngine
 {
     public partial class MainForm : Form
     {
+        PictureBox Cursor;
         Map CurrentMap;
 
         public MainForm()
@@ -42,7 +45,123 @@ namespace PokemonEngine
             LoadMap();
 
             UpdatePanels();
+
+            Cursor = new PictureBox();
+            Cursor.Location = new Point(0, 0);
+            Cursor.Image = PokemonKitEngine.Properties.Resources.cursor;
+            Cursor.SizeMode = PictureBoxSizeMode.AutoSize;
+            tilesetBoxPanel.Controls.Add(Cursor);
+            Cursor.BackColor = Color.Transparent;
+            tilesetBox.Controls.Add(Cursor);
+
+            #region Script Editor
+            FastColoredTextBox txt = new FastColoredTextBox();
+            txt.Dock = DockStyle.Fill;
+            txt.TextChanged += scriptEditor_TextChanged;
+            txt.AutoIndentNeeded += scriptEditor_AutoIndentNeeded;
+            txt.TabLength = 2;
+            txt.KeyDown += Txt_KeyDown;
+            scriptEditorPanel.Controls.Add(txt);
+            #endregion
         }
+
+        #region Script Editor
+
+        private void Txt_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers == Keys.Control)
+            {
+                if (e.KeyCode == Keys.V)
+                {
+                    scriptEditor_TextChanged(sender, new TextChangedEventArgs(((FastColoredTextBox) sender).VisibleRange));
+                    MessageBox.Show(((FastColoredTextBox) sender).Text);
+                    Console.WriteLine("Ctrl + V");
+                }
+                else if (e.KeyCode == Keys.T)
+                {
+                    Console.WriteLine("Ctrl + T");
+                    FastColoredTextBox box = sender as FastColoredTextBox;
+                    int iChar = box.Selection.Start.iChar;
+                    int iLine = box.Selection.Start.iLine;
+                    if (iLine == 0) return;
+                    List<string> Lines = box.Lines.ToList();
+                    string tmp = box.GetLineText(iLine);
+                    Lines[iLine] = Lines[iLine - 1];
+                    Lines[iLine - 1] = tmp;
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < Lines.Count; i++)
+                    {
+                        if (i == Lines.Count - 1) sb.Append(Lines[i]);
+                        else sb.AppendLine(Lines[i]);
+                    }
+                    box.Text = sb.ToString();
+                    box.Selection.Start = new Place(iChar, iLine - 1);
+                }
+            }
+        }
+
+        private void scriptEditor_AutoIndentNeeded(object sender, AutoIndentEventArgs e)
+        {
+            string LineText = e.LineText.Trim();
+            List<string> Indents = new List<string>() { "class ", "module ", "def ", "rescue", "do ", " for ", "while ", "when ", "until", "if" };
+            foreach (string Entry in Indents)
+            {
+                if (LineText.Contains(Entry))
+                {
+                    e.ShiftNextLines = e.TabLength;
+                    return;
+                }
+            }
+            if (LineText.Contains("begin") && !LineText.Contains("=begin"))
+            {
+                e.ShiftNextLines = e.TabLength;
+                return;
+            }
+        }
+
+        Style Comment = new TextStyle(Brushes.Green, null, FontStyle.Italic);
+        Style Keyword = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
+        Style Method = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
+        Style Operator = new TextStyle(Brushes.CornflowerBlue, null, FontStyle.Regular);
+        Style Integer = new TextStyle(Brushes.IndianRed, null, FontStyle.Regular);
+        Style String = new TextStyle(Brushes.DeepPink, null, FontStyle.Regular);
+
+        private void scriptEditor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FastColoredTextBox box = (FastColoredTextBox)sender;
+            // Only the changed text
+            Range range = e.ChangedRange;
+
+            range.ClearStyle(Keyword);
+            range.ClearStyle(Comment);
+            range.ClearStyle(Method);
+            range.ClearStyle(Operator);
+            range.ClearStyle(Integer);
+            range.ClearStyle(String);
+
+            range.SetStyle(Comment, @"#[^{].*$", RegexOptions.Multiline);
+            range.SetStyle(Keyword, @"\b(alias|and|begin|break|case|class|def|do|else|elsif|end|ensure|false|for|if|in|module|" +
+                                                @"next|nil|not|or|redo|rescue|retry|return|self|super|then|true|undef|unless|until|when|while|yield)\b", RegexOptions.Multiline);
+            range.SetStyle(Method, @"\b(BEGIN|END|_ENCODING_|_LINE_|_FILE_|defined?|_END_)\b", RegexOptions.Multiline);
+
+            range.SetStyle(Operator, @"(=|\*|&|-|\+|%|/|!|\||~|<|>|\?|:|;|\{\}|\[\])", RegexOptions.Multiline);
+
+            range.SetStyle(Integer, @"\b\d+\b", RegexOptions.Multiline);
+
+            range = ((FastColoredTextBox)sender).VisibleRange;
+
+            range.SetStyle(Comment, "=begin.*?=end", RegexOptions.Singleline);
+
+            range.SetStyle(String, "\".*?\"", RegexOptions.Singleline);
+
+            box.AddStyle(Method);
+            box.AddStyle(Keyword);
+            box.AddStyle(Operator);
+            box.AddStyle(Integer);
+            box.AddStyle(String);
+            box.AddStyle(Comment);
+        }
+        #endregion
 
         /// <summary>
         /// Resizes all panels and boxes according to the screensize.
@@ -127,6 +246,17 @@ namespace PokemonEngine
             {
                 mapBoxPanel.Controls[$"mapLayer{i - 1}"].Controls.Add(mapBoxPanel.Controls[$"mapLayer{i}"]);
             }
+        }
+
+        private void tilesetBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            Cursor.Location = new Point(32 * (int) Math.Floor((double) e.X / 32), 32 * (int) Math.Floor((double) e.Y / 32));
+            MessageBox.Show(GetTileID().ToString());
+        }
+
+        public int GetTileID()
+        {
+            return (Cursor.Location.X / 32) + 8 * (Cursor.Location.Y / 32);
         }
     }
 }

@@ -51,6 +51,8 @@
             this.tilesetBlack = new System.Windows.Forms.PictureBox();
             this.toolbarPanel = new System.Windows.Forms.Panel();
             this.scriptsTab = new System.Windows.Forms.TabPage();
+            this.scriptEditorPanel = new System.Windows.Forms.Panel();
+            this.scriptsPanel = new System.Windows.Forms.Panel();
             this.menuBar.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.mapsTab.SuspendLayout();
@@ -68,6 +70,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tilesetBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tilesetWhite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tilesetBlack)).BeginInit();
+            this.scriptsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuBar
@@ -254,6 +257,7 @@
             this.tilesetBox.Size = new System.Drawing.Size(256, 741);
             this.tilesetBox.TabIndex = 0;
             this.tilesetBox.TabStop = false;
+            this.tilesetBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilesetBox_MouseClick);
             // 
             // tilesetWhite
             // 
@@ -284,6 +288,8 @@
             // scriptsTab
             // 
             this.scriptsTab.BackColor = System.Drawing.SystemColors.Control;
+            this.scriptsTab.Controls.Add(this.scriptEditorPanel);
+            this.scriptsTab.Controls.Add(this.scriptsPanel);
             this.scriptsTab.Location = new System.Drawing.Point(4, 22);
             this.scriptsTab.Name = "scriptsTab";
             this.scriptsTab.Padding = new System.Windows.Forms.Padding(3);
@@ -291,6 +297,22 @@
             this.scriptsTab.TabIndex = 1;
             this.scriptsTab.Text = "Scripts";
             this.scriptsTab.ToolTipText = "Contains all tools and funtionality for scripting.";
+            // 
+            // scriptEditorPanel
+            // 
+            this.scriptEditorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scriptEditorPanel.Location = new System.Drawing.Point(203, 3);
+            this.scriptEditorPanel.Name = "scriptEditorPanel";
+            this.scriptEditorPanel.Size = new System.Drawing.Size(959, 775);
+            this.scriptEditorPanel.TabIndex = 1;
+            // 
+            // scriptsPanel
+            // 
+            this.scriptsPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.scriptsPanel.Location = new System.Drawing.Point(3, 3);
+            this.scriptsPanel.Name = "scriptsPanel";
+            this.scriptsPanel.Size = new System.Drawing.Size(200, 775);
+            this.scriptsPanel.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -322,6 +344,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tilesetBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tilesetWhite)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tilesetBlack)).EndInit();
+            this.scriptsTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -351,6 +374,8 @@
         private System.Windows.Forms.PictureBox mapWhite;
         private System.Windows.Forms.PictureBox mapBlack;
         private System.Windows.Forms.Panel mapBoxPanel;
+        private System.Windows.Forms.Panel scriptEditorPanel;
+        private System.Windows.Forms.Panel scriptsPanel;
     }
 }
 
