@@ -48,7 +48,7 @@ namespace PokemonEngine
 
             Cursor = new PictureBox();
             Cursor.Location = new Point(0, 0);
-            Cursor.Image = PokemonKitEngine.Properties.Resources.cursor;
+            Cursor.Image = Properties.Resources.cursor;
             Cursor.SizeMode = PictureBoxSizeMode.AutoSize;
             tilesetBoxPanel.Controls.Add(Cursor);
             Cursor.BackColor = Color.Transparent;
@@ -61,6 +61,8 @@ namespace PokemonEngine
             txt.AutoIndentNeeded += scriptEditor_AutoIndentNeeded;
             txt.TabLength = 2;
             txt.KeyDown += Txt_KeyDown;
+            DocumentMap DocumentMap = new DocumentMap();
+            DocumentMap.Target = txt;
             scriptEditorPanel.Controls.Add(txt);
             #endregion
         }
@@ -103,7 +105,7 @@ namespace PokemonEngine
         private void scriptEditor_AutoIndentNeeded(object sender, AutoIndentEventArgs e)
         {
             string LineText = e.LineText.Trim();
-            List<string> Indents = new List<string>() { "class ", "module ", "def ", "rescue", "do ", " for ", "while ", "when ", "until", "if" };
+            List<string> Indents = new List<string>() { "class ", "module ", "def ", "rescue", "do ", "for ", "while ", "when ", "until", "if" };
             foreach (string Entry in Indents)
             {
                 if (LineText.Contains(Entry))
@@ -153,6 +155,7 @@ namespace PokemonEngine
             range.SetStyle(Comment, "=begin.*?=end", RegexOptions.Singleline);
 
             range.SetStyle(String, "\".*?\"", RegexOptions.Singleline);
+            range.SetStyle(String, "'.*?'", RegexOptions.Singleline);
 
             box.AddStyle(Method);
             box.AddStyle(Keyword);
@@ -248,15 +251,19 @@ namespace PokemonEngine
             }
         }
 
-        private void tilesetBox_MouseClick(object sender, MouseEventArgs e)
+        private void tilesetBox_MouseDown(object sender, MouseEventArgs e)
         {
-            Cursor.Location = new Point(32 * (int) Math.Floor((double) e.X / 32), 32 * (int) Math.Floor((double) e.Y / 32));
-            MessageBox.Show(GetTileID().ToString());
+            Cursor.Location = new Point(32 * (int)Math.Floor((double)e.X / 32), 32 * (int)Math.Floor((double)e.Y / 32));
         }
 
         public int GetTileID()
         {
             return (Cursor.Location.X / 32) + 8 * (Cursor.Location.Y / 32);
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -31,7 +31,6 @@
             this.menuBar = new System.Windows.Forms.MenuStrip();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.mapsTab = new System.Windows.Forms.TabPage();
@@ -50,9 +49,12 @@
             this.tilesetWhite = new System.Windows.Forms.PictureBox();
             this.tilesetBlack = new System.Windows.Forms.PictureBox();
             this.toolbarPanel = new System.Windows.Forms.Panel();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.aboutThisMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptsTab = new System.Windows.Forms.TabPage();
             this.scriptEditorPanel = new System.Windows.Forms.Panel();
             this.scriptsPanel = new System.Windows.Forms.Panel();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBar.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.mapsTab.SuspendLayout();
@@ -70,6 +72,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tilesetBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tilesetWhite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tilesetBlack)).BeginInit();
+            this.toolbarPanel.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.scriptsTab.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -88,8 +92,7 @@
             // gameToolStripMenuItem
             // 
             this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.compressToolStripMenuItem,
-            this.changeNameToolStripMenuItem});
+            this.compressToolStripMenuItem});
             this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
             this.gameToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.gameToolStripMenuItem.Text = "Game";
@@ -100,17 +103,13 @@
             this.compressToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.compressToolStripMenuItem.Text = "Compress";
             // 
-            // changeNameToolStripMenuItem
-            // 
-            this.changeNameToolStripMenuItem.Name = "changeNameToolStripMenuItem";
-            this.changeNameToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.changeNameToolStripMenuItem.Text = "Settings";
-            // 
             // aboutToolStripMenuItem
             // 
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.aboutToolStripMenuItem.Text = "Engine";
             // 
             // mainTabControl
             // 
@@ -257,7 +256,7 @@
             this.tilesetBox.Size = new System.Drawing.Size(256, 741);
             this.tilesetBox.TabIndex = 0;
             this.tilesetBox.TabStop = false;
-            this.tilesetBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilesetBox_MouseClick);
+            this.tilesetBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tilesetBox_MouseDown);
             // 
             // tilesetWhite
             // 
@@ -279,11 +278,28 @@
             // 
             // toolbarPanel
             // 
+            this.toolbarPanel.Controls.Add(this.menuStrip1);
             this.toolbarPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.toolbarPanel.Location = new System.Drawing.Point(3, 3);
             this.toolbarPanel.Name = "toolbarPanel";
             this.toolbarPanel.Size = new System.Drawing.Size(1159, 30);
             this.toolbarPanel.TabIndex = 4;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutThisMapToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1159, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // aboutThisMapToolStripMenuItem
+            // 
+            this.aboutThisMapToolStripMenuItem.Name = "aboutThisMapToolStripMenuItem";
+            this.aboutThisMapToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
+            this.aboutThisMapToolStripMenuItem.Text = "About this map";
             // 
             // scriptsTab
             // 
@@ -313,6 +329,13 @@
             this.scriptsPanel.Name = "scriptsPanel";
             this.scriptsPanel.Size = new System.Drawing.Size(200, 775);
             this.scriptsPanel.TabIndex = 0;
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -344,6 +367,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.tilesetBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tilesetWhite)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tilesetBlack)).EndInit();
+            this.toolbarPanel.ResumeLayout(false);
+            this.toolbarPanel.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.scriptsTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -354,7 +381,6 @@
         private System.Windows.Forms.MenuStrip menuBar;
         private System.Windows.Forms.ToolStripMenuItem gameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compressToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem changeNameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.TabControl mainTabControl;
         private System.Windows.Forms.TabPage mapsTab;
@@ -376,6 +402,9 @@
         private System.Windows.Forms.Panel mapBoxPanel;
         private System.Windows.Forms.Panel scriptEditorPanel;
         private System.Windows.Forms.Panel scriptsPanel;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem aboutThisMapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
 

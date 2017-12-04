@@ -12,11 +12,6 @@ C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\obj\Debug\PokemonEng
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\obj\Debug\PokemonEngine.MainForm.resources
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\obj\Debug\PokemonKitEngine.Properties.Resources.resources
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Engine\PokemonEngine\obj\Debug\PokemonEngine.csproj.GenerateResource.Cache
-C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\PokemonKitEngine.exe.config
-C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonKitEngine.exe
-C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonKitEngine.pdb
-C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\PokemonKitEngine.exe
-C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\PokemonKitEngine.pdb
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\IronRuby.dll
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\IronRuby.Libraries.dll
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\Microsoft.Scripting.dll
@@ -24,7 +19,11 @@ C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\M
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\Microsoft.Dynamic.dll
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.csprojResolveAssemblyReference.cache
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.MainForm.resources
-C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonKitEngine.Properties.Resources.resources
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.csproj.GenerateResource.Cache
-C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\FastColoredTextBox.dll
-C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\FastColoredTextBox.xml
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\PokemonEngine.exe.config
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\PokemonEngine.exe
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\bin\Debug\PokemonEngine.pdb
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.Properties.Resources.resources
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.exe
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.pdb
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.SettingsForm.resources
