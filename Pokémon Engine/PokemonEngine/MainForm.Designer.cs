@@ -32,6 +32,7 @@
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.mapsTab = new System.Windows.Forms.TabPage();
             this.mainMapPanel = new System.Windows.Forms.Panel();
@@ -54,7 +55,7 @@
             this.scriptsTab = new System.Windows.Forms.TabPage();
             this.scriptEditorPanel = new System.Windows.Forms.Panel();
             this.scriptsPanel = new System.Windows.Forms.Panel();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuBar.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.mapsTab.SuspendLayout();
@@ -75,6 +76,7 @@
             this.toolbarPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.scriptsTab.SuspendLayout();
+            this.scriptsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuBar
@@ -110,6 +112,13 @@
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.aboutToolStripMenuItem.Text = "Engine";
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // mainTabControl
             // 
@@ -300,6 +309,7 @@
             this.aboutThisMapToolStripMenuItem.Name = "aboutThisMapToolStripMenuItem";
             this.aboutThisMapToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
             this.aboutThisMapToolStripMenuItem.Text = "About this map";
+            this.aboutThisMapToolStripMenuItem.Click += new System.EventHandler(this.aboutThisMapToolStripMenuItem_Click);
             // 
             // scriptsTab
             // 
@@ -324,18 +334,22 @@
             // 
             // scriptsPanel
             // 
+            this.scriptsPanel.Controls.Add(this.button1);
             this.scriptsPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.scriptsPanel.Location = new System.Drawing.Point(3, 3);
             this.scriptsPanel.Name = "scriptsPanel";
             this.scriptsPanel.Size = new System.Drawing.Size(200, 775);
             this.scriptsPanel.TabIndex = 0;
             // 
-            // settingsToolStripMenuItem
+            // button1
             // 
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.settingsToolStripMenuItem.Text = "Settings";
-            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            this.button1.Location = new System.Drawing.Point(50, 95);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 44);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Eval (temporary)";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
@@ -372,6 +386,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.scriptsTab.ResumeLayout(false);
+            this.scriptsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -405,6 +420,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem aboutThisMapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
     }
 }
 

@@ -27,3 +27,4 @@ C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\P
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.exe
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.pdb
 C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.SettingsForm.resources
+C:\Users\Eigenaar\Desktop\Pokémon Kit\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.MapForm.resources

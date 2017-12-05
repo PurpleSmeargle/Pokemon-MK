@@ -56,6 +56,7 @@ namespace PokemonEngine
 
             #region Script Editor
             FastColoredTextBox txt = new FastColoredTextBox();
+            txt.Name = "scriptEditor";
             txt.Dock = DockStyle.Fill;
             txt.TextChanged += scriptEditor_TextChanged;
             txt.AutoIndentNeeded += scriptEditor_AutoIndentNeeded;
@@ -104,7 +105,7 @@ namespace PokemonEngine
 
         private void scriptEditor_AutoIndentNeeded(object sender, AutoIndentEventArgs e)
         {
-            string LineText = e.LineText.Trim();
+            string LineText = e.LineText.Trim().Split('#')[0];
             List<string> Indents = new List<string>() { "class ", "module ", "def ", "rescue", "do ", "for ", "while ", "when ", "until", "if" };
             foreach (string Entry in Indents)
             {
@@ -181,7 +182,7 @@ namespace PokemonEngine
         {
             if (Map == null) Map = CurrentMap;
 
-            foreach (Control c in Controls)
+            foreach (Control c in mapBoxPanel.Controls)
             {
                 if (c.Name.StartsWith("mapLayer"))
                 {
@@ -192,7 +193,9 @@ namespace PokemonEngine
 
             CurrentMap = Map;
 
-            Bitmap Tileset = new Bitmap(new FileStream($@"Graphics\Tilesets\{CurrentMap.General.Tileset}.png", FileMode.Open));
+            FileStream fs = new FileStream($@"Graphics\Tilesets\{CurrentMap.General.Tileset}.png", FileMode.Open);
+            Bitmap Tileset = new Bitmap(fs);
+            fs.Close();
 
             tilesetBox.Image = Tileset;
             tilesetBox.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -253,7 +256,7 @@ namespace PokemonEngine
 
         private void tilesetBox_MouseDown(object sender, MouseEventArgs e)
         {
-            Cursor.Location = new Point(32 * (int)Math.Floor((double)e.X / 32), 32 * (int)Math.Floor((double)e.Y / 32));
+            Cursor.Location = new Point(32 * (int) Math.Floor((double) e.X / 32), 32 * (int) Math.Floor((double) e.Y / 32));
         }
 
         public int GetTileID()
@@ -264,6 +267,29 @@ namespace PokemonEngine
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Ruby.CreateEngine().Execute(scriptEditorPanel.Controls["scriptEditor"].Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void aboutThisMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MapForm mf = new MapForm(CurrentMap);
+            mf.ShowDialog();
+            // If width/height changed and it needs to be redrawn
+            if (mf.ShouldUpdate)
+            {
+                LoadMap();
+            }
         }
     }
 }

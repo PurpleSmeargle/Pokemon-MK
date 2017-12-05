@@ -91,6 +91,37 @@ return New
             this.Layers = Layers;
             this.General = General;
         }
+
+        public bool Update(int OldWidth, int OldHeight)
+        {
+            List<List<dynamic>> NewLayers = new List<List<dynamic>>();
+            for (int l = 0; l < Layers.Count; l++)
+            {
+                List<dynamic> NewLayer = new List<dynamic>();
+                for (int i = 0; i < Layers[l].Count; i++)
+                {
+                    NewLayer.Add(Layers[l][i]);
+                    if (i % OldWidth == OldWidth - 1)
+                    {
+                        for (int k = 0; k < General.Width - OldWidth; k++)
+                        {
+                            NewLayer.Add(16);
+                        }
+                    }
+                }
+                for (int i = 0; i < General.Height - OldHeight; i++)
+                {
+                    for (int k = 0; k < General.Width; k++)
+                    {
+                        NewLayer.Add(16);
+                    }
+                }
+                NewLayers.Add(NewLayer);
+            }
+            bool ret = (Layers[0].Count != NewLayers.Count);
+            Layers = NewLayers;
+            return ret;
+        }
     }
 
     public class General
