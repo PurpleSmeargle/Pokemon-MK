@@ -8,6 +8,6 @@ namespace PokemonEngine
 {
     public class Config
     {
-
+        public static int LastScriptIndex { get; set; } = 0;
     }
 }

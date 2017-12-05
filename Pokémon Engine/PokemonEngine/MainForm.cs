@@ -17,8 +17,15 @@ namespace PokemonEngine
 {
     public partial class MainForm : Form
     {
-        PictureBox Cursor;
+        new PictureBox Cursor;
         Map CurrentMap;
+
+        // Whether or not the engine is still starting up
+        bool Starting = true;
+        bool MadeChanges = false;
+
+        BindingSource scriptBinder = new BindingSource();
+        List<Script> Scripts = new List<Script>();
 
         public MainForm()
         {
@@ -27,6 +34,7 @@ namespace PokemonEngine
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            #region Setting Current Working Directory
             // Setting the working directory to the root folder instead of this application's
             List<string> Path = Application.StartupPath.Split('\\').ToList();
             Path.RemoveAt(Path.Count - 1);
@@ -40,11 +48,9 @@ namespace PokemonEngine
             }
             ret = ret.Remove(ret.Length - 1);
             Directory.SetCurrentDirectory(ret);
+            #endregion
 
             CurrentMap = MapInterpreter.Parse(1);
-            LoadMap();
-
-            UpdatePanels();
 
             Cursor = new PictureBox();
             Cursor.Location = new Point(0, 0);
@@ -66,6 +72,51 @@ namespace PokemonEngine
             DocumentMap.Target = txt;
             scriptEditorPanel.Controls.Add(txt);
             #endregion
+
+            List<string> ScriptFiles = new List<string>();
+            foreach (string file in Directory.GetFiles("Scripts"))
+            {
+                if (Regex.IsMatch(file, @"\d+-") && file.EndsWith(".rb"))
+                {
+                    ScriptFiles.Add(file.Split('\\').Last());
+                    Scripts.Add(new Script(null, null));
+                }
+            }
+            for (int i = 0; i < ScriptFiles.Count; i++)
+            {
+                List<string> tmp1 = ScriptFiles[i].Split('.').ToList();
+                string Extensionless = "";
+                for (int j = 0; j < tmp1.Count - 1; j++)
+                {
+                    Extensionless += tmp1[j];
+                    if (j != tmp1.Count - 2) Extensionless += ".";
+                }
+                List<string> tmp2 = Extensionless.Split('-').ToList();
+                int Index = Convert.ToInt32(tmp2[0]) - 1;
+                string Name = "";
+                for (int j = 1; j < tmp2.Count; j++)
+                {
+                    Name += tmp2[j];
+                    if (j != tmp2.Count - 1) Name += "-";
+                }
+                StreamReader sr = new StreamReader(File.OpenRead(@"Scripts\" + ScriptFiles[i]));
+                string Code = sr.ReadToEnd();
+                sr.Close();
+                Scripts[Index] = new Script(Name, Code);
+            }
+            scriptBinder.DataSource = Scripts;
+            scriptBox.DataSource = scriptBinder;
+            scriptBox.DisplayMember = "Name";
+
+            LoadMap();
+
+            UpdatePanels();
+
+            scriptBox.SelectedIndex = 0;
+
+            Starting = false;
+
+            scriptBox_SelectedIndexChanged(sender, e);
         }
 
         #region Script Editor
@@ -106,16 +157,13 @@ namespace PokemonEngine
         private void scriptEditor_AutoIndentNeeded(object sender, AutoIndentEventArgs e)
         {
             string LineText = e.LineText.Trim().Split('#')[0];
-            List<string> Indents = new List<string>() { "class ", "module ", "def ", "rescue", "do ", "for ", "while ", "when ", "until", "if" };
-            foreach (string Entry in Indents)
+            if (Regex.IsMatch(LineText, $@"\b(class|module|def|rescue|do|for|while|when|until|if)\b"))
             {
-                if (LineText.Contains(Entry))
-                {
-                    e.ShiftNextLines = e.TabLength;
-                    return;
-                }
+                e.ShiftNextLines = e.TabLength;
+                return;
             }
-            if (LineText.Contains("begin") && !LineText.Contains("=begin"))
+            if (Regex.IsMatch(LineText, @"\bbegin\b") && !Regex.IsMatch(LineText, @"=begin\b") && !Regex.IsMatch(LineText, @".begin\b") && 
+               !Regex.IsMatch(LineText, @"_begin\b"))
             {
                 e.ShiftNextLines = e.TabLength;
                 return;
@@ -126,37 +174,51 @@ namespace PokemonEngine
         Style Keyword = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
         Style Method = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
         Style Operator = new TextStyle(Brushes.CornflowerBlue, null, FontStyle.Regular);
-        Style Integer = new TextStyle(Brushes.IndianRed, null, FontStyle.Regular);
-        Style String = new TextStyle(Brushes.DeepPink, null, FontStyle.Regular);
+        Style Integer = new TextStyle(Brushes.Red, null, FontStyle.Regular);
+        Style String = new TextStyle(Brushes.Purple, null, FontStyle.Regular);
 
         private void scriptEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
-            FastColoredTextBox box = (FastColoredTextBox)sender;
+            FastColoredTextBox box = (FastColoredTextBox) sender;
             // Only the changed text
             Range range = e.ChangedRange;
 
-            range.ClearStyle(Keyword);
-            range.ClearStyle(Comment);
-            range.ClearStyle(Method);
-            range.ClearStyle(Operator);
-            range.ClearStyle(Integer);
-            range.ClearStyle(String);
+            range.ClearStyle(Keyword, Comment, Method, Operator, Integer, String);
 
-            range.SetStyle(Comment, @"#[^{].*$", RegexOptions.Multiline);
             range.SetStyle(Keyword, @"\b(alias|and|begin|break|case|class|def|do|else|elsif|end|ensure|false|for|if|in|module|" +
                                                 @"next|nil|not|or|redo|rescue|retry|return|self|super|then|true|undef|unless|until|when|while|yield)\b", RegexOptions.Multiline);
             range.SetStyle(Method, @"\b(BEGIN|END|_ENCODING_|_LINE_|_FILE_|defined?|_END_)\b", RegexOptions.Multiline);
 
-            range.SetStyle(Operator, @"(=|\*|&|-|\+|%|/|!|\||~|<|>|\?|:|;|\{\}|\[\])", RegexOptions.Multiline);
+            range.SetStyle(Operator, @"(=|\*|&|-|\+|%|/|!|\||~|<|>|\b\?|:|;|{|}|\[|\]|\(|\)|,|\.)", RegexOptions.Multiline);
 
-            range.SetStyle(Integer, @"\b\d+\b", RegexOptions.Multiline);
+            range.SetStyle(Integer, @"\b(\d+|\d+x[0123456789ABCDEF]*)\b|", RegexOptions.Multiline);
 
-            range = ((FastColoredTextBox)sender).VisibleRange;
+            range = ((FastColoredTextBox) sender).Range;
 
             range.SetStyle(Comment, "=begin.*?=end", RegexOptions.Singleline);
 
-            range.SetStyle(String, "\".*?\"", RegexOptions.Singleline);
-            range.SetStyle(String, "'.*?'", RegexOptions.Singleline);
+            string RangeText = range.Text;
+            string[] Lines = RangeText.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+
+            List<Range> DoubleStringMatches = range.GetRanges("\".*?\"", RegexOptions.Singleline).ToList();
+            foreach (Range r in DoubleStringMatches)
+            {
+                r.ClearStyle(Method, Keyword, Operator, Integer, Comment);
+                r.SetStyle(String);
+            }
+            List<Range> SingleStringMatches = range.GetRanges("'.*?'", RegexOptions.Singleline).ToList();
+            foreach (Range r in SingleStringMatches)
+            {
+                r.ClearStyle(Method, Keyword, Operator, Integer, Comment);
+                r.SetStyle(String);
+            }
+
+            List<Range> CommentMatches = range.GetRanges(@"#[^{].*$", RegexOptions.Multiline).ToList();
+            foreach (Range r in CommentMatches)
+            {
+                r.ClearStyle(Keyword, Method, Operator, Integer, String);
+                r.SetStyle(Comment);
+            }
 
             box.AddStyle(Method);
             box.AddStyle(Keyword);
@@ -164,6 +226,9 @@ namespace PokemonEngine
             box.AddStyle(Integer);
             box.AddStyle(String);
             box.AddStyle(Comment);
+
+            if (Scripts[scriptBox.SelectedIndex].Code != box.Text) MadeChanges = true;
+            Scripts[scriptBox.SelectedIndex].Code = box.Text;
         }
         #endregion
 
@@ -173,6 +238,11 @@ namespace PokemonEngine
         public void UpdatePanels()
         {
             // Make it work with all screensizes
+        }
+
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            UpdatePanels();
         }
 
         /// <summary>
@@ -266,19 +336,7 @@ namespace PokemonEngine
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Ruby.CreateEngine().Execute(scriptEditorPanel.Controls["scriptEditor"].Text);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message);
-            }
+            
         }
 
         private void aboutThisMapToolStripMenuItem_Click(object sender, EventArgs e)
@@ -289,6 +347,69 @@ namespace PokemonEngine
             if (mf.ShouldUpdate)
             {
                 LoadMap();
+            }
+        }
+
+        private void scriptBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Starting) return;
+            scriptNameBox.Text = Scripts[scriptBox.SelectedIndex].Name;
+            scriptEditorPanel.Controls["scriptEditor"].Text = Scripts[scriptBox.SelectedIndex].Code;
+            scriptEditor_TextChanged(scriptEditorPanel.Controls["scriptEditor"],
+                new TextChangedEventArgs(((FastColoredTextBox) scriptEditorPanel.Controls["scriptEditor"]).Range));
+            Config.LastScriptIndex = scriptBox.SelectedIndex;
+        }
+
+        private void scriptNameBox_TextChanged(object sender, EventArgs e)
+        {
+            string Name = scriptNameBox.Text;
+            List<string> Invalid = new List<string>() { "\\", "/", ":", "*", "?", "\"", "<", ">", "|" };
+            foreach (string s in Invalid)
+            {
+                while (Name.Contains(s))
+                {
+                    Name = Name.Replace(s, "");
+                }
+            }
+            if (Scripts[scriptBox.SelectedIndex].Name != Name) MadeChanges = true;
+            Scripts[scriptBox.SelectedIndex].Name = Name;
+            scriptNameBox.Text = Name;
+            scriptBinder.ResetBindings(false);
+        }
+
+        private void scriptBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Directory.Exists("Scripts")) Directory.CreateDirectory("Scripts");
+            foreach (string file in Directory.GetFiles("Scripts")) { File.Delete(file); }
+            int ExtraDigits = Scripts.Count.ToString().Length;
+            for (int i = 0; i < Scripts.Count; i++)
+            {
+                string Name = $"{Digits(i + 1, ExtraDigits)}-{Scripts[i].Name}.rb";
+                StreamWriter sw = new StreamWriter(File.OpenWrite(@"Scripts\" + Name));
+                sw.Write(Scripts[i].Code);
+                sw.Close();
+            }
+            MadeChanges = false;
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MadeChanges)
+            {
+                DialogResult result = MessageBox.Show("Save changes before closing?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    saveToolStripMenuItem_Click(sender, new EventArgs());
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
             }
         }
     }
