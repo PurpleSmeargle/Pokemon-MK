@@ -387,6 +387,11 @@ namespace PokemonEngine
         {
             if (!Directory.Exists("Scripts")) Directory.CreateDirectory("Scripts");
             foreach (string file in Directory.GetFiles("Scripts")) { File.Delete(file); }
+            StreamWriter stwr = new StreamWriter(File.OpenWrite(@"Scripts\entry.rb"));
+            stwr.Write(
+@"$LOAD_PATH << "".""
+Dir.glob(""Scripts/*.rb"") { |f| require f }");
+            stwr.Close();
             int ExtraDigits = Scripts.Count.ToString().Length;
             for (int i = 0; i < Scripts.Count; i++)
             {
