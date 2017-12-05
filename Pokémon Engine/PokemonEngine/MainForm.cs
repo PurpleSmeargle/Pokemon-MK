@@ -416,7 +416,8 @@ namespace PokemonEngine
 
         private void playToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start("MKXP.exe");
+            saveToolStripMenuItem_Click(sender, e);
+            Process.Start("mkxp.exe");
         }
     }
 }
