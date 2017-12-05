@@ -12,6 +12,7 @@ using System.IO;
 using static PokemonEngine.Util;
 using FastColoredTextBoxNS;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace PokemonEngine
 {
@@ -411,6 +412,11 @@ namespace PokemonEngine
                     e.Cancel = true;
                 }
             }
+        }
+
+        private void playToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("MKXP.exe");
         }
     }
 }
