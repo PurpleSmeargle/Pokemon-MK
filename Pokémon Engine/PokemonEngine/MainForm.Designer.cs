@@ -46,7 +46,11 @@
             this.rightPanel = new System.Windows.Forms.Panel();
             this.rightPanelSplitter = new System.Windows.Forms.SplitContainer();
             this.tilePanel = new System.Windows.Forms.Panel();
+            this.tileWhite = new System.Windows.Forms.PictureBox();
+            this.tileBlack = new System.Windows.Forms.PictureBox();
             this.allMapsPanel = new System.Windows.Forms.Panel();
+            this.allMapsWhite = new System.Windows.Forms.PictureBox();
+            this.allMapsBlack = new System.Windows.Forms.PictureBox();
             this.tilesetPanel = new System.Windows.Forms.Panel();
             this.tilesetBoxPanel = new System.Windows.Forms.Panel();
             this.tilesetBox = new System.Windows.Forms.PictureBox();
@@ -62,6 +66,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.scriptBox = new System.Windows.Forms.ListBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.toolbar = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.menuBar.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.mapsTab.SuspendLayout();
@@ -74,6 +81,12 @@
             this.rightPanelSplitter.Panel1.SuspendLayout();
             this.rightPanelSplitter.Panel2.SuspendLayout();
             this.rightPanelSplitter.SuspendLayout();
+            this.tilePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tileWhite)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tileBlack)).BeginInit();
+            this.allMapsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.allMapsWhite)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.allMapsBlack)).BeginInit();
             this.tilesetPanel.SuspendLayout();
             this.tilesetBoxPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tilesetBox)).BeginInit();
@@ -83,6 +96,7 @@
             this.menuStrip1.SuspendLayout();
             this.scriptsTab.SuspendLayout();
             this.scriptsPanel.SuspendLayout();
+            this.toolbar.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuBar
@@ -101,6 +115,7 @@
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
@@ -117,14 +132,14 @@
             // compressToolStripMenuItem
             // 
             this.compressToolStripMenuItem.Name = "compressToolStripMenuItem";
-            this.compressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.compressToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.compressToolStripMenuItem.Text = "Compress";
             // 
             // playToolStripMenuItem
             // 
             this.playToolStripMenuItem.Name = "playToolStripMenuItem";
             this.playToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this.playToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.playToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.playToolStripMenuItem.Text = "Play";
             this.playToolStripMenuItem.Click += new System.EventHandler(this.playToolStripMenuItem_Click);
             // 
@@ -147,12 +162,11 @@
             // 
             this.mainTabControl.Controls.Add(this.mapsTab);
             this.mainTabControl.Controls.Add(this.scriptsTab);
-            this.mainTabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.mainTabControl.Location = new System.Drawing.Point(0, 72);
+            this.mainTabControl.Location = new System.Drawing.Point(0, 52);
             this.mainTabControl.Name = "mainTabControl";
             this.mainTabControl.SelectedIndex = 0;
             this.mainTabControl.ShowToolTips = true;
-            this.mainTabControl.Size = new System.Drawing.Size(1173, 759);
+            this.mainTabControl.Size = new System.Drawing.Size(1173, 779);
             this.mainTabControl.TabIndex = 2;
             // 
             // mapsTab
@@ -163,7 +177,7 @@
             this.mapsTab.Location = new System.Drawing.Point(4, 22);
             this.mapsTab.Name = "mapsTab";
             this.mapsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mapsTab.Size = new System.Drawing.Size(1165, 733);
+            this.mapsTab.Size = new System.Drawing.Size(1165, 753);
             this.mapsTab.TabIndex = 0;
             this.mapsTab.Text = "Maps";
             this.mapsTab.ToolTipText = "Contains all tools and functionality for mapping.";
@@ -176,7 +190,7 @@
             this.mainMapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainMapPanel.Location = new System.Drawing.Point(3, 33);
             this.mainMapPanel.Name = "mainMapPanel";
-            this.mainMapPanel.Size = new System.Drawing.Size(1159, 697);
+            this.mainMapPanel.Size = new System.Drawing.Size(1159, 717);
             this.mainMapPanel.TabIndex = 5;
             // 
             // mapPanel
@@ -187,14 +201,14 @@
             this.mapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mapPanel.Location = new System.Drawing.Point(260, 0);
             this.mapPanel.Name = "mapPanel";
-            this.mapPanel.Size = new System.Drawing.Size(719, 697);
+            this.mapPanel.Size = new System.Drawing.Size(719, 717);
             this.mapPanel.TabIndex = 2;
             // 
             // mapBoxPanel
             // 
             this.mapBoxPanel.Location = new System.Drawing.Point(6, 2);
             this.mapBoxPanel.Name = "mapBoxPanel";
-            this.mapBoxPanel.Size = new System.Drawing.Size(695, 741);
+            this.mapBoxPanel.Size = new System.Drawing.Size(506, 453);
             this.mapBoxPanel.TabIndex = 2;
             // 
             // mapWhite
@@ -220,7 +234,7 @@
             this.rightPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.rightPanel.Location = new System.Drawing.Point(979, 0);
             this.rightPanel.Name = "rightPanel";
-            this.rightPanel.Size = new System.Drawing.Size(180, 697);
+            this.rightPanel.Size = new System.Drawing.Size(180, 717);
             this.rightPanel.TabIndex = 1;
             // 
             // rightPanelSplitter
@@ -237,28 +251,68 @@
             // rightPanelSplitter.Panel2
             // 
             this.rightPanelSplitter.Panel2.Controls.Add(this.allMapsPanel);
-            this.rightPanelSplitter.Size = new System.Drawing.Size(180, 697);
-            this.rightPanelSplitter.SplitterDistance = 341;
+            this.rightPanelSplitter.Size = new System.Drawing.Size(180, 717);
+            this.rightPanelSplitter.SplitterDistance = 350;
             this.rightPanelSplitter.TabIndex = 0;
             // 
             // tilePanel
             // 
             this.tilePanel.BackColor = System.Drawing.SystemColors.Control;
+            this.tilePanel.Controls.Add(this.tileWhite);
+            this.tilePanel.Controls.Add(this.tileBlack);
             this.tilePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tilePanel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.tilePanel.Location = new System.Drawing.Point(0, 0);
             this.tilePanel.Name = "tilePanel";
-            this.tilePanel.Size = new System.Drawing.Size(180, 341);
+            this.tilePanel.Size = new System.Drawing.Size(180, 350);
             this.tilePanel.TabIndex = 0;
+            // 
+            // tileWhite
+            // 
+            this.tileWhite.BackColor = System.Drawing.SystemColors.Control;
+            this.tileWhite.Location = new System.Drawing.Point(1, 1);
+            this.tileWhite.Name = "tileWhite";
+            this.tileWhite.Size = new System.Drawing.Size(165, 348);
+            this.tileWhite.TabIndex = 1;
+            this.tileWhite.TabStop = false;
+            // 
+            // tileBlack
+            // 
+            this.tileBlack.BackColor = System.Drawing.Color.DimGray;
+            this.tileBlack.Location = new System.Drawing.Point(0, 0);
+            this.tileBlack.Name = "tileBlack";
+            this.tileBlack.Size = new System.Drawing.Size(167, 350);
+            this.tileBlack.TabIndex = 0;
+            this.tileBlack.TabStop = false;
             // 
             // allMapsPanel
             // 
             this.allMapsPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.allMapsPanel.Controls.Add(this.allMapsWhite);
+            this.allMapsPanel.Controls.Add(this.allMapsBlack);
             this.allMapsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.allMapsPanel.Location = new System.Drawing.Point(0, 0);
             this.allMapsPanel.Name = "allMapsPanel";
-            this.allMapsPanel.Size = new System.Drawing.Size(180, 352);
+            this.allMapsPanel.Size = new System.Drawing.Size(180, 363);
             this.allMapsPanel.TabIndex = 0;
+            // 
+            // allMapsWhite
+            // 
+            this.allMapsWhite.BackColor = System.Drawing.SystemColors.Control;
+            this.allMapsWhite.Location = new System.Drawing.Point(1, 1);
+            this.allMapsWhite.Name = "allMapsWhite";
+            this.allMapsWhite.Size = new System.Drawing.Size(165, 363);
+            this.allMapsWhite.TabIndex = 4;
+            this.allMapsWhite.TabStop = false;
+            // 
+            // allMapsBlack
+            // 
+            this.allMapsBlack.BackColor = System.Drawing.Color.DimGray;
+            this.allMapsBlack.Location = new System.Drawing.Point(0, 0);
+            this.allMapsBlack.Name = "allMapsBlack";
+            this.allMapsBlack.Size = new System.Drawing.Size(167, 363);
+            this.allMapsBlack.TabIndex = 3;
+            this.allMapsBlack.TabStop = false;
             // 
             // tilesetPanel
             // 
@@ -268,7 +322,7 @@
             this.tilesetPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.tilesetPanel.Location = new System.Drawing.Point(0, 0);
             this.tilesetPanel.Name = "tilesetPanel";
-            this.tilesetPanel.Size = new System.Drawing.Size(260, 697);
+            this.tilesetPanel.Size = new System.Drawing.Size(260, 717);
             this.tilesetPanel.TabIndex = 0;
             // 
             // tilesetBoxPanel
@@ -343,7 +397,7 @@
             this.scriptsTab.Location = new System.Drawing.Point(4, 22);
             this.scriptsTab.Name = "scriptsTab";
             this.scriptsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.scriptsTab.Size = new System.Drawing.Size(1165, 733);
+            this.scriptsTab.Size = new System.Drawing.Size(1165, 753);
             this.scriptsTab.TabIndex = 1;
             this.scriptsTab.Text = "Scripts";
             this.scriptsTab.ToolTipText = "Contains all tools and funtionality for scripting.";
@@ -353,7 +407,7 @@
             this.scriptEditorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scriptEditorPanel.Location = new System.Drawing.Point(176, 3);
             this.scriptEditorPanel.Name = "scriptEditorPanel";
-            this.scriptEditorPanel.Size = new System.Drawing.Size(986, 727);
+            this.scriptEditorPanel.Size = new System.Drawing.Size(986, 747);
             this.scriptEditorPanel.TabIndex = 1;
             // 
             // scriptsPanel
@@ -364,7 +418,7 @@
             this.scriptsPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.scriptsPanel.Location = new System.Drawing.Point(3, 3);
             this.scriptsPanel.Name = "scriptsPanel";
-            this.scriptsPanel.Size = new System.Drawing.Size(173, 727);
+            this.scriptsPanel.Size = new System.Drawing.Size(173, 747);
             this.scriptsPanel.TabIndex = 0;
             // 
             // scriptNameBox
@@ -401,11 +455,44 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // toolbar
+            // 
+            this.toolbar.BackColor = System.Drawing.Color.Transparent;
+            this.toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripButton2});
+            this.toolbar.Location = new System.Drawing.Point(0, 24);
+            this.toolbar.Name = "toolbar";
+            this.toolbar.Size = new System.Drawing.Size(1173, 25);
+            this.toolbar.TabIndex = 3;
+            this.toolbar.Text = "Toolbar";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::PokemonEngine.Properties.Resources.save;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "Save";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = global::PokemonEngine.Properties.Resources.play;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton2.Text = "Play";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1173, 831);
+            this.Controls.Add(this.toolbar);
             this.Controls.Add(this.mainTabControl);
             this.Controls.Add(this.menuBar);
             this.MainMenuStrip = this.menuBar;
@@ -428,6 +515,12 @@
             this.rightPanelSplitter.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.rightPanelSplitter)).EndInit();
             this.rightPanelSplitter.ResumeLayout(false);
+            this.tilePanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tileWhite)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tileBlack)).EndInit();
+            this.allMapsPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.allMapsWhite)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.allMapsBlack)).EndInit();
             this.tilesetPanel.ResumeLayout(false);
             this.tilesetBoxPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tilesetBox)).EndInit();
@@ -440,6 +533,8 @@
             this.scriptsTab.ResumeLayout(false);
             this.scriptsPanel.ResumeLayout(false);
             this.scriptsPanel.PerformLayout();
+            this.toolbar.ResumeLayout(false);
+            this.toolbar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -479,6 +574,13 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem playToolStripMenuItem;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ToolStrip toolbar;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.PictureBox tileWhite;
+        private System.Windows.Forms.PictureBox tileBlack;
+        private System.Windows.Forms.PictureBox allMapsWhite;
+        private System.Windows.Forms.PictureBox allMapsBlack;
     }
 }
 

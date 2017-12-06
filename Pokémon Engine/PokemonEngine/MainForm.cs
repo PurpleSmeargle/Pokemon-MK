@@ -111,7 +111,7 @@ namespace PokemonEngine
 
             LoadMap();
 
-            UpdatePanels();
+            MainForm_SizeChanged(sender, e);
 
             scriptBox.SelectedIndex = 0;
 
@@ -232,18 +232,24 @@ namespace PokemonEngine
             Scripts[scriptBox.SelectedIndex].Code = box.Text;
         }
         #endregion
-
         /// <summary>
-        /// Resizes all panels and boxes according to the screensize.
+        /// Resizes all panels and boxes to match the screensize.
         /// </summary>
-        public void UpdatePanels()
-        {
-            // Make it work with all screensizes
-        }
-
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
-            UpdatePanels();
+            mainTabControl.Location = new Point(0, 52);
+            mainTabControl.Size = new Size(Width - 2, Height - 56);
+            tilesetBoxPanel.Size = new Size(tilesetBoxPanel.Width, mainTabControl.Height - tilesetBoxPanel.Location.Y - mainTabControl.Location.Y - 47);
+            tilesetWhite.Size = new Size(tilesetWhite.Width, mainTabControl.Height - tilesetWhite.Location.Y - mainTabControl.Location.Y - 46);
+            tilesetBlack.Size = new Size(tilesetBlack.Width, mainTabControl.Height - tilesetBlack.Location.Y - mainTabControl.Location.Y - 45);
+            mapBoxPanel.Size = new Size(32 * CurrentMap.General.Width, 32 * CurrentMap.General.Height);
+            mapWhite.Size = new Size(Width - tilesetPanel.Width - rightPanel.Width - 26, mainTabControl.Height - mapBlack.Location.Y - mainTabControl.Location.Y - 47);
+            mapBlack.Size = new Size(Width - tilesetPanel.Width - rightPanel.Width - 24, mainTabControl.Height - mapBlack.Location.Y - mainTabControl.Location.Y - 45);
+            rightPanelSplitter.SplitterDistance = mainTabControl.Height / 3;
+            tileBlack.Size = new Size(tilePanel.Width - 13, tilePanel.Height);
+            tileWhite.Size = new Size(tilePanel.Width - 15, tilePanel.Height - 2);
+            allMapsBlack.Size = new Size(allMapsPanel.Width - 13, allMapsPanel.Height - 35);
+            allMapsWhite.Size = new Size(allMapsPanel.Width - 15, allMapsPanel.Height - 37);
         }
 
         /// <summary>
@@ -380,7 +386,7 @@ namespace PokemonEngine
 
         private void scriptBox_MouseClick(object sender, MouseEventArgs e)
         {
-            
+            // Implement right-click stuff
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -422,7 +428,18 @@ Dir.glob(""Scripts/*.rb"") { |f| require f }");
         private void playToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveToolStripMenuItem_Click(sender, e);
+            System.Threading.Thread.Sleep(100);
             Process.Start("mkxp.exe");
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            playToolStripMenuItem_Click(sender, e);
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            saveToolStripMenuItem_Click(sender, e);
         }
     }
 }
