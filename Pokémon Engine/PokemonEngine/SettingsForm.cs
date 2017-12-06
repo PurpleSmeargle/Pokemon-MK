@@ -12,9 +12,133 @@ namespace PokemonEngine
 {
     public partial class SettingsForm : Form
     {
+        int OldRGSSVersion;
+        bool OldPrintFPS;
+        bool OldStartFullscreen;
+        bool OldFixedAspectRatio;
+        bool OldSmoothScaling;
+        bool OldF12SoftReset;
+        int OldFixedFrameRate;
+        int OldScreenWidth;
+        int OldScreenHeight;
+        string OldIconPath;
+
+        bool SaveChanges = false;
+
         public SettingsForm()
         {
             InitializeComponent();
+        }
+
+        private void SettingsForm_Load(object sender, EventArgs e)
+        {
+            OldRGSSVersion = Config.RGSSVersion;
+            OldPrintFPS = Config.PrintFPS;
+            OldStartFullscreen = Config.StartFullscreen;
+            OldFixedAspectRatio = Config.FixedAspectRatio;
+            OldSmoothScaling = Config.SmoothScaling;
+            OldF12SoftReset = Config.F12SoftReset;
+            OldFixedFrameRate = Config.FixedFramerate;
+            OldScreenWidth = Config.ScreenWidth;
+            OldScreenHeight = Config.ScreenHeight;
+            OldIconPath = Config.IconPath;
+
+            rgssVersion.SelectedIndex = Config.RGSSVersion;
+            printFPS.Checked = Config.PrintFPS;
+            startFullscreen.Checked = Config.StartFullscreen;
+            fixedAspectRatio.Checked = Config.FixedAspectRatio;
+            smoothScaling.Checked = Config.SmoothScaling;
+            f12SoftReset.Checked = Config.F12SoftReset;
+            fixedFramerate.Value = Config.FixedFramerate;
+            screenWidth.Value = Config.ScreenWidth;
+            screenHeight.Value = Config.ScreenHeight;
+        }
+
+        // Cancel
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        // Apply
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ActiveControl = (Control) sender;
+            SaveChanges = true;
+            Close();
+        }
+
+        private void SettingsForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            EventArgs ev = new EventArgs();
+            rgssVersion_SelectedIndexChanged(sender, ev);
+            printFPS_CheckedChanged(sender, ev);
+            startFullscreen_CheckedChanged(sender, ev);
+            fixedAspectRatio_CheckedChanged(sender, ev);
+            smoothScaling_CheckedChanged(sender, ev);
+            f12SoftReset_CheckedChanged(sender, ev);
+            maxFramerate_ValueChanged(sender, ev);
+            screenWidth_ValueChanged(sender, ev);
+            screenHeight_ValueChanged(sender, ev);
+
+            if (!SaveChanges)
+            {
+                Config.RGSSVersion = OldRGSSVersion;
+                Config.PrintFPS = OldPrintFPS;
+                Config.StartFullscreen = OldStartFullscreen;
+                Config.FixedAspectRatio = OldFixedAspectRatio;
+                Config.SmoothScaling = OldSmoothScaling;
+                Config.F12SoftReset = OldF12SoftReset;
+                Config.FixedFramerate = OldFixedFrameRate;
+                Config.ScreenWidth = OldScreenWidth;
+                Config.ScreenHeight = OldScreenHeight;
+                Config.IconPath = OldIconPath;
+            }
+        }
+
+        private void rgssVersion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Config.RGSSVersion = rgssVersion.SelectedIndex;
+        }
+
+        private void printFPS_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.PrintFPS = printFPS.Checked;
+        }
+
+        private void startFullscreen_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.StartFullscreen = startFullscreen.Checked;
+        }
+
+        private void fixedAspectRatio_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.FixedAspectRatio = fixedAspectRatio.Checked;
+        }
+
+        private void smoothScaling_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SmoothScaling = smoothScaling.Checked;
+        }
+
+        private void f12SoftReset_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.F12SoftReset = f12SoftReset.Checked;
+        }
+
+        private void maxFramerate_ValueChanged(object sender, EventArgs e)
+        {
+            Config.FixedFramerate = (int) fixedFramerate.Value;
+        }
+
+        private void screenWidth_ValueChanged(object sender, EventArgs e)
+        {
+            Config.ScreenWidth = (int) screenWidth.Value;
+        }
+
+        private void screenHeight_ValueChanged(object sender, EventArgs e)
+        {
+            Config.ScreenHeight = (int) screenHeight.Value;
         }
     }
 }

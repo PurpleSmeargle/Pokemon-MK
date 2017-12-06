@@ -109,6 +109,64 @@ namespace PokemonEngine
             scriptBox.DataSource = scriptBinder;
             scriptBox.DisplayMember = "Name";
 
+            // Loading MKXP Config
+            if (File.Exists("mkxp.conf"))
+            {
+                StreamReader sr = new StreamReader(File.OpenRead("mkxp.conf"));
+                string data = sr.ReadToEnd();
+                sr.Close();
+                List<string> Lines = data.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+                data = null;
+                for (int i = 0; i < Lines.Count; i++)
+                {
+                    if (Lines[i].StartsWith("#")) continue;
+                    data += Lines[i];
+                    if (i != Lines.Count - 1) data += "\r\n";
+                }
+                if (data.Contains("rgssVersion=")) { Config.RGSSVersion = Convert.ToInt32(data.Split(new string[] { "rgssVersion=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("debugMode=")) { Config._DebugMode = Convert.ToBoolean(data.Split(new string[] { "debugMode=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("printFPS=")) { Config.PrintFPS = Convert.ToBoolean(data.Split(new string[] { "printFPS=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("winResizable=")) { Config._WinResizable = Convert.ToBoolean(data.Split(new string[] { "winResizable=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("fullscreen=")) { Config.StartFullscreen = Convert.ToBoolean(data.Split(new string[] { "fullscreen=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("fixedAspectRatio=")) { Config.FixedAspectRatio = Convert.ToBoolean(data.Split(new string[] { "fixedAspectRatio=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("smoothScaling=")) { Config.SmoothScaling = Convert.ToBoolean(data.Split(new string[] { "smoothScaling=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("vsync=")) { Config._VSync = Convert.ToBoolean(data.Split(new string[] { "vsync=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("defScreenW=")) { Config.ScreenWidth = Convert.ToInt32(data.Split(new string[] { "defScreenW=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("defScreenH=")) { Config.ScreenHeight = Convert.ToInt32(data.Split(new string[] { "defScreenH=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("fixedFramerate=")) { Config.FixedFramerate = Convert.ToInt32(data.Split(new string[] { "fixedFramerate=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("frameSkip=")) { Config._FrameSkip = Convert.ToBoolean(data.Split(new string[] { "frameSkip=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("syncToRefreshrate=")) { Config._SyncToRefreshRate = Convert.ToBoolean(data.Split(new string[] { "syncToRefreshrate=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("solidFonts=")) { Config._SolidFonts = Convert.ToBoolean(data.Split(new string[] { "solidFonts=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("subImageFix=")) { Config._SubImageFix = Convert.ToBoolean(data.Split(new string[] { "subImageFix=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("enableBlitting=")) { Config._EnableBlitting = Convert.ToBoolean(data.Split(new string[] { "enableBlitting=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("maxTextureSize=")) { Config._MaxTextureSize = data.Split(new string[] { "maxTextureSize=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("gameFolder=")) { Config._GameFolder = data.Split(new string[] { "gameFolder=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("anyAltToggleFS=")) { Config._AnyAltToggleFS = Convert.ToBoolean(data.Split(new string[] { "anyAltToggleFS=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("enableReset=")) { Config.F12SoftReset = Convert.ToBoolean(data.Split(new string[] { "enableReset=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("allowSymlinks=")) { Config._AllowSymLinks = Convert.ToBoolean(data.Split(new string[] { "allowSymlinks=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("dataPathOrg=")) { Config._DataPathOrg = data.Split(new string[] { "dataPathOrg=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("dataPathApp=")) { Config._DataPathApp = data.Split(new string[] { "dataPathApp=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("iconPath=")) { Config.IconPath = data.Split(new string[] { "iconPath=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("customScript=")) { Config._CustomScript = data.Split(new string[] { "customScript=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("preloadScript=")) { Config._PreloadScript = data.Split(new string[] { "preloadScript=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("pathCache=")) { Config._PathCache = Convert.ToBoolean(data.Split(new string[] { "pathCache=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("useScriptNames=")) { Config._UseScriptNames = Convert.ToBoolean(data.Split(new string[] { "useScriptNames=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("rubyLoadpath=")) { Config._RubyLoadPath = data.Split(new string[] { "rubyLoadpath=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("midi.soundFont=")) { Config._SoundFont = data.Split(new string[] { "midi.soundFont=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("midi.chorus=")) { Config._Chorus = Convert.ToBoolean(data.Split(new string[] { "midi.chorus=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("midi.reverb=")) { Config._Reverb = Convert.ToBoolean(data.Split(new string[] { "midi.reverb=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("SE.sourceCount=")) { Config._SourceCount = Convert.ToInt32(data.Split(new string[] { "SE.sourceCount=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("execName=")) { Config._ExecName = data.Split(new string[] { "execName=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("titleLanguage=")) { Config._TitleLanguage = data.Split(new string[] { "titleLanguage=" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]; }
+
+                List<string> RTPs = data.Split(new string[] { "RTP=" }, StringSplitOptions.None).ToList();
+                for (int i = 1; i < RTPs.Count; i++)
+                {
+                    Config._RTP.Add(RTPs[i].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]);
+                }
+            }
+
+
             LoadMap();
 
             MainForm_SizeChanged(sender, e);
@@ -129,7 +187,6 @@ namespace PokemonEngine
                 if (e.KeyCode == Keys.V)
                 {
                     scriptEditor_TextChanged(sender, new TextChangedEventArgs(((FastColoredTextBox) sender).VisibleRange));
-                    MessageBox.Show(((FastColoredTextBox) sender).Text);
                     Console.WriteLine("Ctrl + V");
                 }
                 else if (e.KeyCode == Keys.T)
@@ -341,11 +398,6 @@ namespace PokemonEngine
             return (Cursor.Location.X / 32) + 8 * (Cursor.Location.Y / 32);
         }
 
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void aboutThisMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MapForm mf = new MapForm(CurrentMap);
@@ -391,6 +443,7 @@ namespace PokemonEngine
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Saving all scripts
             if (!Directory.Exists("Scripts")) Directory.CreateDirectory("Scripts");
             foreach (string file in Directory.GetFiles("Scripts")) { File.Delete(file); }
             StreamWriter stwr = new StreamWriter(File.OpenWrite(@"Scripts\entry.rb"));
@@ -402,10 +455,51 @@ Dir.glob(""Scripts/*.rb"") { |f| require f }");
             for (int i = 0; i < Scripts.Count; i++)
             {
                 string Name = $"{Digits(i + 1, ExtraDigits)}-{Scripts[i].Name}.rb";
-                StreamWriter sw = new StreamWriter(File.OpenWrite(@"Scripts\" + Name));
-                sw.Write(Scripts[i].Code);
-                sw.Close();
+                StreamWriter streamwriter = new StreamWriter(File.OpenWrite(@"Scripts\" + Name));
+                streamwriter.Write(Scripts[i].Code);
+                streamwriter.Close();
             }
+
+            // Saving MKXP's Config
+            if (File.Exists("mkxp.conf")) { File.Delete("mkxp.conf"); }
+            StreamWriter sw = new StreamWriter(File.OpenWrite("mkxp.conf"));
+            if (Config.RGSSVersion != 0) sw.WriteLine($"rgssVersion={Config.RGSSVersion}");
+            if (Config._DebugMode) sw.WriteLine($"debugMode=true");
+            if (Config.PrintFPS) sw.WriteLine($"printFPS=true");
+            if (Config._WinResizable) sw.WriteLine($"winResizable=true");
+            if (Config.StartFullscreen) sw.WriteLine($"fullscreen=true");
+            if (!Config.FixedAspectRatio) sw.WriteLine($"fixedAspectRatio=false");
+            if (!Config.SmoothScaling) sw.WriteLine($"smoothScaling=false");
+            if (Config.ScreenWidth != 0) sw.WriteLine($"defScreenW={Config.ScreenWidth}");
+            if (Config.ScreenHeight != 0) sw.WriteLine($"defScreenH={Config.ScreenHeight}");
+            if (Config.FixedFramerate != 0) sw.WriteLine($"fixedFramerate={Config.FixedFramerate}");
+            if (!Config._FrameSkip) sw.WriteLine($"frameSkip=false");
+            if (Config._SyncToRefreshRate) sw.WriteLine($"syncToRefreshratetrue");
+            if (Config._SolidFonts) sw.WriteLine($"solidFonts=true");
+            if (Config._SubImageFix) sw.WriteLine($"subImageFix=true");
+            if (!Config._EnableBlitting) sw.WriteLine($"enableBlitting=false");
+            if (Config._MaxTextureSize != "0") sw.WriteLine($"maxTextureSize={Config._MaxTextureSize}");
+            if (!Empty(Config._GameFolder)) sw.WriteLine($"gameFolder={Config._GameFolder}");
+            if (Config._AnyAltToggleFS) sw.WriteLine($"anyAltToggleFS=true");
+            if (!Config.F12SoftReset) sw.WriteLine($"enableReset=false");
+            if (Config._AllowSymLinks) sw.WriteLine($"allowSymlinks=true");
+            if (!Empty(Config._DataPathOrg)) sw.WriteLine($"dataPathOrg={Config._DataPathOrg}");
+            if (!Empty(Config._DataPathApp)) sw.WriteLine($"dataPathApp={Config._DataPathApp}");
+            if (!Empty(Config.IconPath)) sw.WriteLine($"iconPath={Config.IconPath}");
+            if (!Empty(Config._CustomScript)) sw.WriteLine($"customScript={Config._CustomScript}");
+            if (!Empty(Config._PreloadScript)) sw.WriteLine($"preloadScript={Config._PreloadScript}");
+            if (!Config._PathCache) sw.WriteLine($"pathCache=false");
+            foreach (string s in Config._RTP) sw.WriteLine($"RTP={s}");
+            if (Config._UseScriptNames) sw.WriteLine($"useScriptNames=true");
+            if (!Empty(Config._RubyLoadPath)) sw.WriteLine($"rubyLoadpath={Config._RubyLoadPath}");
+            if (!Empty(Config._SoundFont)) sw.WriteLine($"midi.soundFont={Config._SoundFont}");
+            if (Config._Chorus) sw.WriteLine($"midi.chorus=true");
+            if (Config._Reverb) sw.WriteLine($"midi.reverb=true");
+            if (Config._SourceCount != 6) sw.WriteLine($"SE.sourceCount={Config._SourceCount}");
+            if (!Empty(Config._ExecName)) sw.WriteLine($"execName={Config._ExecName}");
+            if (!Empty(Config._TitleLanguage)) sw.WriteLine($"titleLanguage={Config._TitleLanguage}");
+            sw.Close();
+
             MadeChanges = false;
         }
 
@@ -429,7 +523,7 @@ Dir.glob(""Scripts/*.rb"") { |f| require f }");
         {
             saveToolStripMenuItem_Click(sender, e);
             System.Threading.Thread.Sleep(100);
-            Process.Start("mkxp.exe");
+            Process.Start("Game.exe");
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -440,6 +534,12 @@ Dir.glob(""Scripts/*.rb"") { |f| require f }");
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             saveToolStripMenuItem_Click(sender, e);
+        }
+
+        private void settingsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            SettingsForm settings = new SettingsForm();
+            settings.ShowDialog();
         }
     }
 }

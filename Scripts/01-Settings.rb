@@ -1,5 +1,5 @@
-SCREENWIDTH  = 512
-SCREENHEIGHT = 384
+SCREENWIDTH  = 640
+SCREENHEIGHT = 480
 
 # These are all fonts registered. The first one is the default.
 FONTS = [
