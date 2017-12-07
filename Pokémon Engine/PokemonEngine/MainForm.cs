@@ -298,7 +298,7 @@ namespace PokemonEngine
             tilesetBoxPanel.Size = new Size(tilesetBoxPanel.Width, mainTabControl.Height - tilesetBoxPanel.Location.Y - mainTabControl.Location.Y - 47);
             tilesetWhite.Size = new Size(tilesetWhite.Width, mainTabControl.Height - tilesetWhite.Location.Y - mainTabControl.Location.Y - 46);
             tilesetBlack.Size = new Size(tilesetBlack.Width, mainTabControl.Height - tilesetBlack.Location.Y - mainTabControl.Location.Y - 45);
-            mapBoxPanel.Size = new Size(32 * CurrentMap.General.Width, 32 * CurrentMap.General.Height);
+            if (!Empty(CurrentMap)) mapBoxPanel.Size = new Size(32 * CurrentMap.General.Width, 32 * CurrentMap.General.Height);
             mapWhite.Size = new Size(Width - tilesetPanel.Width - rightPanel.Width - 26, mainTabControl.Height - mapBlack.Location.Y - mainTabControl.Location.Y - 47);
             mapBlack.Size = new Size(Width - tilesetPanel.Width - rightPanel.Width - 24, mainTabControl.Height - mapBlack.Location.Y - mainTabControl.Location.Y - 45);
             rightPanelSplitter.SplitterDistance = mainTabControl.Height / 3;
