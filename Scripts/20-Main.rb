@@ -18,19 +18,19 @@ $Viewports["main"] = Viewport.new(0,0,Graphics.width,Graphics.height)
 $Map = Map.new(1)
 $Player = Player.new
 
+
+
 loop do
-  Graphics.update
-  Input.update
-  $Player.update
-  $Map.update
-  if !$Player.moving?
-    if Input.trigger?(Input::C)
-      p 'Saving...'
-      System.save
-    end
+  begin
+    Graphics.update
+    Input.update
+    $Player.update
+    $Map.update
     if Input.trigger?(Input::B)
-      p 'Loading...'
-      System.load
+      2 ** ""
     end
+  rescue
+    e = $!
+    System.show_formatted_error(e)
   end
 end

@@ -64,7 +64,6 @@ namespace PokemonEngine
             #region Script Editor
             FastColoredTextBox txt = new FastColoredTextBox();
             txt.Name = "scriptEditor";
-            txt.Dock = DockStyle.Fill;
             txt.TextChanged += scriptEditor_TextChanged;
             txt.AutoIndentNeeded += scriptEditor_AutoIndentNeeded;
             txt.TabLength = 2;
@@ -109,7 +108,7 @@ namespace PokemonEngine
             scriptBox.DataSource = scriptBinder;
             scriptBox.DisplayMember = "Name";
 
-            // Loading MKXP Config
+            // Load MKXP Config
             if (File.Exists("mkxp.conf"))
             {
                 StreamReader sr = new StreamReader(File.OpenRead("mkxp.conf"));
@@ -215,13 +214,14 @@ namespace PokemonEngine
         private void scriptEditor_AutoIndentNeeded(object sender, AutoIndentEventArgs e)
         {
             string LineText = e.LineText.Trim().Split('#')[0];
-            if (Regex.IsMatch(LineText, $@"\b(class|module|def|rescue|do|for|while|when|until|if)\b"))
+            if (Regex.IsMatch(LineText, $@"\b(module|def|rescue|do|for|while|when|until|if)\b"))
             {
                 e.ShiftNextLines = e.TabLength;
                 return;
             }
             if (Regex.IsMatch(LineText, @"\bbegin\b") && !Regex.IsMatch(LineText, @"=begin\b") && !Regex.IsMatch(LineText, @".begin\b") && 
-               !Regex.IsMatch(LineText, @"_begin\b"))
+               !Regex.IsMatch(LineText, @"_begin\b") ||
+               Regex.IsMatch(LineText, @"\bclass\b") && !Regex.IsMatch(LineText, @".class\b"))
             {
                 e.ShiftNextLines = e.TabLength;
                 return;
@@ -241,7 +241,7 @@ namespace PokemonEngine
             // Only the changed text
             Range range = e.ChangedRange;
 
-            range.ClearStyle(Keyword, Comment, Method, Operator, Integer, String);
+            range.ClearStyle(Keyword, Comment, Method, Operator, Integer);
 
             range.SetStyle(Keyword, @"\b(alias|and|begin|break|case|class|def|do|else|elsif|end|ensure|false|for|if|in|module|" +
                                                 @"next|nil|not|or|redo|rescue|retry|return|self|super|then|true|undef|unless|until|when|while|yield)\b", RegexOptions.Multiline);
@@ -253,10 +253,9 @@ namespace PokemonEngine
 
             range = ((FastColoredTextBox) sender).Range;
 
-            range.SetStyle(Comment, "=begin.*?=end", RegexOptions.Singleline);
+            range.ClearStyle(String);
 
-            string RangeText = range.Text;
-            string[] Lines = RangeText.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            range.SetStyle(Comment, "=begin.*?=end", RegexOptions.Singleline);
 
             List<Range> DoubleStringMatches = range.GetRanges("\".*?\"", RegexOptions.Singleline).ToList();
             foreach (Range r in DoubleStringMatches)
@@ -307,6 +306,12 @@ namespace PokemonEngine
             tileWhite.Size = new Size(tilePanel.Width - 15, tilePanel.Height - 2);
             allMapsBlack.Size = new Size(allMapsPanel.Width - 13, allMapsPanel.Height - 35);
             allMapsWhite.Size = new Size(allMapsPanel.Width - 15, allMapsPanel.Height - 37);
+
+            FastColoredTextBox txt = scriptEditorPanel.Controls["scriptEditor"] as FastColoredTextBox;
+            txt.Size = new Size(Width - scriptEditorPanel.Location.X - 20, Height - mainTabControl.Location.Y - scriptEditorPanel.Location.Y - 68);
+            scriptNameBox.Location = new Point(scriptNameBox.Location.X, Height - 148);
+            scriptNameLabel.Location = new Point(scriptNameLabel.Location.X, Height - 166);
+            scriptBox.Size = new Size(scriptBox.Size.Width, Height - mainTabControl.Location.Y - 118);
         }
 
         /// <summary>
@@ -448,8 +453,12 @@ namespace PokemonEngine
             foreach (string file in Directory.GetFiles("Scripts")) { File.Delete(file); }
             StreamWriter stwr = new StreamWriter(File.OpenWrite(@"Scripts\entry.rb"));
             stwr.Write(
-@"$LOAD_PATH << "".""
-Dir.glob(""Scripts/*.rb"") { |f| require f }");
+$@"SCREENWIDTH = {Config.ScreenWidth}
+SCREENHEIGHT = {Config.ScreenHeight}
+Graphics.resize_screen(SCREENWIDTH, SCREENHEIGHT)
+
+$LOAD_PATH << "".""
+Dir.glob(""Scripts/*.rb"") {{ |f| require f }}");
             stwr.Close();
             int ExtraDigits = Scripts.Count.ToString().Length;
             for (int i = 0; i < Scripts.Count; i++)
@@ -540,6 +549,11 @@ Dir.glob(""Scripts/*.rb"") { |f| require f }");
         {
             SettingsForm settings = new SettingsForm();
             settings.ShowDialog();
+        }
+
+        private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MainForm_SizeChanged(sender, e);
         }
     }
 }

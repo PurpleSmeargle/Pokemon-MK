@@ -2,15 +2,15 @@
 
 
 def p(*args)
-	msgbox *args
+  msgbox *args
 end
 
 def puts(*args)
-	p(*args)
+  p(*args)
 end
 
 def print(*args)
-	p(*args)
+  p(*args)
 end
 
 
@@ -679,14 +679,14 @@ class Dir
   # Deletes a directory and all files/directories within, unless non_empty is false
   def self.delete(path, non_empty = true)
     if non_empty
-	  for file in Dir.get_all(path)
-	    if File.directory?(file)
-	      Dir.delete(file, non_empty)
-	    elsif File.file?(file)
-	      File.delete(file)
-	    end
-	  end
-	end
+    for file in Dir.get_all(path)
+      if File.directory?(file)
+        Dir.delete(file, non_empty)
+      elsif File.file?(file)
+        File.delete(file)
+      end
+    end
+  end
     marin_delete(path)
   end
   
@@ -794,18 +794,18 @@ class BetterHash
   key = key.to_sym if key.respond_to?(:to_sym)
     add(key, value)
   end
-	
-	def <<(value)
-		i = 0
-		while true
-			if @hash[i]
-				i += 1
-				next
-			end
-		  break
-		end
-		@hash[i] = value
-	end
+  
+  def <<(value)
+    i = 0
+    while true
+      if @hash[i]
+        i += 1
+        next
+      end
+      break
+    end
+    @hash[i] = value
+  end
   
   # Returns the raw hash
   def raw
@@ -968,10 +968,10 @@ def showBlk(update = true)
   $blk.bitmap.fill_rect(0,0,Graphics.width,Graphics.height,Color.new(0,0,0))
   $blk.opacity = 0
   for i in 0...17
-		if update
-			Graphics.update
-			Input.update
-		end
+    if update
+      Graphics.update
+      Input.update
+    end
     yield i if block_given?
     $blk.opacity += 256 / 16.0
   end
@@ -981,10 +981,10 @@ end
 def hideBlk(update = true)
   return if !$blk || !$blkVp
   for i in 0...17
-		if update
-			Graphics.update
-			Input.update
-		end
+    if update
+      Graphics.update
+      Input.update
+    end
     yield i if block_given?
     $blk.opacity -= 256 / 16.0
   end

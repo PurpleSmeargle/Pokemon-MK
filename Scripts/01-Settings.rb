@@ -1,6 +1,3 @@
-SCREENWIDTH  = 640
-SCREENHEIGHT = 480
-
 # These are all fonts registered. The first one is the default.
 FONTS = [
   ["Power Green", 29],
@@ -10,3 +7,5 @@ FONTS = [
   ["Power Clear", 29],
   ["Power Red and Green", 27],
 ]
+
+WALK_SPEED = 16

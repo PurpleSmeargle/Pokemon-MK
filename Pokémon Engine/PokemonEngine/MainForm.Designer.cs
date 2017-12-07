@@ -29,11 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuBar = new System.Windows.Forms.MenuStrip();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.mapsTab = new System.Windows.Forms.TabPage();
             this.mainMapPanel = new System.Windows.Forms.Panel();
@@ -61,13 +63,12 @@
             this.scriptEditorPanel = new System.Windows.Forms.Panel();
             this.scriptsPanel = new System.Windows.Forms.Panel();
             this.scriptNameBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.scriptNameLabel = new System.Windows.Forms.Label();
             this.scriptBox = new System.Windows.Forms.ListBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.settingsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBar.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.mapsTab.SuspendLayout();
@@ -131,16 +132,23 @@
             // compressToolStripMenuItem
             // 
             this.compressToolStripMenuItem.Name = "compressToolStripMenuItem";
-            this.compressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.compressToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.compressToolStripMenuItem.Text = "Compress";
             // 
             // playToolStripMenuItem
             // 
             this.playToolStripMenuItem.Name = "playToolStripMenuItem";
             this.playToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this.playToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.playToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.playToolStripMenuItem.Text = "Play";
             this.playToolStripMenuItem.Click += new System.EventHandler(this.playToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem1
+            // 
+            this.settingsToolStripMenuItem1.Name = "settingsToolStripMenuItem1";
+            this.settingsToolStripMenuItem1.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem1.Text = "Settings";
+            this.settingsToolStripMenuItem1.Click += new System.EventHandler(this.settingsToolStripMenuItem1_Click);
             // 
             // mainTabControl
             // 
@@ -152,6 +160,7 @@
             this.mainTabControl.ShowToolTips = true;
             this.mainTabControl.Size = new System.Drawing.Size(1173, 779);
             this.mainTabControl.TabIndex = 2;
+            this.mainTabControl.SelectedIndexChanged += new System.EventHandler(this.mainTabControl_SelectedIndexChanged);
             // 
             // mapsTab
             // 
@@ -397,7 +406,7 @@
             // scriptsPanel
             // 
             this.scriptsPanel.Controls.Add(this.scriptNameBox);
-            this.scriptsPanel.Controls.Add(this.label1);
+            this.scriptsPanel.Controls.Add(this.scriptNameLabel);
             this.scriptsPanel.Controls.Add(this.scriptBox);
             this.scriptsPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.scriptsPanel.Location = new System.Drawing.Point(3, 3);
@@ -407,20 +416,20 @@
             // 
             // scriptNameBox
             // 
-            this.scriptNameBox.Location = new System.Drawing.Point(13, 743);
+            this.scriptNameBox.Location = new System.Drawing.Point(13, 720);
             this.scriptNameBox.Name = "scriptNameBox";
             this.scriptNameBox.Size = new System.Drawing.Size(146, 20);
             this.scriptNameBox.TabIndex = 2;
             this.scriptNameBox.TextChanged += new System.EventHandler(this.scriptNameBox_TextChanged);
             // 
-            // label1
+            // scriptNameLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(66, 726);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Name:";
+            this.scriptNameLabel.AutoSize = true;
+            this.scriptNameLabel.Location = new System.Drawing.Point(66, 703);
+            this.scriptNameLabel.Name = "scriptNameLabel";
+            this.scriptNameLabel.Size = new System.Drawing.Size(38, 13);
+            this.scriptNameLabel.TabIndex = 1;
+            this.scriptNameLabel.Text = "Name:";
             // 
             // scriptBox
             // 
@@ -428,7 +437,7 @@
             this.scriptBox.FormattingEnabled = true;
             this.scriptBox.Location = new System.Drawing.Point(0, 0);
             this.scriptBox.Name = "scriptBox";
-            this.scriptBox.Size = new System.Drawing.Size(173, 719);
+            this.scriptBox.Size = new System.Drawing.Size(173, 693);
             this.scriptBox.TabIndex = 0;
             this.scriptBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.scriptBox_MouseClick);
             this.scriptBox.SelectedIndexChanged += new System.EventHandler(this.scriptBox_SelectedIndexChanged);
@@ -454,7 +463,7 @@
             // toolStripButton1
             // 
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::PokemonEngine.Properties.Resources.save;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
@@ -464,19 +473,12 @@
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = global::PokemonEngine.Properties.Resources.play;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton2.Text = "Play";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
-            // 
-            // settingsToolStripMenuItem1
-            // 
-            this.settingsToolStripMenuItem1.Name = "settingsToolStripMenuItem1";
-            this.settingsToolStripMenuItem1.Size = new System.Drawing.Size(61, 20);
-            this.settingsToolStripMenuItem1.Text = "Settings";
-            this.settingsToolStripMenuItem1.Click += new System.EventHandler(this.settingsToolStripMenuItem1_Click);
             // 
             // MainForm
             // 
@@ -559,18 +561,18 @@
         private System.Windows.Forms.ToolStripMenuItem aboutThisMapToolStripMenuItem;
         private System.Windows.Forms.ListBox scriptBox;
         private System.Windows.Forms.TextBox scriptNameBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label scriptNameLabel;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem playToolStripMenuItem;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ToolStrip toolbar;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.PictureBox tileWhite;
         private System.Windows.Forms.PictureBox tileBlack;
         private System.Windows.Forms.PictureBox allMapsWhite;
         private System.Windows.Forms.PictureBox allMapsBlack;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
     }
 }
 
