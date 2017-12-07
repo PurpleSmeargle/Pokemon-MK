@@ -368,20 +368,12 @@ namespace PokemonEngine
                         TileID = (int) ((List<dynamic>) Tile)[0];
                     }
                     if (TileID == 0) continue;
-                    Bitmap TileBitmap = new Bitmap(32, 32);
                     int RealTilesetX = (TileID % 8) * 32;
                     int RealTilesetY = (int) Math.Floor((double) TileID / 8) * 32;
-                    for (int x = RealTilesetX; x < RealTilesetX + 32; x++)
-                    {
-                        for (int y = RealTilesetY; y < RealTilesetY + 32; y++)
-                        {
-                            TileBitmap.SetPixel(x - RealTilesetX, y - RealTilesetY, Tileset.GetPixel(x, y));
-                        }
-                    }
-
                     int RealX = (k % Width) * 32;
                     int RealY = (int) Math.Floor((double) k / Width) * 32;
-                    g.DrawImage(TileBitmap, RealX, RealY);
+                    g.DrawImage(Tileset, RealX, RealY,
+                        new Rectangle(RealTilesetX, RealTilesetY, 32, 32), GraphicsUnit.Pixel);
                 }
                 layer.BackgroundImage = LayerBitmap;
                 layer.BackgroundImageLayout = ImageLayout.None;

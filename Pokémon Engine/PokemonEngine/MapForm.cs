@@ -21,6 +21,8 @@ namespace PokemonEngine
         int OldWidth;
         int OldHeight;
 
+        bool Starting = true;
+
         BindingSource tilesetBinder = new BindingSource();
 
         public MapForm(Map CurrentMap)
@@ -57,6 +59,8 @@ namespace PokemonEngine
             tilesetBox.Text = CurrentMap.General.Tileset;
             widthBox.Value = CurrentMap.General.Width;
             heightBox.Value = CurrentMap.General.Height;
+
+            Starting = false;
         }
 
         private void nameBox_TextChanged(object sender, EventArgs e)
@@ -66,6 +70,7 @@ namespace PokemonEngine
 
         private void tilesetBox_TextChanged(object sender, EventArgs e)
         {
+            if (Starting) return;
             CurrentMap.General.Tileset = tilesetBox.Text;
         }
 

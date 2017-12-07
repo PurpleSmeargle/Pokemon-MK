@@ -25,7 +25,7 @@ namespace PokemonEngine
         public static bool Empty(object obj)
         {
             if (obj == null) return true;
-            if (obj is string && ((string) obj).Length == 0 || (string) obj == "") return true;
+            if (obj is string && (((string) obj).Length == 0 || (string) obj == "")) return true;
             return false;
         }
     }
