@@ -18,12 +18,18 @@ namespace PokemonEngine
 {
     public partial class MainForm : Form
     {
-        new PictureBox Cursor;
+        PictureBox TilesetCursor;
+        PictureBox MapCursor;
         Map CurrentMap;
+
+        int CurrentLayer = 1;
+
+        List<PictureBox> Layers = new List<PictureBox>();
 
         // Whether or not the engine is still starting up
         bool Starting = true;
         bool MadeChanges = false;
+        bool OnlyCurrentLayer = false;
 
         BindingSource scriptBinder = new BindingSource();
         List<Script> Scripts = new List<Script>();
@@ -53,13 +59,15 @@ namespace PokemonEngine
 
             CurrentMap = MapInterpreter.Parse(1);
 
-            Cursor = new PictureBox();
-            Cursor.Location = new Point(0, 0);
-            Cursor.Image = Properties.Resources.cursor;
-            Cursor.SizeMode = PictureBoxSizeMode.AutoSize;
-            tilesetBoxPanel.Controls.Add(Cursor);
-            Cursor.BackColor = Color.Transparent;
-            tilesetBox.Controls.Add(Cursor);
+            TilesetCursor = new PictureBox();
+            TilesetCursor.Location = new Point(0, 0);
+            TilesetCursor.Image = Properties.Resources.cursor;
+            TilesetCursor.Width = TilesetCursor.Image.Width;
+            TilesetCursor.Height = TilesetCursor.Image.Height;
+            TilesetCursor.SizeMode = PictureBoxSizeMode.AutoSize;
+            tilesetBoxPanel.Controls.Add(TilesetCursor);
+            TilesetCursor.BackColor = Color.Transparent;
+            tilesetBox.Controls.Add(TilesetCursor);
 
             #region Script Editor
             FastColoredTextBox txt = new FastColoredTextBox();
@@ -168,13 +176,43 @@ namespace PokemonEngine
 
             LoadMap();
 
+            MapCursor = new PictureBox();
+            MapCursor.Name = "mapCursor";
+            MapCursor.Location = new Point(0, 0);
+            MapCursor.Image = Properties.Resources.cursor;
+            MapCursor.Width = MapCursor.Image.Width;
+            MapCursor.Height = MapCursor.Image.Height;
+            MapCursor.SizeMode = PictureBoxSizeMode.AutoSize;
+            MapCursor.BackColor = Color.Transparent;
+            Layers.Last().Controls.Add(MapCursor);
+
             MainForm_SizeChanged(sender, e);
 
             scriptBox.SelectedIndex = 0;
 
+            Layers.Last().MouseMove += map_MouseMove;
+            MapCursor.MouseDown += map_MouseDown;
+
             Starting = false;
 
+            SetLayer(1);
+
             scriptBox_SelectedIndexChanged(sender, e);
+        }
+
+        private void map_MouseDown(object sender, MouseEventArgs e)
+        {
+            Graphics g = Graphics.FromImage(Layers[CurrentLayer - 1].BackgroundImage);
+            g.DrawImage(tilesetBox.Image, MapCursor.Location.X, MapCursor.Location.Y,
+                new Rectangle(TilesetCursor.Location.X, TilesetCursor.Location.Y, 32, 32), GraphicsUnit.Pixel);
+            Layers[CurrentLayer - 1].Invalidate();
+        }
+
+        private void map_MouseMove(object sender, MouseEventArgs e)
+        {
+            int x = 32 * (int) Math.Floor((double) e.Location.X / 32);
+            int y = 32 * (int) Math.Floor((double) e.Location.Y / 32);
+            if (MapCursor.Location.X != x || MapCursor.Location.Y != y) { MapCursor.Location = new Point(x, y); }
         }
 
         #region Script Editor
@@ -294,18 +332,13 @@ namespace PokemonEngine
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
             mainTabControl.Location = new Point(0, 52);
-            mainTabControl.Size = new Size(Width - 2, Height - 56);
+            mainTabControl.Size = new Size(Width - 2, Height - 56 + 31);
             tilesetBoxPanel.Size = new Size(tilesetBoxPanel.Width, mainTabControl.Height - tilesetBoxPanel.Location.Y - mainTabControl.Location.Y - 47);
             tilesetWhite.Size = new Size(tilesetWhite.Width, mainTabControl.Height - tilesetWhite.Location.Y - mainTabControl.Location.Y - 46);
             tilesetBlack.Size = new Size(tilesetBlack.Width, mainTabControl.Height - tilesetBlack.Location.Y - mainTabControl.Location.Y - 45);
             if (!Empty(CurrentMap)) mapBoxPanel.Size = new Size(32 * CurrentMap.General.Width, 32 * CurrentMap.General.Height);
             mapWhite.Size = new Size(Width - tilesetPanel.Width - rightPanel.Width - 26, mainTabControl.Height - mapBlack.Location.Y - mainTabControl.Location.Y - 47);
             mapBlack.Size = new Size(Width - tilesetPanel.Width - rightPanel.Width - 24, mainTabControl.Height - mapBlack.Location.Y - mainTabControl.Location.Y - 45);
-            rightPanelSplitter.SplitterDistance = mainTabControl.Height / 3;
-            tileBlack.Size = new Size(tilePanel.Width - 13, tilePanel.Height);
-            tileWhite.Size = new Size(tilePanel.Width - 15, tilePanel.Height - 2);
-            allMapsBlack.Size = new Size(allMapsPanel.Width - 13, allMapsPanel.Height - 35);
-            allMapsWhite.Size = new Size(allMapsPanel.Width - 15, allMapsPanel.Height - 37);
 
             FastColoredTextBox txt = scriptEditorPanel.Controls["scriptEditor"] as FastColoredTextBox;
             txt.Size = new Size(Width - scriptEditorPanel.Location.X - 20, Height - mainTabControl.Location.Y - scriptEditorPanel.Location.Y - 68);
@@ -329,6 +362,7 @@ namespace PokemonEngine
                     Controls.RemoveByKey(c.Name);
                 }
             }
+            Layers.Clear();
 
             CurrentMap = Map;
 
@@ -365,6 +399,7 @@ namespace PokemonEngine
                     }
                     else
                     {
+
                         TileID = (int) ((List<dynamic>) Tile)[0];
                     }
                     if (TileID == 0) continue;
@@ -378,7 +413,9 @@ namespace PokemonEngine
                 layer.BackgroundImage = LayerBitmap;
                 layer.BackgroundImageLayout = ImageLayout.None;
                 mapBoxPanel.Controls.Add(layer);
+                Layers.Add(layer);
             }
+            mapBoxPanel.Controls["mapLayer1"].BringToFront();
             for (int i = CurrentMap.Layers.Count - 1; i > 0; i--)
             {
                 mapBoxPanel.Controls[$"mapLayer{i - 1}"].Controls.Add(mapBoxPanel.Controls[$"mapLayer{i}"]);
@@ -387,12 +424,12 @@ namespace PokemonEngine
 
         private void tilesetBox_MouseDown(object sender, MouseEventArgs e)
         {
-            Cursor.Location = new Point(32 * (int) Math.Floor((double) e.X / 32), 32 * (int) Math.Floor((double) e.Y / 32));
+            TilesetCursor.Location = new Point(32 * (int) Math.Floor((double) e.X / 32), 32 * (int) Math.Floor((double) e.Y / 32));
         }
 
         public int GetTileID()
         {
-            return (Cursor.Location.X / 32) + 8 * (Cursor.Location.Y / 32);
+            return (TilesetCursor.Location.X / 32) + 8 * (TilesetCursor.Location.Y / 32);
         }
 
         private void aboutThisMapToolStripMenuItem_Click(object sender, EventArgs e)
@@ -546,6 +583,83 @@ Dir.glob(""Scripts/*.rb"") {{ |f| require f }}");
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             MainForm_SizeChanged(sender, e);
+        }
+
+        private void SetLayer(int n)
+        {
+            for (int i = 1; i <= 7; i++) { ((ToolStripButton) mappingTools.Items[$"layerBtn{i}"]).Checked = (i == n); }
+            CurrentLayer = n;
+            if (OnlyCurrentLayer)
+            {
+                if (!Empty(mapBoxPanel.Controls["onlyCurrentLayer"]))
+                {
+                    mapBoxPanel.Controls["onlyCurrentLayer"].Dispose();
+                    mapBoxPanel.Controls.RemoveByKey("onlyCurrentLayer");
+                }
+                Layers[0].Visible = false;
+                PictureBox pb = new PictureBox();
+                pb.Name = "onlyCurrentLayer";
+                pb.BackgroundImage = (Bitmap)Layers[n - 1].BackgroundImage.Clone();
+                pb.Width = pb.BackgroundImage.Width;
+                pb.Height = pb.BackgroundImage.Height;
+                pb.SizeMode = PictureBoxSizeMode.AutoSize;
+                pb.BackgroundImageLayout = ImageLayout.None;
+                mapBoxPanel.Controls.Add(pb);
+                if (!Empty(Layers.Last().Controls["grid"]))
+                {
+                    PictureBox grid = Layers.Last().Controls["grid"] as PictureBox;
+                    pb.Controls.Add(grid);
+                }
+            }
+        }
+
+        private void layerBtn1_Click(object sender, EventArgs e) { SetLayer(1); }
+        private void layerBtn2_Click(object sender, EventArgs e) { SetLayer(2); }
+        private void layerBtn3_Click(object sender, EventArgs e) { SetLayer(3); }
+        private void layerBtn4_Click(object sender, EventArgs e) { SetLayer(4); }
+        private void layerBtn5_Click(object sender, EventArgs e) { SetLayer(5); }
+        private void layerBtn6_Click(object sender, EventArgs e) { SetLayer(6); }
+        private void layerBtn7_Click(object sender, EventArgs e) { SetLayer(7); }
+
+        private void mapGrid_Click(object sender, EventArgs e)
+        {
+            if (!Empty(Layers.Last().Controls["grid"]))
+            {
+                Layers.Last().Controls["grid"].Dispose();
+                Layers.Last().Controls.RemoveByKey("grid");
+            }
+            if (mapGrid.Checked)
+            {
+                PictureBox pb = new PictureBox();
+                Bitmap grid = new Bitmap(CurrentMap.General.Width * 32, CurrentMap.General.Height * 32);
+                for (int x = 2; x < grid.Width - 1; x++)
+                {
+                    for (int y = 0; y < grid.Height; y++)
+                    {
+                        if (x % 32 == 31 || x % 32 == 0)
+                        {
+                            grid.SetPixel(x, y, Color.FromArgb(64, 0, 0, 0));
+                        }
+                    }
+                }
+                for (int x = 0; x < grid.Width; x++)
+                {
+                    for (int y = 2; y < grid.Height - 1; y++)
+                    {
+                        if (y % 32 == 31 || y % 32 == 0)
+                        {
+                            grid.SetPixel(x, y, Color.FromArgb(64, 0, 0, 0));
+                        }
+                    }
+                }
+                pb.BackgroundImage = grid;
+                pb.Width = grid.Width;
+                pb.Height = grid.Height;
+                pb.SizeMode = PictureBoxSizeMode.AutoSize;
+                pb.BackgroundImageLayout = ImageLayout.None;
+                pb.Name = "grid";
+                Layers.Last().Controls.Add(pb);
+            }
         }
     }
 }

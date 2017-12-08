@@ -143,6 +143,15 @@
     <None Include="bin\Debug\play.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\Debug\layer3.png" />
+    <None Include="bin\Debug\layer4.png" />
+    <None Include="bin\Debug\layer5.png" />
+    <None Include="bin\Debug\layer6.png" />
+    <None Include="bin\Debug\layer7.png" />
+    <None Include="bin\Debug\grid.png" />
+    <None Include="bin\Debug\layer1.png" />
+    <None Include="bin\Debug\layer2.png" />
+    <None Include="bin\Debug\settings.png" />
     <Content Include="mk.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
