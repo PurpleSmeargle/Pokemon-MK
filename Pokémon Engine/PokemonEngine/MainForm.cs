@@ -340,7 +340,8 @@ namespace PokemonEngine
             range.SetStyle(Comment, "=begin.*?=end", RegexOptions.Singleline);
             range.SetStyle(Operator, @"(\[|\]|\(|\)|\,|\.)", RegexOptions.Multiline);
 
-            List<Range> StringMatches = range.GetRanges("(\"\"|\"+(.*?\"|.*?\\n|.*$)|''|'+(.*?'|.*?\\n|.*$))", RegexOptions.Multiline).ToList();
+            List<Range> StringMatches = range.GetRanges("(\"\"|\"+(.*?((?<!\\\\)+\")|.*?\n|.*$)|''|'+(.*?(?<!\\\\)+'|.*?\n|.*$))",
+                RegexOptions.Multiline).ToList();
             foreach (Range r in StringMatches)
             {
                 r.ClearStyle(Method, Keyword, Operator, Integer, Comment);
