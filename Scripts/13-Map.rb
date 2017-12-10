@@ -1,3 +1,15 @@
+# Maps are setup as follows:
+# [
+#     [width, height, tileset, name],
+#     [layer1],
+#     [layer2],
+#     [layer3],
+#     [layer4],
+#     [layer5],
+#     [layer6],
+#     [layer7]
+# ]
+
 class Map
   attr_reader :id
   attr_reader :width
@@ -15,19 +27,22 @@ class Map
     @y = 0
     @active = current_map
     
-    @data = File.open("Maps/#{id.to_digits}.dat") do |f|
+    @data = File.open("Maps/#{id.to_digits}.mkd") do |f|
       next Marshal.load(f)
     end
     
-    @width = @data[:general][:width]
-    @height = @data[:general][:height]
-    @tileset = @data[:general][:tileset]
+    @width = @data[0][0]
+    @height = @data[0][1]
+    @tileset = @data[0][2]
+    
+    @data[0] = nil
+    @data.compact!
     
     bmp = Bitmap.new("Graphics/Tilesets/#{@tileset}")
     
     layers = BetterHash.new
-    for i in 0...@data[:layers].size
-      layer = @data[:layers][i]
+    for i in 0...@data.size
+      layer = @data[i]
       for j in 0...layer.size
         id = layer[j]
         id = layer[j][0] if id.is_a?(Array)
@@ -48,11 +63,11 @@ class Map
   end
   
   def tile_data(x, y, layer = nil)
-    return @data[:layers][layer][x + @width * y] if layer
+    return @data[layer][x + @width * y] if layer
     ret = []
     i = 0
     while true
-      data = @data[:layers][i]
+      data = @data[i]
       break unless data
       ret << data[x + @width * y]
       i += 1

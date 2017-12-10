@@ -9,7 +9,7 @@ class Character
     @name = name
     @x = 0
     @y = 0
-    @dir = 2
+    @dir = :down
     @map = map
     @move_speed = 16
     _sprite = CharacterSprite.new(id)
@@ -28,6 +28,7 @@ class Character
   end
   
   def dir=(value)
+    value = [5,:down_left,:down,:down_right,:left,:still,:right,:up_left,:up,:up_right][value] if value.is_a?(Numeric)
     mod = 0
     mod = 1 if value == 4
     mod = 2 if value == 6
@@ -46,13 +47,13 @@ class Character
   
   def go_right
     if !moving?
-      if @x < @map.width - 1 && @map.passable?(@x + 1, @y)
+      if @x < @map.width - 1 && @map.passable?(@x, @y) && @map.passable?(@x + 1, @y)
         sprite.go_right
         @x += 1
       else
         turn_right
       end
-      @dir = 6
+      @dir = :right
       return true
     end
     return false
@@ -60,13 +61,13 @@ class Character
   
   def go_left
     if !moving?
-      if @x > 0 && @map.passable?(@x - 1, @y)
+      if @x > 0 && @map.passable?(@x, @y) && @map.passable?(@x - 1, @y)
         sprite.go_left
         @x -= 1
       else
         turn_left
       end
-      @dir = 4
+      @dir = :left
       return true
     end
     return false
@@ -74,13 +75,13 @@ class Character
   
   def go_down
     if !moving?
-      if @y < @map.height - 1 && @map.passable?(@x, @y + 1)
+      if @y < @map.height - 1 && @map.passable?(@x, @y) && @map.passable?(@x, @y + 1)
         sprite.go_down
         @y += 1
       else
         turn_down
       end
-      @dir = 2
+      @dir = :down
       return true
     end
     return false
@@ -88,13 +89,13 @@ class Character
   
   def go_up
     if !moving?
-      if @y > 0 && @map.passable?(@x, @y - 1)
+      if @y > 0 && @map.passable?(@x, @y) && @map.passable?(@x, @y - 1)
         sprite.go_up
         @y -= 1
       else
         turn_up
       end
-      @dir = 8
+      @dir = :up
       return true
     end
     return false
@@ -102,21 +103,21 @@ class Character
   
   def turn_right
     sprite.turn_right
-    @dir = 6
+    @dir = :right
   end
   
   def turn_left
     sprite.turn_left
-    @dir = 4
+    @dir = :left
   end
   
   def turn_down
     sprite.turn_down
-    @dir = 2
+    @dir = :down
   end
   
   def turn_up
     sprite.turn_up
-    @dir = 8
+    @dir = :up
   end
 end

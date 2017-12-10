@@ -1,6 +1,6 @@
-data = {
-  layers: [
-  		# Layer 1
+data = [
+		[10,10,"outside","Route 1"],
+		# Layer 1
 		[1,      1,      1,      1,      1,      1,      1,      1,      1,     1,
 		 1,      1,      1,      1,      1,      1,      1,      1,      1,     1,
    	 1,      1,      1,      1,      1,      1,      1,      1,      1,     1,
@@ -23,17 +23,9 @@ data = {
 		 0,      0,      0,      0,      0,      0,        0,        0,        0,        0,
 		 0,      0,      0,      0,      0,      0,        0,        0,        0,        0,
 		 0,      0,      0,      0,      0,      0,        0,        0,        0,        0],
-	],
+]
 
-	general: {
-		width: 10,
-		height: 10,
-		tileset: "outside",
-		name: "Route 1"
-	}
-}
-
-File.delete("Maps/001.dat") if File.file?("Maps/001.dat")
-f = File.new("Maps/001.dat", 'wb')
+File.delete("Maps/001.mkd") if File.file?("Maps/001.mkd")
+f = File.new("Maps/001.mkd", 'wb')
 Marshal.dump(data, f)
 f.close

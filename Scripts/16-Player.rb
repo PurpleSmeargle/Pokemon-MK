@@ -21,10 +21,10 @@ class Player < Character
   def refresh
     self.x = self.x
     self.y = self.y
-    turn_right if @dir == 6
-    turn_left if @dir == 4
-    turn_down if @dir == 2
-    turn_up if @dir == 8
+    turn_right if @dir == :right
+    turn_left if @dir == :left
+    turn_down if @dir == :down
+    turn_up if @dir == :up
   end
   
   def update
@@ -33,7 +33,7 @@ class Player < Character
     @down_cooldown -= 1 if @down_cooldown > 0
     @up_cooldown -= 1 if @up_cooldown > 0
     if Input.press?(Input::RIGHT) && !moving?
-      if @dir != 6
+      if @dir != :right
         turn_right
         @right_cooldown = 4
       elsif @right_cooldown == 0
@@ -41,7 +41,7 @@ class Player < Character
       end
     end
     if Input.press?(Input::LEFT) && !moving?
-      if @dir != 4
+      if @dir != :left
         turn_left
         @left_cooldown = 4
       elsif @left_cooldown == 0
@@ -49,7 +49,7 @@ class Player < Character
       end
     end
     if Input.press?(Input::DOWN) && !moving?
-      if @dir != 2
+      if @dir != :down
         turn_down
         @down_cooldown = 4
       elsif @down_cooldown == 0
@@ -57,7 +57,7 @@ class Player < Character
       end
     end
     if Input.press?(Input::UP) && !moving?
-      if @dir != 8
+      if @dir != :up
         turn_up
         @up_cooldown = 4
       elsif @up_cooldown == 0

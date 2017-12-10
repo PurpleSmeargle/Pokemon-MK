@@ -19,16 +19,12 @@ $Map = Map.new(1)
 $Player = Player.new
 
 
-
 loop do
   begin
     Graphics.update
     Input.update
     $Player.update
     $Map.update
-    if Input.trigger?(Input::B)
-      2 ** ""
-    end
   rescue
     e = $!
     System.show_formatted_error(e)

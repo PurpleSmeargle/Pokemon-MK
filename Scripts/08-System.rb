@@ -10,8 +10,8 @@ module System
   # $Player
   
   def self.save
-    File.delete("Save.dat") if File.file?("Save.dat")
-    f = File.new("Save.dat", 'wb')
+    File.delete("Save.mkd") if File.file?("Save.mkd")
+    f = File.new("Save.mkd", 'wb')
     
     Marshal.dump($Player, f)
     
@@ -19,7 +19,7 @@ module System
   end
   
   def self.load
-    File.open("Save.dat", 'rb') do |f|
+    File.open("Save.mkd", 'rb') do |f|
       
       $Player = Marshal.load(f)
       $Player.refresh

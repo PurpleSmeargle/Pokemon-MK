@@ -6,11 +6,11 @@ def p(*args)
 end
 
 def puts(*args)
-  p(*args)
+  p *args
 end
 
 def print(*args)
-  p(*args)
+  p *args
 end
 
 

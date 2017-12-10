@@ -23,25 +23,13 @@ namespace PokemonEngine
 
             ScriptEngine engine = Ruby.CreateEngine();
             dynamic ret = engine.Execute($@"
-f = File.open(""Maps/{Digits(id)}.dat"", ""rb"")
+f = File.open(""Maps/{Digits(id)}.mkd"", ""rb"")
 Data = Marshal.load(f)
 f.close
-
-New = {{}}
-
-New[""layers""] = Data[:layers]
-
-for key in Data[:general].keys
-  New[""general""] ||= {{}}
-  New[""general""][key.to_s] = Data[:general][key]
-end
-
-return New
-
-");
+return [Data[0],Data[1..-1]]");
 
             // Parses the Layer data to C# objects (in Lists instead of Arrays)
-            dynamic[] _layers = ret["layers"].ToArray();
+            dynamic[] _layers = ret[1].ToArray();
             for (int i = 0; i < _layers.Length; i++)
             {
                 List<dynamic> Layer = new List<dynamic>();
@@ -67,10 +55,10 @@ return New
                 Data["layers"].Add(Layer);
             }
 
-            Data["general"].Width = Convert.ToInt32(ret["general"]["width"].ToString());
-            Data["general"].Height = Convert.ToInt32(ret["general"]["height"].ToString());
-            Data["general"].Tileset = ret["general"]["tileset"].ToString();
-            Data["general"].Name = ret["general"]["name"].ToString();
+            Data["general"].Width = Convert.ToInt32(ret[0][0].ToString());
+            Data["general"].Height = Convert.ToInt32(ret[0][1].ToString());
+            Data["general"].Tileset = ret[0][2].ToString();
+            Data["general"].Name = ret[0][3].ToString();
 
             return new Map(id, Data["layers"], Data["general"]);
         }

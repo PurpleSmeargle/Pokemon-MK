@@ -117,6 +117,7 @@ namespace PokemonEngine
             scriptBox.DisplayMember = "Name";
 
             // Load MKXP Config
+            #region Load MKXP Config
             if (File.Exists("mkxp.conf"))
             {
                 StreamReader sr = new StreamReader(File.OpenRead("mkxp.conf"));
@@ -172,6 +173,7 @@ namespace PokemonEngine
                     Config._RTP.Add(RTPs[i].Split(new string[] { "\r\n" }, StringSplitOptions.None)[0]);
                 }
             }
+            #endregion
 
 
             LoadMap();
@@ -202,9 +204,19 @@ namespace PokemonEngine
 
         private void map_MouseDown(object sender, MouseEventArgs e)
         {
-            Graphics g = Graphics.FromImage(Layers[CurrentLayer - 1].BackgroundImage);
+            Console.WriteLine("Mouse down");
+            Bitmap bmp = new Bitmap(Layers[CurrentLayer - 1].BackgroundImage);
+            for (int x = MapCursor.Location.X; x < MapCursor.Location.X + 32; x++)
+            {
+                for (int y = MapCursor.Location.Y; y < MapCursor.Location.Y + 32; y++)
+                {
+                    bmp.SetPixel(x, y, Color.FromArgb(0, 0, 0, 0));
+                }
+            }
+            Graphics g = Graphics.FromImage(bmp);
             g.DrawImage(tilesetBox.Image, MapCursor.Location.X, MapCursor.Location.Y,
                 new Rectangle(TilesetCursor.Location.X, TilesetCursor.Location.Y, 32, 32), GraphicsUnit.Pixel);
+            Layers[CurrentLayer - 1].BackgroundImage = bmp;
             Layers[CurrentLayer - 1].Invalidate();
         }
 
@@ -252,7 +264,7 @@ namespace PokemonEngine
         private void scriptEditor_AutoIndentNeeded(object sender, AutoIndentEventArgs e)
         {
             string LineText = e.LineText.Trim().Split('#')[0];
-            if (Regex.IsMatch(LineText, $@"\b(module|def|rescue|do|for|while|when|until|if)\b"))
+            if (Regex.IsMatch(LineText, $@"\b(module|def|do|for|when)\b"))
             {
                 e.ShiftNextLines = e.TabLength;
                 return;
@@ -263,6 +275,33 @@ namespace PokemonEngine
             {
                 e.ShiftNextLines = e.TabLength;
                 return;
+            }
+            if (Regex.IsMatch(e.LineText, @"^[^a-zA-Z=\*&-\+%/!\|~<>\?:;{}\[\]\(\),\.](if|unless|while|until|rescue)"))
+            {
+                e.ShiftNextLines = e.TabLength;
+                return;
+            }
+            List<string> Special = new List<string>() { "if", "unless", "while", "until" };
+            foreach (string Char in Special)
+            {
+                if (e.LineText.Contains($"{Char} ") || e.LineText.Contains($"{Char}("))
+                {
+                    string Left = e.LineText.Split(new string[] { Char }, StringSplitOptions.None)[0];
+                    if (Empty(Left) || Left.EndsWith("\n") || Left.EndsWith("\r") || Left.EndsWith("\r\n"))
+                    {
+                        e.ShiftNextLines = e.TabLength;
+                        return;
+                    }
+                }
+            }
+            if (e.LineText.Contains("rescue"))
+            {
+                string Left = e.LineText.Split(new string[] { "rescue" }, StringSplitOptions.None)[0];
+                if (Empty(Left) || Left.EndsWith("\n") || Left.EndsWith("\r") || Left.EndsWith("\r\n"))
+                {
+                    e.ShiftNextLines = e.TabLength;
+                    return;
+                }
             }
         }
 
@@ -281,12 +320,17 @@ namespace PokemonEngine
 
             range.ClearStyle(Keyword, Comment, Method, Operator, Integer);
 
+            // Keywords
             range.SetStyle(Keyword, @"\b(alias|and|begin|break|case|class|def|do|else|elsif|end|ensure|false|for|if|in|module|" +
                                                 @"next|nil|not|or|redo|rescue|retry|return|self|super|then|true|undef|unless|until|when|while|yield)\b", RegexOptions.Multiline);
+
+            // Special keywords
             range.SetStyle(Method, @"\b(BEGIN|END|_ENCODING_|_LINE_|_FILE_|defined?|_END_)\b", RegexOptions.Multiline);
 
-            range.SetStyle(Operator, @"(=|\*|&|-|\+|%|/|!|\||~|<|>|\b\?|:|;|{|}|\[|\]|\(|\)|,|\.)", RegexOptions.Multiline);
+            // Character Symbol
+            range.SetStyle(Operator, @"(=|\*|&|-|\+|%|/|!|\||~|<|>|\b|\?|:|;|{|})", RegexOptions.Multiline);
 
+            // Integer and Hex
             range.SetStyle(Integer, @"\b(\d+|\d+x[0123456789ABCDEF]*)\b|", RegexOptions.Multiline);
 
             range = ((FastColoredTextBox) sender).Range;
@@ -294,15 +338,10 @@ namespace PokemonEngine
             range.ClearStyle(String);
 
             range.SetStyle(Comment, "=begin.*?=end", RegexOptions.Singleline);
+            range.SetStyle(Operator, @"(\[|\]|\(|\)|\,|\.)", RegexOptions.Multiline);
 
-            List<Range> DoubleStringMatches = range.GetRanges("\".*?\"", RegexOptions.Singleline).ToList();
-            foreach (Range r in DoubleStringMatches)
-            {
-                r.ClearStyle(Method, Keyword, Operator, Integer, Comment);
-                r.SetStyle(String);
-            }
-            List<Range> SingleStringMatches = range.GetRanges("'.*?'", RegexOptions.Singleline).ToList();
-            foreach (Range r in SingleStringMatches)
+            List<Range> StringMatches = range.GetRanges("(\"\"|\"+(.*?\"|.*?\\n|.*$)|''|'+(.*?'|.*?\\n|.*$))", RegexOptions.Multiline).ToList();
+            foreach (Range r in StringMatches)
             {
                 r.ClearStyle(Method, Keyword, Operator, Integer, Comment);
                 r.SetStyle(String);
@@ -415,6 +454,18 @@ namespace PokemonEngine
                 mapBoxPanel.Controls.Add(layer);
                 Layers.Add(layer);
             }
+            /*for (int i = Layers.Count; i < 7; i++)
+            {
+                PictureBox layer = new PictureBox();
+                layer.Name = $"mapLayer{i}";
+                layer.Location = new Point(0, 0);
+                layer.Size = mapBoxPanel.Size;
+                layer.BackColor = Color.Transparent;
+                layer.BackgroundImage = new Bitmap(32 * Width, 32 * Height);
+                layer.BackgroundImageLayout = ImageLayout.None;
+                mapBoxPanel.Controls.Add(layer);
+                Layers.Add(layer);
+            }*/
             mapBoxPanel.Controls["mapLayer1"].BringToFront();
             for (int i = CurrentMap.Layers.Count - 1; i > 0; i--)
             {
