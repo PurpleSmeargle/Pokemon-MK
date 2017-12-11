@@ -74,6 +74,19 @@
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.activeLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideLowerLayersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer6ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer7ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBar.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.mapsTab.SuspendLayout();
@@ -101,6 +114,8 @@
             this.scriptsTab.SuspendLayout();
             this.scriptsPanel.SuspendLayout();
             this.toolbar.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuBar
@@ -191,6 +206,7 @@
             // 
             // mapPanel
             // 
+            this.mapPanel.Controls.Add(this.panel1);
             this.mapPanel.Controls.Add(this.mappingTools);
             this.mapPanel.Controls.Add(this.mapBoxPanel);
             this.mapPanel.Controls.Add(this.mapWhite);
@@ -228,7 +244,7 @@
             this.mapGrid.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mapGrid.Name = "mapGrid";
             this.mapGrid.Size = new System.Drawing.Size(23, 22);
-            this.mapGrid.Text = "toolStripButton3";
+            this.mapGrid.Text = "Show Grid";
             this.mapGrid.Click += new System.EventHandler(this.mapGrid_Click);
             // 
             // layerBtn1
@@ -239,7 +255,7 @@
             this.layerBtn1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.layerBtn1.Name = "layerBtn1";
             this.layerBtn1.Size = new System.Drawing.Size(23, 22);
-            this.layerBtn1.Text = "toolStripButton4";
+            this.layerBtn1.Text = "Layer 1";
             this.layerBtn1.Click += new System.EventHandler(this.layerBtn1_Click);
             // 
             // layerBtn2
@@ -250,7 +266,7 @@
             this.layerBtn2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.layerBtn2.Name = "layerBtn2";
             this.layerBtn2.Size = new System.Drawing.Size(23, 22);
-            this.layerBtn2.Text = "toolStripButton5";
+            this.layerBtn2.Text = "Layer 2";
             this.layerBtn2.Click += new System.EventHandler(this.layerBtn2_Click);
             // 
             // layerBtn3
@@ -260,7 +276,7 @@
             this.layerBtn3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.layerBtn3.Name = "layerBtn3";
             this.layerBtn3.Size = new System.Drawing.Size(23, 22);
-            this.layerBtn3.Text = "toolStripButton6";
+            this.layerBtn3.Text = "Layer 3";
             this.layerBtn3.Click += new System.EventHandler(this.layerBtn3_Click);
             // 
             // layerBtn4
@@ -270,7 +286,7 @@
             this.layerBtn4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.layerBtn4.Name = "layerBtn4";
             this.layerBtn4.Size = new System.Drawing.Size(23, 22);
-            this.layerBtn4.Text = "toolStripButton7";
+            this.layerBtn4.Text = "Layer 4";
             this.layerBtn4.Click += new System.EventHandler(this.layerBtn4_Click);
             // 
             // layerBtn5
@@ -280,7 +296,7 @@
             this.layerBtn5.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.layerBtn5.Name = "layerBtn5";
             this.layerBtn5.Size = new System.Drawing.Size(23, 22);
-            this.layerBtn5.Text = "toolStripButton8";
+            this.layerBtn5.Text = "Layer 5";
             this.layerBtn5.Click += new System.EventHandler(this.layerBtn5_Click);
             // 
             // layerBtn6
@@ -290,7 +306,7 @@
             this.layerBtn6.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.layerBtn6.Name = "layerBtn6";
             this.layerBtn6.Size = new System.Drawing.Size(23, 22);
-            this.layerBtn6.Text = "toolStripButton9";
+            this.layerBtn6.Text = "Layer 6";
             this.layerBtn6.Click += new System.EventHandler(this.layerBtn6_Click);
             // 
             // layerBtn7
@@ -300,7 +316,7 @@
             this.layerBtn7.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.layerBtn7.Name = "layerBtn7";
             this.layerBtn7.Size = new System.Drawing.Size(23, 22);
-            this.layerBtn7.Text = "toolStripButton10";
+            this.layerBtn7.Text = "Layer 7";
             this.layerBtn7.Click += new System.EventHandler(this.layerBtn7_Click);
             // 
             // mapSettings
@@ -310,7 +326,7 @@
             this.mapSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mapSettings.Name = "mapSettings";
             this.mapSettings.Size = new System.Drawing.Size(23, 22);
-            this.mapSettings.Text = "toolStripButton11";
+            this.mapSettings.Text = "Settings";
             this.mapSettings.Click += new System.EventHandler(this.mapSettings_Click);
             // 
             // mapBoxPanel
@@ -560,6 +576,114 @@
             this.toolStripButton2.Text = "Play";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.menuStrip1);
+            this.panel1.Location = new System.Drawing.Point(219, 1);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(158, 26);
+            this.panel1.TabIndex = 4;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(158, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showGridToolStripMenuItem,
+            this.activeLayerToolStripMenuItem,
+            this.hideLowerLayersToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // showGridToolStripMenuItem
+            // 
+            this.showGridToolStripMenuItem.CheckOnClick = true;
+            this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
+            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.showGridToolStripMenuItem.Text = "Show Grid";
+            this.showGridToolStripMenuItem.Click += new System.EventHandler(this.showGridToolStripMenuItem_Click);
+            // 
+            // activeLayerToolStripMenuItem
+            // 
+            this.activeLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.layer1ToolStripMenuItem,
+            this.layer2ToolStripMenuItem,
+            this.layer3ToolStripMenuItem,
+            this.layer4ToolStripMenuItem,
+            this.layer5ToolStripMenuItem,
+            this.layer6ToolStripMenuItem,
+            this.layer7ToolStripMenuItem});
+            this.activeLayerToolStripMenuItem.Name = "activeLayerToolStripMenuItem";
+            this.activeLayerToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.activeLayerToolStripMenuItem.Text = "Active Layer";
+            // 
+            // hideLowerLayersToolStripMenuItem
+            // 
+            this.hideLowerLayersToolStripMenuItem.CheckOnClick = true;
+            this.hideLowerLayersToolStripMenuItem.Name = "hideLowerLayersToolStripMenuItem";
+            this.hideLowerLayersToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.hideLowerLayersToolStripMenuItem.Text = "Hide lower layers";
+            this.hideLowerLayersToolStripMenuItem.Click += new System.EventHandler(this.hideLowerLayersToolStripMenuItem_Click);
+            // 
+            // layer1ToolStripMenuItem
+            // 
+            this.layer1ToolStripMenuItem.CheckOnClick = true;
+            this.layer1ToolStripMenuItem.Name = "layer1ToolStripMenuItem";
+            this.layer1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.layer1ToolStripMenuItem.Text = "Layer 1";
+            // 
+            // layer2ToolStripMenuItem
+            // 
+            this.layer2ToolStripMenuItem.CheckOnClick = true;
+            this.layer2ToolStripMenuItem.Name = "layer2ToolStripMenuItem";
+            this.layer2ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.layer2ToolStripMenuItem.Text = "Layer 2";
+            // 
+            // layer3ToolStripMenuItem
+            // 
+            this.layer3ToolStripMenuItem.CheckOnClick = true;
+            this.layer3ToolStripMenuItem.Name = "layer3ToolStripMenuItem";
+            this.layer3ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.layer3ToolStripMenuItem.Text = "Layer 3";
+            // 
+            // layer4ToolStripMenuItem
+            // 
+            this.layer4ToolStripMenuItem.CheckOnClick = true;
+            this.layer4ToolStripMenuItem.Name = "layer4ToolStripMenuItem";
+            this.layer4ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.layer4ToolStripMenuItem.Text = "Layer 4";
+            // 
+            // layer5ToolStripMenuItem
+            // 
+            this.layer5ToolStripMenuItem.CheckOnClick = true;
+            this.layer5ToolStripMenuItem.Name = "layer5ToolStripMenuItem";
+            this.layer5ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.layer5ToolStripMenuItem.Text = "Layer 5";
+            // 
+            // layer6ToolStripMenuItem
+            // 
+            this.layer6ToolStripMenuItem.CheckOnClick = true;
+            this.layer6ToolStripMenuItem.Name = "layer6ToolStripMenuItem";
+            this.layer6ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.layer6ToolStripMenuItem.Text = "Layer 6";
+            // 
+            // layer7ToolStripMenuItem
+            // 
+            this.layer7ToolStripMenuItem.CheckOnClick = true;
+            this.layer7ToolStripMenuItem.Name = "layer7ToolStripMenuItem";
+            this.layer7ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.layer7ToolStripMenuItem.Text = "Layer 7";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -608,6 +732,10 @@
             this.scriptsPanel.PerformLayout();
             this.toolbar.ResumeLayout(false);
             this.toolbar.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -659,6 +787,19 @@
         private System.Windows.Forms.ToolStripButton layerBtn6;
         private System.Windows.Forms.ToolStripButton layerBtn7;
         private System.Windows.Forms.ToolStripButton mapSettings;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showGridToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem activeLayerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hideLowerLayersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem layer1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem layer2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem layer3ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem layer4ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem layer5ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem layer6ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem layer7ToolStripMenuItem;
     }
 }
 
