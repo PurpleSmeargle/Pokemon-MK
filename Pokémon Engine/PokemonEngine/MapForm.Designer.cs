@@ -149,9 +149,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 12);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(41, 13);
+            this.label4.Size = new System.Drawing.Size(38, 13);
             this.label4.TabIndex = 8;
-            this.label4.Text = "Tileset:";
+            this.label4.Text = "Name:";
             // 
             // nameBox
             // 
@@ -179,7 +179,7 @@
             this.Name = "MapForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "About this map";
+            this.Text = "Mapping";
             this.Load += new System.EventHandler(this.MapForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.widthBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightBox)).EndInit();

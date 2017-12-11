@@ -29,10 +29,10 @@ namespace PokemonEngine
         {
             InitializeComponent();
             this.CurrentMap = CurrentMap;
-            this.OldName = CurrentMap.General.Name;
-            this.OldTileset = CurrentMap.General.Tileset;
-            this.OldWidth = CurrentMap.General.Width;
-            this.OldHeight = CurrentMap.General.Height;
+            this.OldName = CurrentMap.Name;
+            this.OldTileset = CurrentMap.Tileset;
+            this.OldWidth = CurrentMap.Width;
+            this.OldHeight = CurrentMap.Height;
         }
 
         private void MapForm_Load(object sender, EventArgs e)
@@ -55,41 +55,41 @@ namespace PokemonEngine
             tilesetBox.DataSource = tilesetBinder;
             tilesetBox.DisplayMember = "Name";
 
-            nameBox.Text = CurrentMap.General.Name;
-            tilesetBox.Text = CurrentMap.General.Tileset;
-            widthBox.Value = CurrentMap.General.Width;
-            heightBox.Value = CurrentMap.General.Height;
+            nameBox.Text = CurrentMap.Name;
+            tilesetBox.Text = CurrentMap.Tileset;
+            widthBox.Value = CurrentMap.Width;
+            heightBox.Value = CurrentMap.Height;
 
             Starting = false;
         }
 
         private void nameBox_TextChanged(object sender, EventArgs e)
         {
-            CurrentMap.General.Name = nameBox.Text;
+            CurrentMap.Name = nameBox.Text;
         }
 
         private void tilesetBox_TextChanged(object sender, EventArgs e)
         {
             if (Starting) return;
-            CurrentMap.General.Tileset = tilesetBox.Text;
+            CurrentMap.Tileset = tilesetBox.Text;
         }
 
         private void widthBox_ValueChanged(object sender, EventArgs e)
         {
-            CurrentMap.General.Width = (int) widthBox.Value;
+            CurrentMap.Width = (int) widthBox.Value;
         }
 
         private void heightBox_ValueChanged(object sender, EventArgs e)
         {
-            CurrentMap.General.Height = (int) heightBox.Value;
+            CurrentMap.Height = (int) heightBox.Value;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CurrentMap.General.Name = OldName;
-            CurrentMap.General.Tileset = OldTileset;
-            CurrentMap.General.Width = OldWidth;
-            CurrentMap.General.Height = OldHeight;
+            CurrentMap.Name = OldName;
+            CurrentMap.Tileset = OldTileset;
+            CurrentMap.Width = OldWidth;
+            CurrentMap.Height = OldHeight;
             Close();
         }
 

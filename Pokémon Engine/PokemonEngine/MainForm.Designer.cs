@@ -311,12 +311,13 @@
             this.mapSettings.Name = "mapSettings";
             this.mapSettings.Size = new System.Drawing.Size(23, 22);
             this.mapSettings.Text = "toolStripButton11";
+            this.mapSettings.Click += new System.EventHandler(this.mapSettings_Click);
             // 
             // mapBoxPanel
             // 
             this.mapBoxPanel.Location = new System.Drawing.Point(6, 34);
             this.mapBoxPanel.Name = "mapBoxPanel";
-            this.mapBoxPanel.Size = new System.Drawing.Size(506, 453);
+            this.mapBoxPanel.Size = new System.Drawing.Size(696, 710);
             this.mapBoxPanel.TabIndex = 2;
             // 
             // mapWhite
@@ -570,7 +571,8 @@
             this.MainMenuStrip = this.menuBar;
             this.Name = "MainForm";
             this.ShowIcon = false;
-            this.Text = "Pokémon Engine";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Pokémon MK";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);

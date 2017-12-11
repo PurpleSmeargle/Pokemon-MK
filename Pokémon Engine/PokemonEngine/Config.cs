@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PokemonEngine
 {
@@ -52,5 +49,9 @@ namespace PokemonEngine
         public static int LastMainTab { get; set; } = 0;
         public static int LastScriptIndex { get; set; } = 0;
         public static bool DebugMode { get; set; } = true;
+        public static bool ShowGrid { get; set; } = false;
+        public static int GridWidth { get; set; } = 1;
+        public static int GridHeight { get; set; } = 1;
+        public static System.Drawing.Color GridColor { get; set; } = System.Drawing.Color.FromArgb(96, 0, 0, 0);
     }
 }

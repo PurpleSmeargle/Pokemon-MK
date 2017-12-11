@@ -18,8 +18,7 @@ namespace PokemonEngine
         public static Map Parse(int id)
         {
             Dictionary<string, dynamic> Data = new Dictionary<string, dynamic>();
-            Data["layers"] = new List<List<dynamic>>();
-            Data["general"] = new General();
+            List<List<dynamic>> Layers = new List<List<dynamic>>();
 
             ScriptEngine engine = Ruby.CreateEngine();
             dynamic ret = engine.Execute($@"
@@ -52,15 +51,15 @@ return [Data[0],Data[1..-1]]");
                         Layer.Add(Convert.ToInt32(_layer[j].ToString()));
                     }
                 }
-                Data["layers"].Add(Layer);
+                Layers.Add(Layer);
             }
 
-            Data["general"].Width = Convert.ToInt32(ret[0][0].ToString());
-            Data["general"].Height = Convert.ToInt32(ret[0][1].ToString());
-            Data["general"].Tileset = ret[0][2].ToString();
-            Data["general"].Name = ret[0][3].ToString();
+            int Width = Convert.ToInt32(ret[0][0].ToString());
+            int Height = Convert.ToInt32(ret[0][1].ToString());
+            string Tileset = ret[0][2].ToString();
+            string Name = ret[0][3].ToString();
 
-            return new Map(id, Data["layers"], Data["general"]);
+            return new Map(id, Layers, Width, Height, Tileset, Name);
         }
     }
 
@@ -71,13 +70,19 @@ return [Data[0],Data[1..-1]]");
         /// </summary>
         public int ID { get; set; }
         public List<List<dynamic>> Layers { get; set; }
-        public General General { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public string Tileset { get; set; }
+        public string Name { get; set; }
 
-        public Map(int ID, List<List<dynamic>> Layers, General General)
+        public Map(int ID, List<List<dynamic>> Layers, int Width, int Height, string Tileset, string Name)
         {
             this.ID = ID;
             this.Layers = Layers;
-            this.General = General;
+            this.Width = Width;
+            this.Height = Height;
+            this.Tileset = Tileset;
+            this.Name = Name;
         }
 
         public bool Update(int OldWidth, int OldHeight)
@@ -91,17 +96,17 @@ return [Data[0],Data[1..-1]]");
                     NewLayer.Add(Layers[l][i]);
                     if (i % OldWidth == OldWidth - 1)
                     {
-                        for (int k = 0; k < General.Width - OldWidth; k++)
+                        for (int k = 0; k < Width - OldWidth; k++)
                         {
-                            NewLayer.Add(16);
+                            NewLayer.Add(0);
                         }
                     }
                 }
-                for (int i = 0; i < General.Height - OldHeight; i++)
+                for (int i = 0; i < Height - OldHeight; i++)
                 {
-                    for (int k = 0; k < General.Width; k++)
+                    for (int k = 0; k < Width; k++)
                     {
-                        NewLayer.Add(16);
+                        NewLayer.Add(0);
                     }
                 }
                 NewLayers.Add(NewLayer);
@@ -110,13 +115,5 @@ return [Data[0],Data[1..-1]]");
             Layers = NewLayers;
             return ret;
         }
-    }
-
-    public class General
-    {
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public string Tileset { get; set; }
-        public string Name { get; set; }
     }
 }
