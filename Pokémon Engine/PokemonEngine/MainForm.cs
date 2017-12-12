@@ -144,53 +144,43 @@ namespace PokemonEngine
                     data += Lines[i];
                     if (i != Lines.Count - 1) data += "\r\n";
                 }
+                // Compatibility with other line endings
                 while (data.Contains("\r")) { data = data.Replace("\r", ""); }
-                try
-                {
-                    if (data.Contains("rgssVersion=")) { Config.RGSSVersion = Convert.ToInt32(data.Split(new string[] { "rgssVersion=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("debugMode=")) { Config._DebugMode = Convert.ToBoolean(data.Split(new string[] { "debugMode=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("printFPS=")) { Config.PrintFPS = Convert.ToBoolean(data.Split(new string[] { "printFPS=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("winResizable=")) { Config._WinResizable = Convert.ToBoolean(data.Split(new string[] { "winResizable=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("fullscreen=")) { Config.StartFullscreen = Convert.ToBoolean(data.Split(new string[] { "fullscreen=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("fixedAspectRatio=")) { Config.FixedAspectRatio = Convert.ToBoolean(data.Split(new string[] { "fixedAspectRatio=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("smoothScaling=")) { Config.SmoothScaling = Convert.ToBoolean(data.Split(new string[] { "smoothScaling=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("vsync=")) { Config._VSync = Convert.ToBoolean(data.Split(new string[] { "vsync=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("defScreenW=")) { Config.ScreenWidth = Convert.ToInt32(data.Split(new string[] { "defScreenW=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("defScreenH=")) { Config.ScreenHeight = Convert.ToInt32(data.Split(new string[] { "defScreenH=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("fixedFramerate=")) { Config.FixedFramerate = Convert.ToInt32(data.Split(new string[] { "fixedFramerate=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("frameSkip=")) { Config._FrameSkip = Convert.ToBoolean(data.Split(new string[] { "frameSkip=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("syncToRefreshrate=")) { Config._SyncToRefreshRate = Convert.ToBoolean(data.Split(new string[] { "syncToRefreshrate=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("solidFonts=")) { Config._SolidFonts = Convert.ToBoolean(data.Split(new string[] { "solidFonts=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("subImageFix=")) { Config._SubImageFix = Convert.ToBoolean(data.Split(new string[] { "subImageFix=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("enableBlitting=")) { Config._EnableBlitting = Convert.ToBoolean(data.Split(new string[] { "enableBlitting=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("maxTextureSize=")) { Config._MaxTextureSize = data.Split(new string[] { "maxTextureSize=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                    if (data.Contains("gameFolder=")) { Config._GameFolder = data.Split(new string[] { "gameFolder=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                    if (data.Contains("anyAltToggleFS=")) { Config._AnyAltToggleFS = Convert.ToBoolean(data.Split(new string[] { "anyAltToggleFS=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("enableReset=")) { Config.F12SoftReset = Convert.ToBoolean(data.Split(new string[] { "enableReset=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("allowSymlinks=")) { Config._AllowSymLinks = Convert.ToBoolean(data.Split(new string[] { "allowSymlinks=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("dataPathOrg=")) { Config._DataPathOrg = data.Split(new string[] { "dataPathOrg=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                    if (data.Contains("dataPathApp=")) { Config._DataPathApp = data.Split(new string[] { "dataPathApp=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                    if (data.Contains("iconPath=")) { Config.IconPath = data.Split(new string[] { "iconPath=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                    if (data.Contains("customScript=")) { Config._CustomScript = data.Split(new string[] { "customScript=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                    if (data.Contains("preloadScript=")) { Config._PreloadScript = data.Split(new string[] { "preloadScript=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                    if (data.Contains("pathCache=")) { Config._PathCache = Convert.ToBoolean(data.Split(new string[] { "pathCache=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("useScriptNames=")) { Config._UseScriptNames = Convert.ToBoolean(data.Split(new string[] { "useScriptNames=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("rubyLoadpath=")) { Config._RubyLoadPath = data.Split(new string[] { "rubyLoadpath=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                    if (data.Contains("midi.soundFont=")) { Config._SoundFont = data.Split(new string[] { "midi.soundFont=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                    if (data.Contains("midi.chorus=")) { Config._Chorus = Convert.ToBoolean(data.Split(new string[] { "midi.chorus=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("midi.reverb=")) { Config._Reverb = Convert.ToBoolean(data.Split(new string[] { "midi.reverb=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("SE.sourceCount=")) { Config._SourceCount = Convert.ToInt32(data.Split(new string[] { "SE.sourceCount=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
-                    if (data.Contains("execName=")) { Config._ExecName = data.Split(new string[] { "execName=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                    if (data.Contains("titleLanguage=")) { Config._TitleLanguage = data.Split(new string[] { "titleLanguage=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
-                }
-                catch (NullReferenceException)
-                {
-                    MessageBox.Show("NullReference");
-                }
-                catch (FormatException)
-                {
-                    MessageBox.Show("FormatException (String not int/bool/whatever)");
-                }
+                if (data.Contains("rgssVersion=")) { Config.RGSSVersion = Convert.ToInt32(data.Split(new string[] { "rgssVersion=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("debugMode=")) { Config._DebugMode = Convert.ToBoolean(data.Split(new string[] { "debugMode=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("printFPS=")) { Config.PrintFPS = Convert.ToBoolean(data.Split(new string[] { "printFPS=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("winResizable=")) { Config._WinResizable = Convert.ToBoolean(data.Split(new string[] { "winResizable=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("fullscreen=")) { Config.StartFullscreen = Convert.ToBoolean(data.Split(new string[] { "fullscreen=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("fixedAspectRatio=")) { Config.FixedAspectRatio = Convert.ToBoolean(data.Split(new string[] { "fixedAspectRatio=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("smoothScaling=")) { Config.SmoothScaling = Convert.ToBoolean(data.Split(new string[] { "smoothScaling=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("vsync=")) { Config._VSync = Convert.ToBoolean(data.Split(new string[] { "vsync=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("defScreenW=")) { Config.ScreenWidth = Convert.ToInt32(data.Split(new string[] { "defScreenW=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("defScreenH=")) { Config.ScreenHeight = Convert.ToInt32(data.Split(new string[] { "defScreenH=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("fixedFramerate=")) { Config.FixedFramerate = Convert.ToInt32(data.Split(new string[] { "fixedFramerate=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("frameSkip=")) { Config._FrameSkip = Convert.ToBoolean(data.Split(new string[] { "frameSkip=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("syncToRefreshrate=")) { Config._SyncToRefreshRate = Convert.ToBoolean(data.Split(new string[] { "syncToRefreshrate=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("solidFonts=")) { Config._SolidFonts = Convert.ToBoolean(data.Split(new string[] { "solidFonts=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("subImageFix=")) { Config._SubImageFix = Convert.ToBoolean(data.Split(new string[] { "subImageFix=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("enableBlitting=")) { Config._EnableBlitting = Convert.ToBoolean(data.Split(new string[] { "enableBlitting=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("maxTextureSize=")) { Config._MaxTextureSize = data.Split(new string[] { "maxTextureSize=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("gameFolder=")) { Config._GameFolder = data.Split(new string[] { "gameFolder=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("anyAltToggleFS=")) { Config._AnyAltToggleFS = Convert.ToBoolean(data.Split(new string[] { "anyAltToggleFS=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("enableReset=")) { Config.F12SoftReset = Convert.ToBoolean(data.Split(new string[] { "enableReset=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("allowSymlinks=")) { Config._AllowSymLinks = Convert.ToBoolean(data.Split(new string[] { "allowSymlinks=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("dataPathOrg=")) { Config._DataPathOrg = data.Split(new string[] { "dataPathOrg=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("dataPathApp=")) { Config._DataPathApp = data.Split(new string[] { "dataPathApp=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("iconPath=")) { Config.IconPath = data.Split(new string[] { "iconPath=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("customScript=")) { Config._CustomScript = data.Split(new string[] { "customScript=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("preloadScript=")) { Config._PreloadScript = data.Split(new string[] { "preloadScript=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("pathCache=")) { Config._PathCache = Convert.ToBoolean(data.Split(new string[] { "pathCache=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("useScriptNames=")) { Config._UseScriptNames = Convert.ToBoolean(data.Split(new string[] { "useScriptNames=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("rubyLoadpath=")) { Config._RubyLoadPath = data.Split(new string[] { "rubyLoadpath=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("midi.soundFont=")) { Config._SoundFont = data.Split(new string[] { "midi.soundFont=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("midi.chorus=")) { Config._Chorus = Convert.ToBoolean(data.Split(new string[] { "midi.chorus=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("midi.reverb=")) { Config._Reverb = Convert.ToBoolean(data.Split(new string[] { "midi.reverb=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("SE.sourceCount=")) { Config._SourceCount = Convert.ToInt32(data.Split(new string[] { "SE.sourceCount=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]); }
+                if (data.Contains("execName=")) { Config._ExecName = data.Split(new string[] { "execName=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
+                if (data.Contains("titleLanguage=")) { Config._TitleLanguage = data.Split(new string[] { "titleLanguage=" }, StringSplitOptions.None)[1].Split(new string[] { "\n" }, StringSplitOptions.None)[0]; }
                 List<string> RTPs = data.Split(new string[] { "RTP=" }, StringSplitOptions.None).ToList();
                 for (int i = 1; i < RTPs.Count; i++)
                 {
@@ -393,8 +383,9 @@ namespace PokemonEngine
             tilesetBlack.Size = new Size(tilesetBlack.Width, mainTabControl.Height - tilesetBlack.Location.Y - mainTabControl.Location.Y - 45);
             mapWhite.Size = new Size(Width - tilesetPanel.Width - rightPanel.Width - 26, mainTabControl.Height - mapBlack.Location.Y - mainTabControl.Location.Y - 47);
             mapBlack.Size = new Size(Width - tilesetPanel.Width - rightPanel.Width - 24, mainTabControl.Height - mapBlack.Location.Y - mainTabControl.Location.Y - 45);
-            if (!Empty(CurrentMap)) mapBoxPanel.Size = new Size(Math.Min(mapBlack.Size.Width - 4, 32 * CurrentMap.Width),
-                Math.Min(mapBlack.Size.Height - 4, 32 * CurrentMap.Height));
+            if (!Empty(CurrentMap) && !Empty(mapBoxPanel))
+                mapBoxPanel.Size = new Size(Math.Min(mapBlack.Size.Width - 4, 32 * CurrentMap.Width),
+                    Math.Min(mapBlack.Size.Height - 4, 32 * CurrentMap.Height));
 
             try
             {
