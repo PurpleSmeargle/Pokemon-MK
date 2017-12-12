@@ -444,7 +444,7 @@ namespace PokemonEngine
             int Width = CurrentMap.Width;
             int Height = CurrentMap.Height;
 
-            if (UpdateBounds)
+            if (RedrawLayers || UpdateBounds)
             {
                 CreateBlack();
                 CreateGrid();
@@ -634,7 +634,7 @@ namespace PokemonEngine
 
         private void CreateOverlay()
         {
-            if (!Empty(Overlay)) return;
+            if (!Empty(Overlay)) Overlay.Dispose();
             Overlay = new Bitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
             for (int x = 0; x < CurrentMap.Width * 32; x++)
             {
