@@ -291,7 +291,7 @@ namespace PokemonEngine
                 if (e.LineText.Contains($"{Char} ") || e.LineText.Contains($"{Char}("))
                 {
                     string Left = e.LineText.Split(new string[] { Char }, StringSplitOptions.None)[0];
-                    if (Empty(Left) || Left.EndsWith("\n") || Left.EndsWith("\r") || Left.EndsWith("\r\n"))
+                    if (Empty(Left) || Left.EndsWith("\n") || Left.EndsWith("\r") || Left.EndsWith("\r\n") || Left.Contains("  "))
                     {
                         e.ShiftNextLines = e.TabLength;
                         return;
@@ -301,7 +301,7 @@ namespace PokemonEngine
             if (e.LineText.Contains("rescue"))
             {
                 string Left = e.LineText.Split(new string[] { "rescue" }, StringSplitOptions.None)[0];
-                if (Empty(Left) || Left.EndsWith("\n") || Left.EndsWith("\r") || Left.EndsWith("\r\n"))
+                if (Empty(Left) || Left.EndsWith("\n") || Left.EndsWith("\r") || Left.EndsWith("\r\n") || Left.Contains("  "))
                 {
                     e.ShiftNextLines = e.TabLength;
                     return;
@@ -332,7 +332,7 @@ namespace PokemonEngine
             range.SetStyle(Method, @"\b(BEGIN|END|_ENCODING_|_LINE_|_FILE_|defined?|_END_)\b", RegexOptions.Multiline);
 
             // Character Symbol
-            range.SetStyle(Operator, @"(=|\*|&|-|\+|%|/|!|\||~|<|>|\b|\?|:|;|{|})", RegexOptions.Multiline);
+            range.SetStyle(Operator, @"(=|\*|&|-|\+|%|/|!|\||~|<|>|\b|\?|:|::|;|{|})", RegexOptions.Multiline);
 
             // Integer and Hex
             range.SetStyle(Integer, @"\b(\d+|\d+x[0123456789ABCDEF]*)\b|", RegexOptions.Multiline);
@@ -785,7 +785,7 @@ Dir.glob(""Scripts/*.rb"") {{ |f| require f }}");
             {
                 if (File.Exists($@"Maps\{Digits(m.ID)}.txt")) File.Delete($@"Maps\{Digits(m.ID)}.txt");
                 string Data = ($"[[{m.Width},{m.Height},'{m.Tileset}','{m.Name}'],");
-                for (int i = 0; i < 2/*m.Layers.Count*/; i++)
+                for (int i = 0; i < m.Layers.Count; i++)
                 {
                     Data += "[";
                     for (int j = 0; j < m.Layers[i].Count; j++)
@@ -807,7 +807,7 @@ Dir.glob(""Scripts/*.rb"") {{ |f| require f }}");
                         if (j != m.Layers[i].Count - 1) Data += ",";
                     }
                     Data += "]";
-                    if (i != 1) Data += ",";
+                    if (i != m.Layers.Count - 1) Data += ",";
                 }
                 Data += "]";
                 Engine.Execute(

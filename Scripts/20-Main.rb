@@ -19,8 +19,9 @@ $Viewports = {}
 # Maps, events
 $Viewports["main"] = Viewport.new(0,0,Graphics.width,Graphics.height)
 
-$Map = Map.new(0)
+$Map = Map.new(2)
 $Player = Player.new
+npc = Character.new(1)
 
 
 loop do
@@ -28,6 +29,8 @@ loop do
     Graphics.update
     Input.update
     $Player.update
+    npc.update
+    npc.do_random if Input.trigger?(Input::C)
     $Map.update
   rescue
     e = $!

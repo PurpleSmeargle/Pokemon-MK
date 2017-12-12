@@ -17,7 +17,8 @@ class Map
   attr_reader :x
   attr_reader :y
   attr_accessor :active
-  attr_reader :layers
+  attr_accessor :initial_x
+  attr_accessor :initial_y
   
   def initialize(id, current_map = false)
     @id = id
@@ -54,12 +55,21 @@ class Map
           layers[priority].bmp(32 * @width, 32 * @height)
           layers[priority].z = priority
         end
-        layers[priority].bmp.blt(32 * (j % @width), 32 * ((j / @height).floor), bmp, Rect.new(32 * (id % 8), 32 * ((id / 8).floor), 32, 32))
+        layers[priority].bmp.blt(32 * (j % @width), 32 * ((j / @height).floor), bmp,
+            Rect.new(32 * (id % 8), 32 * ((id / 8).floor), 32, 32))
       end
     end
     Graphics.maps[@id] = BetterHash.new
     Graphics.maps[@id][:layers] = layers
     Graphics.maps[@id][:events] = []
+  end
+  
+  def layers
+    return Graphics.maps[@id][:layers]
+  end
+  
+  def events
+    return Graphics.maps[@id][:events]
   end
   
   def tile_data(x, y, layer = nil)

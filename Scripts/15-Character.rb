@@ -4,17 +4,20 @@ class Character
   attr_reader :id
   attr_accessor :name
   
-  def initialize(map, id, name = "")
+  def initialize(id, map = $Map, name = "")
     @id = id
     @name = name
     @x = 0
     @y = 0
     @dir = :down
     @map = map
-    @move_speed = 16
+    @move_speed = 8
     _sprite = CharacterSprite.new(id)
     Graphics.maps[@map.id][:events] << _sprite
     @spriteindex = Graphics.maps[@map.id][:events].index(_sprite)
+    sprite.x = @map.x
+    sprite.y = 32 + @map.y
+    sprite.move_speed = @move_speed
   end
   
   def moving?
@@ -28,7 +31,8 @@ class Character
   end
   
   def dir=(value)
-    value = [5,:down_left,:down,:down_right,:left,:still,:right,:up_left,:up,:up_right][value] if value.is_a?(Numeric)
+    value = [:still,:down_left,:down,:down_right,:left,:still,
+             :right,:up_left,:up,:up_right][value] if value.is_a?(Numeric)
     mod = 0
     mod = 1 if value == 4
     mod = 2 if value == 6
@@ -39,10 +43,14 @@ class Character
   
   def update
     sprite.update
-    go_right if Input.press?(Input::RIGHT)
-    go_left if Input.press?(Input::LEFT)
-    go_down if Input.press?(Input::DOWN)
-    go_up if Input.press?(Input::UP)
+    if moving?
+      sprite.x = (sprite.x - @map.initial_x) % 32 + @map.x + @x * 32
+      sprite.y = (sprite.y - @map.initial_y) % 32 + 32 + @map.y + @y * 32
+    else
+      sprite.x = @map.x + @x * 32
+      sprite.y = 32 + @map.y + @y * 32
+    end
+    
   end
   
   def go_right
@@ -119,5 +127,26 @@ class Character
   def turn_up
     sprite.turn_up
     @dir = :up
+  end
+  
+  def do_random
+    case rand(9)
+    when 0
+      go_right
+    when 1
+      go_left
+    when 2
+      go_down
+    when 3
+      go_up
+    when 4
+      turn_right
+    when 5
+      turn_left
+    when 6
+      turn_down
+    when 7
+      turn_up
+    end
   end
 end

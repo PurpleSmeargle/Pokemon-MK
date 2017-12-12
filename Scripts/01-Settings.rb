@@ -8,4 +8,4 @@ FONTS = [
   ["Power Red and Green", 27],
 ]
 
-WALK_SPEED = 16
+WALK_SPEED = 8

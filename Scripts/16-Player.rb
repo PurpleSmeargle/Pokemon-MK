@@ -3,14 +3,17 @@ class Player < Character
   attr_reader :gender
   
   def initialize(gender = 0, name = "")
-    super($Map, gender)
+    super(gender, $Map)
     @gender = gender
     @party = []
     @move_speed = WALK_SPEED
     sprite.x = Graphics.width / 2 - sprite.src_rect.width / 2
     sprite.y = Graphics.height / 2
+    sprite.z = 1
     self.x = 0
     self.y = 0
+    @map.initial_x = Graphics.width / 2 - sprite.src_rect.width / 2
+    @map.initial_y = Graphics.height / 2 - 32
     @right_cooldown = 0
     @left_cooldown = 0
     @down_cooldown = 0
@@ -67,8 +70,8 @@ class Player < Character
     
     
     if sprite.right_mov
-      $Map.x -= 2
-      if sprite.right_mov % 8 == 0
+      $Map.x -= (32.0 / (@move_speed * 2))
+      if sprite.right_mov % @move_speed == 0
         sprite.src_rect.x += sprite.bmp.width / 4
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end
@@ -76,8 +79,8 @@ class Player < Character
       sprite.right_mov = nil if sprite.right_mov == 0
     end
     if sprite.left_mov
-      $Map.x += 2
-      if sprite.left_mov % 8 == 0
+      $Map.x += (32.0 / (@move_speed * 2))
+      if sprite.left_mov % @move_speed == 0
         sprite.src_rect.x += sprite.bmp.width / 4
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end
@@ -85,8 +88,8 @@ class Player < Character
       sprite.left_mov = nil if sprite.left_mov == 0
     end
     if sprite.down_mov
-      $Map.y -= 2
-      if sprite.down_mov % 8 == 0
+      $Map.y -= (32.0 / (@move_speed * 2))
+      if sprite.down_mov % @move_speed == 0
         sprite.src_rect.x += sprite.bmp.width / 4
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end
@@ -94,8 +97,8 @@ class Player < Character
       sprite.down_mov = nil if sprite.down_mov == 0
     end
     if sprite.up_mov
-      $Map.y += 2
-      if sprite.up_mov % 8 == 0
+      $Map.y += (32.0 / (@move_speed * 2))
+      if sprite.up_mov % @move_speed == 0
         sprite.src_rect.x += sprite.bmp.width / 4
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end

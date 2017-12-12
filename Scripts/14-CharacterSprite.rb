@@ -1,9 +1,12 @@
 class CharacterSprite < Sprite
+  # Internal
   attr_accessor :sprite
   attr_accessor :right_mov
   attr_accessor :left_mov
   attr_accessor :down_mov
   attr_accessor :up_mov
+  
+  attr_accessor :move_speed
   
   def initialize(id = 0)
     super($Viewports["main"])
@@ -16,13 +19,14 @@ class CharacterSprite < Sprite
     @left_mov = nil
     @down_mov = nil
     @up_mov = nil
+    @move_speed = 16
   end
   
   def update
     super
     if @right_mov
       self.x += 2
-      if @right_mov % 8 == 0
+      if @right_mov % @move_speed == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
       end
@@ -31,7 +35,7 @@ class CharacterSprite < Sprite
     end
     if @left_mov
       self.x -= 2
-      if @left_mov % 8 == 0
+      if @left_mov % @move_speed == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
       end
@@ -40,7 +44,7 @@ class CharacterSprite < Sprite
     end
     if @down_mov
       self.y += 2
-      if @down_mov % 8 == 0
+      if @down_mov % @move_speed == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
       end
@@ -49,7 +53,7 @@ class CharacterSprite < Sprite
     end
     if @up_mov
       self.y -= 2
-      if @up_mov % 8 == 0
+      if @up_mov % @move_speed == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
       end
@@ -60,25 +64,25 @@ class CharacterSprite < Sprite
   
   def go_right
     turn_right
-    @right_mov = 16
+    @right_mov = @move_speed * 2
     return true
   end
   
   def go_left
     turn_left
-    @left_mov = 16
+    @left_mov = @move_speed * 2
     return true
   end
   
   def go_down
     turn_down
-    @down_mov = 16
+    @down_mov = @move_speed * 2
     return true
   end
   
   def go_up
     turn_up
-    @up_mov = 16
+    @up_mov = @move_speed * 2
     return true
   end
   
