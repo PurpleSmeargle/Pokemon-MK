@@ -19,7 +19,7 @@ $Viewports = {}
 # Maps, events
 $Viewports["main"] = Viewport.new(0,0,Graphics.width,Graphics.height)
 
-$Map = Map.new(1)
+$Map = Map.new(0)
 $Player = Player.new
 
 

@@ -453,7 +453,6 @@ namespace PokemonEngine
             {
                 for (int i = 0; i < CurrentMap.Layers.Count; i++)
                 {
-                    Console.WriteLine("SetPixel :: LoadMap " + (i + 1).ToString());
                     Bitmap Layer = new Bitmap(Width * 32, Height * 32);
                     Graphics gr = Graphics.FromImage(Layer);
                     for (int k = 0; k < CurrentMap.Layers[i].Count; k++)
@@ -552,7 +551,6 @@ namespace PokemonEngine
                 if (Config.HideLowerLayers && i == CurrentLayer - 2) { g.DrawImage(Overlay, 0, 0); }
             }
             if (Config.ShowGrid) g.DrawImage(Grid, 0, 0); // Grid
-            Console.WriteLine(sender);
         }
 
         private void MapBox_MouseDown(object sender, MouseEventArgs e)
@@ -563,15 +561,17 @@ namespace PokemonEngine
             if (LeftMouse)
             {
                 if (SetTile(CurrentLayer, CursorX, CursorY,
-                    (int)Math.Floor((double)TilesetCursor.Location.X / 32) +
-                    (int)Math.Floor((double)TilesetCursor.Location.Y / 32) * 8))
+                    (int) Math.Floor((double)TilesetCursor.Location.X / 32) +
+                    (int) Math.Floor((double)TilesetCursor.Location.Y / 32) * 8))
                 {
                     MapBox.Refresh();
                 }
             }
             if (RightMouse)
             {
-
+                dynamic obj = CurrentMap.Layers[CurrentLayer - 1][CursorX + CurrentMap.Width * CursorY];
+                int TileID = (obj is int ? (int) obj : (int) obj[0]);
+                TilesetCursor.Location = new Point(32 * (TileID % 8), 32 * (int) Math.Floor((double) TileID / 8));
             }
         }
 
@@ -601,8 +601,6 @@ namespace PokemonEngine
                 return false;
             }
             Graphics g = Graphics.FromImage(Layers[Layer - 1]);
-            Console.WriteLine((int)(32 * Math.Floor((double)TileID / 8)));
-            Console.WriteLine("SetPixel :: SetTile 1");
             for (int x = X * 32; x < X * 32 + 32; x++)
             {
                 for (int y = Y * 32; y < Y * 32 + 32; y++)
@@ -613,7 +611,6 @@ namespace PokemonEngine
 
             if (TileID != 0)
             {
-                Console.WriteLine("SetPixel :: SetTile 2");
                 for (int x = X * 32; x < X * 32 + 32; x++)
                 {
                     for (int y = Y * 32; y < Y * 32 + 32; y++)
@@ -637,7 +634,6 @@ namespace PokemonEngine
         {
             if (!Empty(Overlay)) return;
             Overlay = new Bitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
-            Console.WriteLine("SetPixel :: CreateOverlay");
             for (int x = 0; x < CurrentMap.Width * 32; x++)
             {
                 for (int y = 0; y < CurrentMap.Height * 32; y++)
@@ -660,7 +656,6 @@ namespace PokemonEngine
         {
             if (!Empty(Grid)) Grid.Dispose();
             Grid = new Bitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
-            Console.WriteLine("SetPixel :: CreateGrid");
             for (int x = 0; x < Grid.Width; x++)
             {
                 for (int y = 0; y < Grid.Height; y++)
@@ -934,7 +929,7 @@ f.close");
         {
             List<int> IDs = new List<int>();
             foreach (Map m in Maps) { IDs.Add(m.ID); }
-            int ID = 0;
+            int ID = 1;
             while (IDs.Contains(ID)) { ID += 1; }
             NewMap CreateNewMap = new NewMap(ID);
             CreateNewMap.ShowDialog();
