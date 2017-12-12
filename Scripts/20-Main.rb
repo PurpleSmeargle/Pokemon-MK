@@ -3,8 +3,12 @@ System.initialize
 
 Species.compile
 
-#p Species.new(2).name
-#p Species.new(:IVYSAUR).name
+#b = Species.new(1)
+#p b.base_exp
+#p b.types
+#p b.gender_rate
+#p b.growth_rate
+#p b.base_stats
 
 
 

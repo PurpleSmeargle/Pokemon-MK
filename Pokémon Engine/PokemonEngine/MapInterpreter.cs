@@ -11,7 +11,7 @@ using System.IO;
 namespace PokemonEngine
 {
     public class MapInterpreter
-    {
+   { 
         /// <summary>
         /// Loads a map data file based on ID and parses it to C# object.
         /// </summary>
@@ -87,30 +87,33 @@ return [Data[0],Data[1..-1]]");
 
         public bool Update(int OldWidth, int OldHeight)
         {
+            int WidthDiff = Math.Abs(Width - OldWidth);
+            int HeightDiff = Math.Abs(Height - OldHeight);
             List<List<dynamic>> NewLayers = new List<List<dynamic>>();
-            for (int l = 0; l < Layers.Count; l++)
+            foreach (List<dynamic> Layer in Layers)
             {
                 List<dynamic> NewLayer = new List<dynamic>();
-                for (int i = 0; i < Layers[l].Count; i++)
+                for (int i = 0; i < Layer.Count; i++)
                 {
-                    NewLayer.Add(Layers[l][i]);
-                    if (i % OldWidth == OldWidth - 1)
+                    if (Width > OldWidth)
                     {
-                        for (int k = 0; k < Width - OldWidth; k++)
-                        {
-                            NewLayer.Add(0);
-                        }
+                        NewLayer.Add(Layer[i]);
+                        if (i % OldWidth == OldWidth - 1) { for (int n = 0; n < WidthDiff; n++) { NewLayer.Add(0); } }
+                    }
+                    else if (Width < OldWidth)
+                    {
+                        if (i % OldWidth < OldWidth - WidthDiff) { NewLayer.Add(Layer[i]); }
+                    }
+                    else
+                    {
+                        NewLayer.Add(Layer[i]);
                     }
                 }
-                for (int i = 0; i < Height - OldHeight; i++)
-                {
-                    for (int k = 0; k < Width; k++)
-                    {
-                        NewLayer.Add(0);
-                    }
-                }
+                if (Height > OldHeight) for (int n = 0; n < HeightDiff; n++) { for (int k = 0; k < Width; k++) { NewLayer.Add(0); } }
+                else if (Height < OldHeight) NewLayer.RemoveRange(Width * (Height - 1), Width * (OldHeight - Height));
                 NewLayers.Add(NewLayer);
             }
+            // Whether or not the map should be redrawn
             bool ret = (Layers[0].Count != NewLayers.Count);
             Layers = NewLayers;
             return ret;

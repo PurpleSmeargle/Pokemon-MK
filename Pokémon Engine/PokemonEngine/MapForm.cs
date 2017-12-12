@@ -14,6 +14,7 @@ namespace PokemonEngine
     public partial class MapForm : Form
     {
         public bool ShouldUpdate = false;
+        PictureBox MapBox;
 
         Map CurrentMap;
         string OldName;
@@ -25,7 +26,7 @@ namespace PokemonEngine
 
         BindingSource tilesetBinder = new BindingSource();
 
-        public MapForm(Map CurrentMap)
+        public MapForm(Map CurrentMap, PictureBox MapBox)
         {
             InitializeComponent();
             this.CurrentMap = CurrentMap;
@@ -33,6 +34,7 @@ namespace PokemonEngine
             this.OldTileset = CurrentMap.Tileset;
             this.OldWidth = CurrentMap.Width;
             this.OldHeight = CurrentMap.Height;
+            this.MapBox = MapBox;
         }
 
         private void MapForm_Load(object sender, EventArgs e)
@@ -95,7 +97,9 @@ namespace PokemonEngine
 
         private void button2_Click(object sender, EventArgs e)
         {
+            MapBox.UseWaitCursor = true;
             ShouldUpdate = CurrentMap.Update(OldWidth, OldHeight);
+            MapBox.UseWaitCursor = false;
             Close();
         }
     }

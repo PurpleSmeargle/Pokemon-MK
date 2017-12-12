@@ -89,4 +89,28 @@ class Species
   def name
     return Data[@id][:Name]
   end
+  
+  def internal_name
+    return Data[@id][:InternalName]
+  end
+  
+  def types
+    return [Data[@id][:Type1],Data[@id][:Type2]].compact
+  end
+  
+  def base_stats
+    return Data[@id][:BaseStats]
+  end
+  
+  def gender_rate
+    return Data[@id][:GenderRate]
+  end
+  
+  def growth_rate
+    return Data[@id][:GrowthRate]
+  end
+  
+  def base_exp
+    return Data[@id][:BaseEXP]
+  end
 end

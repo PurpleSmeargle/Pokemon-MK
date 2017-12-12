@@ -28,5 +28,17 @@ namespace PokemonEngine
             if (obj is string && (((string) obj).Length == 0 || (string) obj == "")) return true;
             return false;
         }
+
+        public static string ColorToString(System.Drawing.Color Color)
+        {
+            return $"{Color.A},{Color.R},{Color.G},{Color.B}";
+        }
+
+        public static System.Drawing.Color StringToColor(string Color)
+        {
+            List<string> Nums = Color.Split(',').ToList();
+            return System.Drawing.Color.FromArgb(Convert.ToInt32(Nums[0]), Convert.ToInt32(Nums[1]),
+                Convert.ToInt32(Nums[2]), Convert.ToInt32(Nums[3]));
+        }
     }
 }

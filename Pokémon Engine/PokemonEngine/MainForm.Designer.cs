@@ -39,6 +39,21 @@
             this.mapsTab = new System.Windows.Forms.TabPage();
             this.mainMapPanel = new System.Windows.Forms.Panel();
             this.mapPanel = new System.Windows.Forms.Panel();
+            this.mapToolbar = new System.Windows.Forms.Panel();
+            this.mapMenu = new System.Windows.Forms.MenuStrip();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.activeLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer6ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer7ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideLowerLayersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mappingTools = new System.Windows.Forms.ToolStrip();
             this.mapGrid = new System.Windows.Forms.ToolStripButton();
             this.layerBtn1 = new System.Windows.Forms.ToolStripButton();
@@ -53,7 +68,7 @@
             this.mapWhite = new System.Windows.Forms.PictureBox();
             this.mapBlack = new System.Windows.Forms.PictureBox();
             this.rightPanel = new System.Windows.Forms.Panel();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.rightPanelSplitter = new System.Windows.Forms.SplitContainer();
             this.tilePanel = new System.Windows.Forms.Panel();
             this.tileWhite = new System.Windows.Forms.PictureBox();
             this.tileBlack = new System.Windows.Forms.PictureBox();
@@ -72,34 +87,29 @@
             this.scriptNameLabel = new System.Windows.Forms.Label();
             this.scriptBox = new System.Windows.Forms.ListBox();
             this.toolbar = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.activeLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hideLowerLayersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer6ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer7ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.save = new System.Windows.Forms.ToolStripButton();
+            this.play = new System.Windows.Forms.ToolStripButton();
+            this.allMapsBoxPanel = new System.Windows.Forms.Panel();
+            this.allMapsMenu = new System.Windows.Forms.MenuStrip();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.allMaps = new System.Windows.Forms.TreeView();
             this.menuBar.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.mapsTab.SuspendLayout();
             this.mainMapPanel.SuspendLayout();
             this.mapPanel.SuspendLayout();
+            this.mapToolbar.SuspendLayout();
+            this.mapMenu.SuspendLayout();
             this.mappingTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapWhite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapBlack)).BeginInit();
             this.rightPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rightPanelSplitter)).BeginInit();
+            this.rightPanelSplitter.Panel1.SuspendLayout();
+            this.rightPanelSplitter.Panel2.SuspendLayout();
+            this.rightPanelSplitter.SuspendLayout();
             this.tilePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tileWhite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tileBlack)).BeginInit();
@@ -114,8 +124,8 @@
             this.scriptsTab.SuspendLayout();
             this.scriptsPanel.SuspendLayout();
             this.toolbar.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
+            this.allMapsBoxPanel.SuspendLayout();
+            this.allMapsMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuBar
@@ -206,7 +216,7 @@
             // 
             // mapPanel
             // 
-            this.mapPanel.Controls.Add(this.panel1);
+            this.mapPanel.Controls.Add(this.mapToolbar);
             this.mapPanel.Controls.Add(this.mappingTools);
             this.mapPanel.Controls.Add(this.mapBoxPanel);
             this.mapPanel.Controls.Add(this.mapWhite);
@@ -216,6 +226,135 @@
             this.mapPanel.Name = "mapPanel";
             this.mapPanel.Size = new System.Drawing.Size(719, 747);
             this.mapPanel.TabIndex = 2;
+            // 
+            // mapToolbar
+            // 
+            this.mapToolbar.Controls.Add(this.mapMenu);
+            this.mapToolbar.Location = new System.Drawing.Point(219, 1);
+            this.mapToolbar.Name = "mapToolbar";
+            this.mapToolbar.Size = new System.Drawing.Size(158, 26);
+            this.mapToolbar.TabIndex = 4;
+            // 
+            // mapMenu
+            // 
+            this.mapMenu.BackColor = System.Drawing.Color.Transparent;
+            this.mapMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewToolStripMenuItem});
+            this.mapMenu.Location = new System.Drawing.Point(0, 0);
+            this.mapMenu.Name = "mapMenu";
+            this.mapMenu.Size = new System.Drawing.Size(158, 24);
+            this.mapMenu.TabIndex = 0;
+            this.mapMenu.Text = "menuStrip1";
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showGridToolStripMenuItem,
+            this.activeLayerToolStripMenuItem,
+            this.hideLowerLayersToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // showGridToolStripMenuItem
+            // 
+            this.showGridToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showToolStripMenuItem,
+            this.configureToolStripMenuItem});
+            this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
+            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.showGridToolStripMenuItem.Text = "Grid";
+            // 
+            // showToolStripMenuItem
+            // 
+            this.showToolStripMenuItem.Name = "showToolStripMenuItem";
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.showToolStripMenuItem.Text = "Show";
+            this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+            // 
+            // configureToolStripMenuItem
+            // 
+            this.configureToolStripMenuItem.Name = "configureToolStripMenuItem";
+            this.configureToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.configureToolStripMenuItem.Text = "Configure";
+            // 
+            // activeLayerToolStripMenuItem
+            // 
+            this.activeLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.layer1ToolStripMenuItem,
+            this.layer2ToolStripMenuItem,
+            this.layer3ToolStripMenuItem,
+            this.layer4ToolStripMenuItem,
+            this.layer5ToolStripMenuItem,
+            this.layer6ToolStripMenuItem,
+            this.layer7ToolStripMenuItem});
+            this.activeLayerToolStripMenuItem.Name = "activeLayerToolStripMenuItem";
+            this.activeLayerToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.activeLayerToolStripMenuItem.Text = "Active Layer";
+            // 
+            // layer1ToolStripMenuItem
+            // 
+            this.layer1ToolStripMenuItem.CheckOnClick = true;
+            this.layer1ToolStripMenuItem.Name = "layer1ToolStripMenuItem";
+            this.layer1ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer1ToolStripMenuItem.Text = "Layer 1";
+            this.layer1ToolStripMenuItem.Click += new System.EventHandler(this.layer1ToolStripMenuItem_Click);
+            // 
+            // layer2ToolStripMenuItem
+            // 
+            this.layer2ToolStripMenuItem.CheckOnClick = true;
+            this.layer2ToolStripMenuItem.Name = "layer2ToolStripMenuItem";
+            this.layer2ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer2ToolStripMenuItem.Text = "Layer 2";
+            this.layer2ToolStripMenuItem.Click += new System.EventHandler(this.layer2ToolStripMenuItem_Click);
+            // 
+            // layer3ToolStripMenuItem
+            // 
+            this.layer3ToolStripMenuItem.CheckOnClick = true;
+            this.layer3ToolStripMenuItem.Name = "layer3ToolStripMenuItem";
+            this.layer3ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer3ToolStripMenuItem.Text = "Layer 3";
+            this.layer3ToolStripMenuItem.Click += new System.EventHandler(this.layer3ToolStripMenuItem_Click);
+            // 
+            // layer4ToolStripMenuItem
+            // 
+            this.layer4ToolStripMenuItem.CheckOnClick = true;
+            this.layer4ToolStripMenuItem.Name = "layer4ToolStripMenuItem";
+            this.layer4ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer4ToolStripMenuItem.Text = "Layer 4";
+            this.layer4ToolStripMenuItem.Click += new System.EventHandler(this.layer4ToolStripMenuItem_Click);
+            // 
+            // layer5ToolStripMenuItem
+            // 
+            this.layer5ToolStripMenuItem.CheckOnClick = true;
+            this.layer5ToolStripMenuItem.Name = "layer5ToolStripMenuItem";
+            this.layer5ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer5ToolStripMenuItem.Text = "Layer 5";
+            this.layer5ToolStripMenuItem.Click += new System.EventHandler(this.layer5ToolStripMenuItem_Click);
+            // 
+            // layer6ToolStripMenuItem
+            // 
+            this.layer6ToolStripMenuItem.CheckOnClick = true;
+            this.layer6ToolStripMenuItem.Name = "layer6ToolStripMenuItem";
+            this.layer6ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer6ToolStripMenuItem.Text = "Layer 6";
+            this.layer6ToolStripMenuItem.Click += new System.EventHandler(this.layer6ToolStripMenuItem_Click);
+            // 
+            // layer7ToolStripMenuItem
+            // 
+            this.layer7ToolStripMenuItem.CheckOnClick = true;
+            this.layer7ToolStripMenuItem.Name = "layer7ToolStripMenuItem";
+            this.layer7ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer7ToolStripMenuItem.Text = "Layer 7";
+            this.layer7ToolStripMenuItem.Click += new System.EventHandler(this.layer7ToolStripMenuItem_Click);
+            // 
+            // hideLowerLayersToolStripMenuItem
+            // 
+            this.hideLowerLayersToolStripMenuItem.CheckOnClick = true;
+            this.hideLowerLayersToolStripMenuItem.Name = "hideLowerLayersToolStripMenuItem";
+            this.hideLowerLayersToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.hideLowerLayersToolStripMenuItem.Text = "Hide lower layers";
+            this.hideLowerLayersToolStripMenuItem.Click += new System.EventHandler(this.hideLowerLayersToolStripMenuItem_Click);
             // 
             // mappingTools
             // 
@@ -331,6 +470,7 @@
             // 
             // mapBoxPanel
             // 
+            this.mapBoxPanel.AutoScroll = true;
             this.mapBoxPanel.Location = new System.Drawing.Point(6, 34);
             this.mapBoxPanel.Name = "mapBoxPanel";
             this.mapBoxPanel.Size = new System.Drawing.Size(696, 710);
@@ -355,30 +495,30 @@
             // 
             // rightPanel
             // 
-            this.rightPanel.Controls.Add(this.splitContainer1);
+            this.rightPanel.Controls.Add(this.rightPanelSplitter);
             this.rightPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.rightPanel.Location = new System.Drawing.Point(979, 0);
             this.rightPanel.Name = "rightPanel";
             this.rightPanel.Size = new System.Drawing.Size(180, 747);
             this.rightPanel.TabIndex = 1;
             // 
-            // splitContainer1
+            // rightPanelSplitter
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.rightPanelSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rightPanelSplitter.Location = new System.Drawing.Point(0, 0);
+            this.rightPanelSplitter.Name = "rightPanelSplitter";
+            this.rightPanelSplitter.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // splitContainer1.Panel1
+            // rightPanelSplitter.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tilePanel);
+            this.rightPanelSplitter.Panel1.Controls.Add(this.tilePanel);
             // 
-            // splitContainer1.Panel2
+            // rightPanelSplitter.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.allMapsPanel);
-            this.splitContainer1.Size = new System.Drawing.Size(180, 747);
-            this.splitContainer1.SplitterDistance = 329;
-            this.splitContainer1.TabIndex = 0;
+            this.rightPanelSplitter.Panel2.Controls.Add(this.allMapsPanel);
+            this.rightPanelSplitter.Size = new System.Drawing.Size(180, 747);
+            this.rightPanelSplitter.SplitterDistance = 329;
+            this.rightPanelSplitter.TabIndex = 0;
             // 
             // tilePanel
             // 
@@ -410,6 +550,7 @@
             // 
             // allMapsPanel
             // 
+            this.allMapsPanel.Controls.Add(this.allMapsBoxPanel);
             this.allMapsPanel.Controls.Add(this.allMapsWhite);
             this.allMapsPanel.Controls.Add(this.allMapsBlack);
             this.allMapsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -423,7 +564,7 @@
             this.allMapsWhite.BackColor = System.Drawing.SystemColors.Control;
             this.allMapsWhite.Location = new System.Drawing.Point(1, 1);
             this.allMapsWhite.Name = "allMapsWhite";
-            this.allMapsWhite.Size = new System.Drawing.Size(165, 395);
+            this.allMapsWhite.Size = new System.Drawing.Size(165, 408);
             this.allMapsWhite.TabIndex = 1;
             this.allMapsWhite.TabStop = false;
             // 
@@ -548,141 +689,84 @@
             // 
             this.toolbar.BackColor = System.Drawing.Color.Transparent;
             this.toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton2});
+            this.save,
+            this.play});
             this.toolbar.Location = new System.Drawing.Point(0, 24);
             this.toolbar.Name = "toolbar";
             this.toolbar.Size = new System.Drawing.Size(1173, 25);
             this.toolbar.TabIndex = 3;
             this.toolbar.Text = "Toolbar";
             // 
-            // toolStripButton1
+            // save
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "Save";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.save.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.save.Image = ((System.Drawing.Image)(resources.GetObject("save.Image")));
+            this.save.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.save.Name = "save";
+            this.save.Size = new System.Drawing.Size(23, 22);
+            this.save.Text = "Save";
+            this.save.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
-            // toolStripButton2
+            // play
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "Play";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            this.play.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.play.Image = ((System.Drawing.Image)(resources.GetObject("play.Image")));
+            this.play.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.play.Name = "play";
+            this.play.Size = new System.Drawing.Size(23, 22);
+            this.play.Text = "Play";
+            this.play.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
-            // panel1
+            // allMapsBoxPanel
             // 
-            this.panel1.Controls.Add(this.menuStrip1);
-            this.panel1.Location = new System.Drawing.Point(219, 1);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(158, 26);
-            this.panel1.TabIndex = 4;
+            this.allMapsBoxPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.allMapsBoxPanel.Controls.Add(this.allMaps);
+            this.allMapsBoxPanel.Controls.Add(this.allMapsMenu);
+            this.allMapsBoxPanel.Location = new System.Drawing.Point(2, 2);
+            this.allMapsBoxPanel.Name = "allMapsBoxPanel";
+            this.allMapsBoxPanel.Size = new System.Drawing.Size(163, 406);
+            this.allMapsBoxPanel.TabIndex = 2;
             // 
-            // menuStrip1
+            // allMapsMenu
             // 
-            this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(158, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.allMapsMenu.BackColor = System.Drawing.Color.Transparent;
+            this.allMapsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importToolStripMenuItem,
+            this.newToolStripMenuItem,
+            this.editStripMenuItem1});
+            this.allMapsMenu.Location = new System.Drawing.Point(0, 0);
+            this.allMapsMenu.Name = "allMapsMenu";
+            this.allMapsMenu.Size = new System.Drawing.Size(163, 24);
+            this.allMapsMenu.TabIndex = 0;
+            this.allMapsMenu.Text = "menuStrip1";
             // 
-            // viewToolStripMenuItem
+            // importToolStripMenuItem
             // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showGridToolStripMenuItem,
-            this.activeLayerToolStripMenuItem,
-            this.hideLowerLayersToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "View";
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.importToolStripMenuItem.Text = "Import";
             // 
-            // showGridToolStripMenuItem
+            // newToolStripMenuItem
             // 
-            this.showGridToolStripMenuItem.CheckOnClick = true;
-            this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
-            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.showGridToolStripMenuItem.Text = "Show Grid";
-            this.showGridToolStripMenuItem.Click += new System.EventHandler(this.showGridToolStripMenuItem_Click);
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
-            // activeLayerToolStripMenuItem
+            // editStripMenuItem1
             // 
-            this.activeLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.layer1ToolStripMenuItem,
-            this.layer2ToolStripMenuItem,
-            this.layer3ToolStripMenuItem,
-            this.layer4ToolStripMenuItem,
-            this.layer5ToolStripMenuItem,
-            this.layer6ToolStripMenuItem,
-            this.layer7ToolStripMenuItem});
-            this.activeLayerToolStripMenuItem.Name = "activeLayerToolStripMenuItem";
-            this.activeLayerToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.activeLayerToolStripMenuItem.Text = "Active Layer";
+            this.editStripMenuItem1.Name = "editStripMenuItem1";
+            this.editStripMenuItem1.Size = new System.Drawing.Size(39, 20);
+            this.editStripMenuItem1.Text = "Edit";
             // 
-            // hideLowerLayersToolStripMenuItem
+            // allMaps
             // 
-            this.hideLowerLayersToolStripMenuItem.CheckOnClick = true;
-            this.hideLowerLayersToolStripMenuItem.Name = "hideLowerLayersToolStripMenuItem";
-            this.hideLowerLayersToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.hideLowerLayersToolStripMenuItem.Text = "Hide lower layers";
-            this.hideLowerLayersToolStripMenuItem.Click += new System.EventHandler(this.hideLowerLayersToolStripMenuItem_Click);
-            // 
-            // layer1ToolStripMenuItem
-            // 
-            this.layer1ToolStripMenuItem.CheckOnClick = true;
-            this.layer1ToolStripMenuItem.Name = "layer1ToolStripMenuItem";
-            this.layer1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.layer1ToolStripMenuItem.Text = "Layer 1";
-            // 
-            // layer2ToolStripMenuItem
-            // 
-            this.layer2ToolStripMenuItem.CheckOnClick = true;
-            this.layer2ToolStripMenuItem.Name = "layer2ToolStripMenuItem";
-            this.layer2ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.layer2ToolStripMenuItem.Text = "Layer 2";
-            // 
-            // layer3ToolStripMenuItem
-            // 
-            this.layer3ToolStripMenuItem.CheckOnClick = true;
-            this.layer3ToolStripMenuItem.Name = "layer3ToolStripMenuItem";
-            this.layer3ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.layer3ToolStripMenuItem.Text = "Layer 3";
-            // 
-            // layer4ToolStripMenuItem
-            // 
-            this.layer4ToolStripMenuItem.CheckOnClick = true;
-            this.layer4ToolStripMenuItem.Name = "layer4ToolStripMenuItem";
-            this.layer4ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.layer4ToolStripMenuItem.Text = "Layer 4";
-            // 
-            // layer5ToolStripMenuItem
-            // 
-            this.layer5ToolStripMenuItem.CheckOnClick = true;
-            this.layer5ToolStripMenuItem.Name = "layer5ToolStripMenuItem";
-            this.layer5ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.layer5ToolStripMenuItem.Text = "Layer 5";
-            // 
-            // layer6ToolStripMenuItem
-            // 
-            this.layer6ToolStripMenuItem.CheckOnClick = true;
-            this.layer6ToolStripMenuItem.Name = "layer6ToolStripMenuItem";
-            this.layer6ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.layer6ToolStripMenuItem.Text = "Layer 6";
-            // 
-            // layer7ToolStripMenuItem
-            // 
-            this.layer7ToolStripMenuItem.CheckOnClick = true;
-            this.layer7ToolStripMenuItem.Name = "layer7ToolStripMenuItem";
-            this.layer7ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.layer7ToolStripMenuItem.Text = "Layer 7";
+            this.allMaps.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.allMaps.Location = new System.Drawing.Point(0, 24);
+            this.allMaps.Name = "allMaps";
+            this.allMaps.Size = new System.Drawing.Size(163, 382);
+            this.allMaps.TabIndex = 1;
+            this.allMaps.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.allMaps_AfterSelect);
             // 
             // MainForm
             // 
@@ -707,15 +791,19 @@
             this.mainMapPanel.ResumeLayout(false);
             this.mapPanel.ResumeLayout(false);
             this.mapPanel.PerformLayout();
+            this.mapToolbar.ResumeLayout(false);
+            this.mapToolbar.PerformLayout();
+            this.mapMenu.ResumeLayout(false);
+            this.mapMenu.PerformLayout();
             this.mappingTools.ResumeLayout(false);
             this.mappingTools.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapWhite)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapBlack)).EndInit();
             this.rightPanel.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.rightPanelSplitter.Panel1.ResumeLayout(false);
+            this.rightPanelSplitter.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.rightPanelSplitter)).EndInit();
+            this.rightPanelSplitter.ResumeLayout(false);
             this.tilePanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tileWhite)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tileBlack)).EndInit();
@@ -732,10 +820,10 @@
             this.scriptsPanel.PerformLayout();
             this.toolbar.ResumeLayout(false);
             this.toolbar.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.allMapsBoxPanel.ResumeLayout(false);
+            this.allMapsBoxPanel.PerformLayout();
+            this.allMapsMenu.ResumeLayout(false);
+            this.allMapsMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -767,10 +855,10 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem playToolStripMenuItem;
         private System.Windows.Forms.ToolStrip toolbar;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton save;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ToolStripButton play;
+        private System.Windows.Forms.SplitContainer rightPanelSplitter;
         private System.Windows.Forms.Panel tilePanel;
         private System.Windows.Forms.PictureBox tileWhite;
         private System.Windows.Forms.PictureBox tileBlack;
@@ -787,12 +875,14 @@
         private System.Windows.Forms.ToolStripButton layerBtn6;
         private System.Windows.Forms.ToolStripButton layerBtn7;
         private System.Windows.Forms.ToolStripButton mapSettings;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.Panel mapToolbar;
+        private System.Windows.Forms.MenuStrip mapMenu;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showGridToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem activeLayerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideLowerLayersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem configureToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem activeLayerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem layer1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem layer2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem layer3ToolStripMenuItem;
@@ -800,6 +890,12 @@
         private System.Windows.Forms.ToolStripMenuItem layer5ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem layer6ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem layer7ToolStripMenuItem;
+        private System.Windows.Forms.Panel allMapsBoxPanel;
+        private System.Windows.Forms.MenuStrip allMapsMenu;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editStripMenuItem1;
+        private System.Windows.Forms.TreeView allMaps;
     }
 }
 

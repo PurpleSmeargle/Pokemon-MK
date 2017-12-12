@@ -13,28 +13,35 @@ using static PokemonEngine.Util;
 using FastColoredTextBoxNS;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Drawing.Imaging;
+using Microsoft.Scripting.Hosting;
 
 namespace PokemonEngine
 {
     public partial class MainForm : Form
     {
         PictureBox TilesetCursor;
+        Bitmap Tileset;
         PictureBox MapBox;
         Map CurrentMap;
 
         int CurrentLayer = 1;
         int CursorX = 0;
         int CursorY = 0;
-        bool MouseDown = false;
+        bool LeftMouse = false;
+        bool RightMouse = false;
+        bool MiddleMouse = false;
 
         List<Bitmap> Layers = new List<Bitmap>();
         Bitmap Black;
         Bitmap Grid;
+        Bitmap Overlay;
+
+        List<Map> Maps = new List<Map>();
 
         // Whether or not the engine is still starting up
         bool Starting = true;
         bool MadeChanges = false;
-        bool OnlyCurrentLayer = false;
         string TilesetPath = null;
 
         BindingSource scriptBinder = new BindingSource();
@@ -63,8 +70,6 @@ namespace PokemonEngine
             Directory.SetCurrentDirectory(ret);
             #endregion
 
-            CurrentMap = MapInterpreter.Parse(1);
-
             TilesetCursor = new PictureBox();
             TilesetCursor.Location = new Point(0, 0);
             TilesetCursor.Image = Properties.Resources.cursor;
@@ -87,6 +92,7 @@ namespace PokemonEngine
             scriptEditorPanel.Controls.Add(txt);
             #endregion
 
+            #region Script Files
             List<string> ScriptFiles = new List<string>();
             foreach (string file in Directory.GetFiles("Scripts"))
             {
@@ -121,6 +127,7 @@ namespace PokemonEngine
             scriptBinder.DataSource = Scripts;
             scriptBox.DataSource = scriptBinder;
             scriptBox.DisplayMember = "Name";
+            #endregion
 
             // Load MKXP Config
             #region Load MKXP Config
@@ -181,11 +188,36 @@ namespace PokemonEngine
             }
             #endregion
 
+            #region Load Maps
+            foreach (string File in Directory.GetFiles("Maps"))
+            {
+                if (!Regex.IsMatch(File, @"Maps\\\d+.mkd")) continue;
+                Map Map = MapInterpreter.Parse(Convert.ToInt32(File.Split('\\').Last().Split('.').First()));
+                Maps.Add(Map);
+                allMaps.Nodes.Add(Map.Name);
+            }
+            CurrentMap = Maps[0];
+            #endregion
+
+            Cursor = new PictureBox();
+            Cursor.Name = "Cursor";
+            Cursor.Width = CurrentMap.Width * 32;
+            Cursor.Height = CurrentMap.Height * 32;
+            Cursor.BackColor = Color.Transparent;
+            Cursor.MouseDown += MapBox_MouseDown;
+            Cursor.MouseMove += MapBox_MouseMove;
+            Cursor.MouseUp += MapBox_MouseUp;
+            Cursor.Paint += Cursor_Paint;
+            mapBoxPanel.Controls.Add(Cursor);
+            Cursor.Refresh();
+
             LoadMap(null, true, true);
 
             MainForm_SizeChanged(sender, e);
 
             scriptBox.SelectedIndex = 0;
+
+
 
             Starting = false;
 
@@ -193,6 +225,13 @@ namespace PokemonEngine
 
             scriptBox_SelectedIndexChanged(sender, e);
         }
+
+        private void Cursor_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawImage(Properties.Resources.cursor, CursorX * 32, CursorY * 32);
+        }
+
+        PictureBox Cursor;
 
         #region Script Editor
 
@@ -202,7 +241,7 @@ namespace PokemonEngine
             {
                 if (e.KeyCode == Keys.V)
                 {
-                    scriptEditor_TextChanged(sender, new TextChangedEventArgs(((FastColoredTextBox) sender).VisibleRange));
+                    scriptEditor_TextChanged(sender, new TextChangedEventArgs(((FastColoredTextBox)sender).VisibleRange));
                 }
                 else if (e.KeyCode == Keys.T)
                 {
@@ -234,7 +273,7 @@ namespace PokemonEngine
                 e.ShiftNextLines = e.TabLength;
                 return;
             }
-            if (Regex.IsMatch(LineText, @"\bbegin\b") && !Regex.IsMatch(LineText, @"=begin\b") && !Regex.IsMatch(LineText, @".begin\b") && 
+            if (Regex.IsMatch(LineText, @"\bbegin\b") && !Regex.IsMatch(LineText, @"=begin\b") && !Regex.IsMatch(LineText, @".begin\b") &&
                !Regex.IsMatch(LineText, @"_begin\b") ||
                Regex.IsMatch(LineText, @"\bclass\b") && !Regex.IsMatch(LineText, @".class\b"))
             {
@@ -279,7 +318,7 @@ namespace PokemonEngine
 
         private void scriptEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
-            FastColoredTextBox box = (FastColoredTextBox) sender;
+            FastColoredTextBox box = (FastColoredTextBox)sender;
             // Only the changed text
             Range range = e.ChangedRange;
 
@@ -298,7 +337,7 @@ namespace PokemonEngine
             // Integer and Hex
             range.SetStyle(Integer, @"\b(\d+|\d+x[0123456789ABCDEF]*)\b|", RegexOptions.Multiline);
 
-            range = ((FastColoredTextBox) sender).Range;
+            range = ((FastColoredTextBox)sender).Range;
 
             range.ClearStyle(String);
 
@@ -341,9 +380,21 @@ namespace PokemonEngine
             tilesetBoxPanel.Size = new Size(tilesetBoxPanel.Width, mainTabControl.Height - tilesetBoxPanel.Location.Y - mainTabControl.Location.Y - 47);
             tilesetWhite.Size = new Size(tilesetWhite.Width, mainTabControl.Height - tilesetWhite.Location.Y - mainTabControl.Location.Y - 46);
             tilesetBlack.Size = new Size(tilesetBlack.Width, mainTabControl.Height - tilesetBlack.Location.Y - mainTabControl.Location.Y - 45);
-            if (!Empty(CurrentMap)) mapBoxPanel.Size = new Size(32 * CurrentMap.Width, 32 * CurrentMap.Height);
             mapWhite.Size = new Size(Width - tilesetPanel.Width - rightPanel.Width - 26, mainTabControl.Height - mapBlack.Location.Y - mainTabControl.Location.Y - 47);
             mapBlack.Size = new Size(Width - tilesetPanel.Width - rightPanel.Width - 24, mainTabControl.Height - mapBlack.Location.Y - mainTabControl.Location.Y - 45);
+            if (!Empty(CurrentMap)) mapBoxPanel.Size = new Size(Math.Min(mapBlack.Size.Width - 4, 32 * CurrentMap.Width),
+                Math.Min(mapBlack.Size.Height - 4, 32 * CurrentMap.Height));
+
+            try
+            {
+                rightPanelSplitter.SplitterDistance = (Height / 3);
+                tileBlack.Height = tilePanel.Height;
+                tileWhite.Height = tilePanel.Height - 2;
+                allMapsBlack.Height = allMapsPanel.Height - 65;
+                allMapsWhite.Height = allMapsPanel.Height - 67;
+                allMapsBoxPanel.Height = allMapsPanel.Height - 69;
+            }
+            catch (Exception) { }
 
             FastColoredTextBox txt = scriptEditorPanel.Controls["scriptEditor"] as FastColoredTextBox;
             txt.Size = new Size(Width - scriptEditorPanel.Location.X - 20, Height - mainTabControl.Location.Y - scriptEditorPanel.Location.Y - 68);
@@ -359,6 +410,8 @@ namespace PokemonEngine
         {
             if (Map == null) Map = CurrentMap;
 
+            if (!Empty(MapBox)) MapBox.UseWaitCursor = true;
+
             if (RedrawLayers)
             {
                 foreach (Bitmap Bmp in Layers) { Bmp.Dispose(); }
@@ -367,24 +420,23 @@ namespace PokemonEngine
 
             CurrentMap = Map;
 
-            Bitmap Tileset;
             if (TilesetPath != CurrentMap.Tileset)
             {
+                if (!Empty(Tileset)) Tileset.Dispose();
+
                 FileStream fs = new FileStream($@"Graphics\Tilesets\{CurrentMap.Tileset}.png", FileMode.Open);
                 Tileset = new Bitmap(fs);
                 fs.Close();
 
-                tilesetBox.Image = Tileset;
+                tilesetBox.Image = (Bitmap)Tileset.Clone();
+                tilesetBox.Width = Tileset.Width;
+                tilesetBox.Height = Tileset.Height;
                 tilesetBox.SizeMode = PictureBoxSizeMode.AutoSize;
                 tilesetPanel.Width = Tileset.Width + 20;
                 tilesetBlack.Width = Tileset.Width + 20;
                 tilesetWhite.Width = Tileset.Width + 18;
                 tilesetBoxPanel.Width = Tileset.Width + 17;
                 TilesetPath = CurrentMap.Tileset;
-            }
-            else
-            {
-                Tileset = (Bitmap) tilesetBox.Image;
             }
 
             int Width = CurrentMap.Width;
@@ -394,12 +446,14 @@ namespace PokemonEngine
             {
                 CreateBlack();
                 CreateGrid();
+                CreateOverlay();
             }
 
             if (RedrawLayers)
             {
                 for (int i = 0; i < CurrentMap.Layers.Count; i++)
                 {
+                    Console.WriteLine("SetPixel :: LoadMap " + (i + 1).ToString());
                     Bitmap Layer = new Bitmap(Width * 32, Height * 32);
                     Graphics gr = Graphics.FromImage(Layer);
                     for (int k = 0; k < CurrentMap.Layers[i].Count; k++)
@@ -420,10 +474,23 @@ namespace PokemonEngine
                         int RealTilesetY = (int)Math.Floor((double)TileID / 8) * 32;
                         int RealX = (k % Width) * 32;
                         int RealY = (int)Math.Floor((double)k / Width) * 32;
-                        gr.DrawImage(Tileset, RealX, RealY,
-                            new Rectangle(RealTilesetX, RealTilesetY, 32, 32), GraphicsUnit.Pixel);
+                        for (int x = RealX; x < RealX + 32; x++)
+                        {
+                            for (int y = RealY; y < RealY + 32; y++)
+                            {
+                                Color Pix = Tileset.GetPixel(RealTilesetX + (x - RealX), RealTilesetY + (y - RealY));
+                                Layer.SetPixel(x, y, Pix);
+                            }
+                        }
                     }
                     Layers.Add(Layer);
+                }
+                for (int i = CurrentMap.Layers.Count; i < 7; i++)
+                {
+                    List<dynamic> Tiles = new List<dynamic>();
+                    for (int t = 0; t < Width + Height * Width; t++) Tiles.Add(0);
+                    CurrentMap.Layers.Add(Tiles);
+                    Layers.Add(new Bitmap(Width * 32, Height * 32));
                 }
             }
 
@@ -431,9 +498,30 @@ namespace PokemonEngine
 
             MapBox.Width = Width * 32;
             MapBox.Height = Height * 32;
+            if (!Empty(Cursor)) MapBox.Controls.Add(Cursor);
             mapBoxPanel.Width = Width * 32;
             mapBoxPanel.Height = Height * 32;
             MapBox.Refresh();
+
+            if (UpdateBounds)
+            {
+                if (!Empty(CurrentMap)) mapBoxPanel.Size = new Size(Math.Min(mapBlack.Size.Width - 4, 32 * CurrentMap.Width),
+                Math.Min(mapBlack.Size.Height - 4, 32 * CurrentMap.Height));
+                mapBoxPanel.Size = new Size(Math.Min(mapBlack.Size.Width - 4, 32 * CurrentMap.Width),
+                    Math.Min(mapBlack.Size.Height - 4, 32 * CurrentMap.Height));
+                if (mapBoxPanel.VerticalScroll.Visible) { mapBoxPanel.Width -= 17; }
+                if (mapBoxPanel.HorizontalScroll.Visible) { mapBoxPanel.Height -= 17; }
+            }
+            MapBox.UseWaitCursor = false;
+        }
+
+        private void MapBox_SizeChanged(object sender, EventArgs e)
+        {
+            if (!Empty(Cursor))
+            {
+                Cursor.Width = MapBox.Width;
+                Cursor.Height = MapBox.Height;
+            }
         }
 
         private void MakeMapBox()
@@ -442,64 +530,79 @@ namespace PokemonEngine
             MapBox.Name = "mapBox";
             MapBox.Paint += MapBox_Paint;
             MapBox.SizeMode = PictureBoxSizeMode.AutoSize;
-            MapBox.MouseMove += MapBox_MouseMove;
-            MapBox.MouseDown += MapBox_MouseDown;
-            MapBox.MouseUp += MapBox_MouseUp;
+            MapBox.SizeChanged += MapBox_SizeChanged;
             mapBoxPanel.Controls.Add(MapBox);
             this.MapBox = MapBox;
         }
 
         private void MapBox_MouseUp(object sender, MouseEventArgs e)
         {
-            MouseDown = false;
+            LeftMouse = false;
+            RightMouse = false;
+            MiddleMouse = false;
         }
 
         private void MapBox_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.DrawImage(Black, 0, 0); // Black background
-            foreach (Bitmap Bmp in Layers) { g.DrawImage(Bmp, 0, 0); } // Layers
+            for (int i = 0; i < Layers.Count; i++) // Layers
+            {
+                g.DrawImage(Layers[i], 0, 0);
+                if (Config.HideLowerLayers && i == CurrentLayer - 2) { g.DrawImage(Overlay, 0, 0); }
+            }
             if (Config.ShowGrid) g.DrawImage(Grid, 0, 0); // Grid
-            g.DrawImage(Properties.Resources.cursor, CursorX * 32, CursorY * 32);
+            Console.WriteLine(sender);
         }
 
         private void MapBox_MouseDown(object sender, MouseEventArgs e)
         {
-            MouseDown = true;
-            SetTile(CurrentLayer, CursorX, CursorY,
-                (int) Math.Floor((double) TilesetCursor.Location.X / 32) +
-                (int) Math.Floor((double) TilesetCursor.Location.Y / 32) * 8);
-            MapBox.Refresh();
+            LeftMouse = (e.Button == MouseButtons.Left);
+            RightMouse = (e.Button == MouseButtons.Right);
+            MiddleMouse = (e.Button == MouseButtons.Middle);
+            if (LeftMouse)
+            {
+                if (SetTile(CurrentLayer, CursorX, CursorY,
+                    (int)Math.Floor((double)TilesetCursor.Location.X / 32) +
+                    (int)Math.Floor((double)TilesetCursor.Location.Y / 32) * 8))
+                {
+                    MapBox.Refresh();
+                }
+            }
+            if (RightMouse)
+            {
+
+            }
         }
 
         private void MapBox_MouseMove(object sender, MouseEventArgs e)
         {
             int OldX = CursorX;
             int OldY = CursorY;
-            CursorX = Math.Max(0, Math.Min(CurrentMap.Width - 1, (int) Math.Floor((double) e.X / 32)));
-            CursorY = Math.Max(0, Math.Min(CurrentMap.Height - 1, (int) Math.Floor((double) e.Y / 32)));
-            if (CursorX != OldX || CursorY != OldY) UpdateCursor();
-            if (MouseDown)
+            CursorX = Math.Max(0, Math.Min(CurrentMap.Width - 1, (int)Math.Floor((double)e.X / 32)));
+            CursorY = Math.Max(0, Math.Min(CurrentMap.Height - 1, (int)Math.Floor((double)e.Y / 32)));
+            if (CursorX != OldX || CursorY != OldY) Cursor.Refresh();
+            if (LeftMouse)
             {
                 SetTile(CurrentLayer, CursorX, CursorY,
-                    (int) Math.Floor((double) TilesetCursor.Location.X / 32) +
-                    (int) Math.Floor((double) TilesetCursor.Location.Y / 32) * 8);
+                    (int)Math.Floor((double)TilesetCursor.Location.X / 32) +
+                    (int)Math.Floor((double)TilesetCursor.Location.Y / 32) * 8);
                 MapBox.Refresh();
             }
         }
 
-        private void SetTile(int Layer, int X, int Y, int TileID)
+        private bool SetTile(int Layer, int X, int Y, int TileID)
         {
-            try { 
             if (CurrentMap.Layers[Layer - 1][X + Y * CurrentMap.Width] is int &&
                 CurrentMap.Layers[Layer - 1][X + Y * CurrentMap.Width] == TileID ||
                 CurrentMap.Layers[Layer - 1][X + Y * CurrentMap.Width] is List<dynamic> &&
                 CurrentMap.Layers[Layer - 1][X + Y * CurrentMap.Width][0] == TileID)
             {
-                return;
+                return false;
             }
             Graphics g = Graphics.FromImage(Layers[Layer - 1]);
-            Rectangle Rect = new Rectangle(32 * (TileID % 8), 32 * (int) Math.Floor((double) TileID / 8), 32, 32);
+            Console.WriteLine((int)(32 * Math.Floor((double)TileID / 8)));
+            Console.WriteLine("SetPixel :: SetTile 1");
             for (int x = X * 32; x < X * 32 + 32; x++)
             {
                 for (int y = Y * 32; y < Y * 32 + 32; y++)
@@ -507,7 +610,18 @@ namespace PokemonEngine
                     Layers[Layer - 1].SetPixel(x, y, Color.FromArgb(0, 0, 0, 0));
                 }
             }
-            g.DrawImage(tilesetBox.Image, X * 32, Y * 32, Rect, GraphicsUnit.Pixel);
+
+            if (TileID != 0)
+            {
+                Console.WriteLine("SetPixel :: SetTile 2");
+                for (int x = X * 32; x < X * 32 + 32; x++)
+                {
+                    for (int y = Y * 32; y < Y * 32 + 32; y++)
+                    {
+                        Layers[Layer - 1].SetPixel(x, y, Tileset.GetPixel((32 * (TileID % 8)) + (x - X * 32), ((int)(32 * Math.Floor((double)TileID / 8)) + (y - Y * 32))));
+                    }
+                }
+            }
             if (CurrentMap.Layers[Layer - 1][X + Y * CurrentMap.Width] is int)
             {
                 CurrentMap.Layers[Layer - 1][X + Y * CurrentMap.Width] = TileID;
@@ -516,12 +630,21 @@ namespace PokemonEngine
             {
                 CurrentMap.Layers[Layer - 1][X + Y * CurrentMap.Width][0] = TileID;
             }
-            }catch(Exception) { MessageBox.Show("Known error; not yet fixed. hang on.");MouseDown = false; }
+            return true;
         }
 
-        private void UpdateCursor()
+        private void CreateOverlay()
         {
-            mapBoxPanel.Controls["mapBox"].Refresh();
+            if (!Empty(Overlay)) return;
+            Overlay = new Bitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
+            Console.WriteLine("SetPixel :: CreateOverlay");
+            for (int x = 0; x < CurrentMap.Width * 32; x++)
+            {
+                for (int y = 0; y < CurrentMap.Height * 32; y++)
+                {
+                    Overlay.SetPixel(x, y, Color.FromArgb(128, 0, 0, 0));
+                }
+            }
         }
 
         private void CreateBlack()
@@ -537,6 +660,7 @@ namespace PokemonEngine
         {
             if (!Empty(Grid)) Grid.Dispose();
             Grid = new Bitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
+            Console.WriteLine("SetPixel :: CreateGrid");
             for (int x = 0; x < Grid.Width; x++)
             {
                 for (int y = 0; y < Grid.Height; y++)
@@ -552,7 +676,7 @@ namespace PokemonEngine
 
         private void tilesetBox_MouseDown(object sender, MouseEventArgs e)
         {
-            TilesetCursor.Location = new Point(32 * (int) Math.Floor((double) e.X / 32), 32 * (int) Math.Floor((double) e.Y / 32));
+            TilesetCursor.Location = new Point(32 * (int)Math.Floor((double)e.X / 32), 32 * (int)Math.Floor((double)e.Y / 32));
         }
 
         public int GetTileID()
@@ -566,7 +690,7 @@ namespace PokemonEngine
             scriptNameBox.Text = Scripts[scriptBox.SelectedIndex].Name;
             scriptEditorPanel.Controls["scriptEditor"].Text = Scripts[scriptBox.SelectedIndex].Code;
             scriptEditor_TextChanged(scriptEditorPanel.Controls["scriptEditor"],
-                new TextChangedEventArgs(((FastColoredTextBox) scriptEditorPanel.Controls["scriptEditor"]).Range));
+                new TextChangedEventArgs(((FastColoredTextBox)scriptEditorPanel.Controls["scriptEditor"]).Range));
             Config.LastScriptIndex = scriptBox.SelectedIndex;
         }
 
@@ -595,6 +719,7 @@ namespace PokemonEngine
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Saving all scripts
+            #region Scripts
             if (!Directory.Exists("Scripts")) Directory.CreateDirectory("Scripts");
             foreach (string file in Directory.GetFiles("Scripts")) { File.Delete(file); }
             StreamWriter stwr = new StreamWriter(File.OpenWrite(@"Scripts\entry.rb"));
@@ -614,8 +739,10 @@ Dir.glob(""Scripts/*.rb"") {{ |f| require f }}");
                 streamwriter.Write(Scripts[i].Code);
                 streamwriter.Close();
             }
+            #endregion
 
             // Saving MKXP's Config
+            #region MKXP Config
             if (File.Exists("mkxp.conf")) { File.Delete("mkxp.conf"); }
             StreamWriter sw = new StreamWriter(File.OpenWrite("mkxp.conf"));
             if (Config.RGSSVersion != 0) sw.WriteLine($"rgssVersion={Config.RGSSVersion}");
@@ -654,7 +781,46 @@ Dir.glob(""Scripts/*.rb"") {{ |f| require f }}");
             if (!Empty(Config._ExecName)) sw.WriteLine($"execName={Config._ExecName}");
             if (!Empty(Config._TitleLanguage)) sw.WriteLine($"titleLanguage={Config._TitleLanguage}");
             sw.Close();
+            #endregion
 
+            // Saving all maps
+            #region maps
+            ScriptEngine Engine = Ruby.CreateEngine();
+            foreach (Map m in Maps)
+            {
+                if (File.Exists($@"Maps\{Digits(m.ID)}.txt")) File.Delete($@"Maps\{Digits(m.ID)}.txt");
+                string Data = ($"[[{m.Width},{m.Height},'{m.Tileset}','{m.Name}'],");
+                for (int i = 0; i < 2/*m.Layers.Count*/; i++)
+                {
+                    Data += "[";
+                    for (int j = 0; j < m.Layers[i].Count; j++)
+                    {
+                        if (m.Layers[i][j] is int)
+                        {
+                            Data += m.Layers[i][j].ToString();
+                        }
+                        else
+                        {
+                            Data += "[";
+                            for (int k = 0; k < m.Layers[i][j].Count; k++)
+                            {
+                                Data += m.Layers[i][j][k].ToString();
+                                if (k != m.Layers[i][j].Count - 1) Data += ",";
+                            }
+                            Data += "]";
+                        }
+                        if (j != m.Layers[i].Count - 1) Data += ",";
+                    }
+                    Data += "]";
+                    if (i != 1) Data += ",";
+                }
+                Data += "]";
+                Engine.Execute(
+$@"f = File.new('Maps\\{Digits(m.ID)}.mkd', 'wb')
+Marshal.dump({Data}, f)
+f.close");
+            }
+            #endregion
             MadeChanges = false;
         }
 
@@ -704,14 +870,19 @@ Dir.glob(""Scripts/*.rb"") {{ |f| require f }}");
 
         private void SetLayer(int n)
         {
-            for (int i = 1; i <= 7; i++)
-            {
-                ((ToolStripButton) mappingTools.Items[$"layerBtn{i}"]).Checked = (i == n);
-                //layer1 and such in "View"
-            }
+            for (int i = 1; i <= 7; i++) { ((ToolStripButton)mappingTools.Items[$"layerBtn{i}"]).Checked = (i == n); }
+            layer1ToolStripMenuItem.Checked = (n == 1);
+            layer2ToolStripMenuItem.Checked = (n == 2);
+            layer3ToolStripMenuItem.Checked = (n == 3);
+            layer4ToolStripMenuItem.Checked = (n == 4);
+            layer5ToolStripMenuItem.Checked = (n == 5);
+            layer6ToolStripMenuItem.Checked = (n == 6);
+            layer7ToolStripMenuItem.Checked = (n == 7);
             CurrentLayer = n;
+            MapBox.Refresh();
         }
 
+        #region Layer Buttons
         private void layerBtn1_Click(object sender, EventArgs e) { SetLayer(1); }
         private void layerBtn2_Click(object sender, EventArgs e) { SetLayer(2); }
         private void layerBtn3_Click(object sender, EventArgs e) { SetLayer(3); }
@@ -719,18 +890,18 @@ Dir.glob(""Scripts/*.rb"") {{ |f| require f }}");
         private void layerBtn5_Click(object sender, EventArgs e) { SetLayer(5); }
         private void layerBtn6_Click(object sender, EventArgs e) { SetLayer(6); }
         private void layerBtn7_Click(object sender, EventArgs e) { SetLayer(7); }
-
-        private void mapGrid_Click(object sender, EventArgs e)
-        {
-            Config.ShowGrid = !Config.ShowGrid;
-            mapGrid.Checked = Config.ShowGrid;
-            showGridToolStripMenuItem.Checked = Config.ShowGrid;
-            MapBox.Refresh();
-        }
+        private void layer1ToolStripMenuItem_Click(object sender, EventArgs e) { SetLayer(1); }
+        private void layer2ToolStripMenuItem_Click(object sender, EventArgs e) { SetLayer(2); }
+        private void layer3ToolStripMenuItem_Click(object sender, EventArgs e) { SetLayer(3); }
+        private void layer4ToolStripMenuItem_Click(object sender, EventArgs e) { SetLayer(4); }
+        private void layer5ToolStripMenuItem_Click(object sender, EventArgs e) { SetLayer(5); }
+        private void layer6ToolStripMenuItem_Click(object sender, EventArgs e) { SetLayer(6); }
+        private void layer7ToolStripMenuItem_Click(object sender, EventArgs e) { SetLayer(7); }
+        #endregion
 
         private void mapSettings_Click(object sender, EventArgs e)
         {
-            MapForm mf = new MapForm(CurrentMap);
+            MapForm mf = new MapForm(CurrentMap, MapBox);
             mf.ShowDialog();
             // If width/height changed and it needs to be redrawn
             if (mf.ShouldUpdate)
@@ -739,15 +910,52 @@ Dir.glob(""Scripts/*.rb"") {{ |f| require f }}");
             }
         }
 
-        private void showGridToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mapGrid_Click(object sender, EventArgs e)
         {
-            mapGrid_Click(sender, e);
+            Config.ShowGrid = !Config.ShowGrid;
+            mapGrid.Checked = Config.ShowGrid;
+            showToolStripMenuItem.Checked = Config.ShowGrid;
+        }
+        private void showToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Config.ShowGrid = !Config.ShowGrid;
+            mapGrid.Checked = Config.ShowGrid;
+            showToolStripMenuItem.Checked = Config.ShowGrid;
+            MapBox.Refresh();
         }
 
         private void hideLowerLayersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Config.HideLowerLayers = !Config.HideLowerLayers;
             MapBox.Refresh();
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<int> IDs = new List<int>();
+            foreach (Map m in Maps) { IDs.Add(m.ID); }
+            int ID = 0;
+            while (IDs.Contains(ID)) { ID += 1; }
+            NewMap CreateNewMap = new NewMap(ID);
+            CreateNewMap.ShowDialog();
+            if (CreateNewMap.Created)
+            {
+                CurrentMap = CreateNewMap.Map;
+                Maps.Add(CreateNewMap.Map);
+                LoadMap(CreateNewMap.Map, true, true);
+                allMaps.Nodes.Add(CreateNewMap.Map.Name);
+            }
+        }
+
+        private void allMaps_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            foreach (Map M in Maps)
+            {
+                if (M.Name == allMaps.SelectedNode.Text)
+                {
+                    LoadMap(M, true, true);
+                }
+            }
         }
     }
 }
