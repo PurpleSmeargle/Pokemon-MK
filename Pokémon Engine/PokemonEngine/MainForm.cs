@@ -214,13 +214,12 @@ namespace PokemonEngine
 
             LoadMap(null, true, true);
 
-            MainForm_SizeChanged(sender, e);
-
             scriptBox.SelectedIndex = 0;
 
-
-
+            
             Starting = false;
+
+            MainForm_SizeChanged(sender, e);
 
             SetLayer(1);
 
@@ -376,6 +375,7 @@ namespace PokemonEngine
         /// </summary>
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
+            if (Starting) return;
             mainTabControl.Location = new Point(0, 52);
             mainTabControl.Size = new Size(Width - 2, Height - 56 + 31);
             tilesetBoxPanel.Size = new Size(tilesetBoxPanel.Width, mainTabControl.Height - tilesetBoxPanel.Location.Y - mainTabControl.Location.Y - 47);
