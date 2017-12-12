@@ -43,14 +43,15 @@ class Character
   
   def update
     sprite.update
-    if moving?
-      sprite.x = (sprite.x - @map.initial_x) % 32 + @map.x + @x * 32
-      sprite.y = (sprite.y - @map.initial_y) % 32 + 32 + @map.y + @y * 32
-    else
+    #if moving?
+    #  x = (@dir == :left ? @x - 1 : @dir == :right ? @x + 1 : @x) * 32
+    #  y = (@dir == :up ? @y - 1 : @dir == :down ? @y + 1 : @y) * 32
+    #  sprite.x = (sprite.x - @map.initial_x) % 32 + @map.x + x
+    #  sprite.y = (sprite.y - @map.initial_y) % 32 + 32 + @map.y + y
+    #else
       sprite.x = @map.x + @x * 32
       sprite.y = 32 + @map.y + @y * 32
-    end
-    
+    #end
   end
   
   def go_right
