@@ -22,6 +22,7 @@ namespace PokemonEngine
         int OldScreenWidth;
         int OldScreenHeight;
         string OldIconPath;
+        string OldWindowTitle;
 
         bool SaveChanges = false;
 
@@ -42,6 +43,7 @@ namespace PokemonEngine
             OldScreenWidth = Config.ScreenWidth;
             OldScreenHeight = Config.ScreenHeight;
             OldIconPath = Config.IconPath;
+            OldWindowTitle = Config.WindowTitle;
 
             rgssVersion.SelectedIndex = Config.RGSSVersion;
             printFPS.Checked = Config.PrintFPS;
@@ -52,6 +54,7 @@ namespace PokemonEngine
             fixedFramerate.Value = Config.FixedFramerate;
             screenWidth.Value = Config.ScreenWidth;
             screenHeight.Value = Config.ScreenHeight;
+            windowTitle.Text = Config.WindowTitle;
         }
 
         // Cancel
@@ -80,6 +83,7 @@ namespace PokemonEngine
             maxFramerate_ValueChanged(sender, ev);
             screenWidth_ValueChanged(sender, ev);
             screenHeight_ValueChanged(sender, ev);
+            windowTitle_TextChanged(sender, ev);
 
             if (!SaveChanges)
             {
@@ -93,6 +97,7 @@ namespace PokemonEngine
                 Config.ScreenWidth = OldScreenWidth;
                 Config.ScreenHeight = OldScreenHeight;
                 Config.IconPath = OldIconPath;
+                Config.WindowTitle = OldWindowTitle;
             }
         }
 
@@ -139,6 +144,11 @@ namespace PokemonEngine
         private void screenHeight_ValueChanged(object sender, EventArgs e)
         {
             Config.ScreenHeight = (int) screenHeight.Value;
+        }
+
+        private void windowTitle_TextChanged(object sender, EventArgs e)
+        {
+            Config.WindowTitle = windowTitle.Text;
         }
     }
 }

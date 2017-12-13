@@ -55,7 +55,7 @@ class Map
           layers[priority].bmp(32 * @width, 32 * @height)
           layers[priority].z = priority
         end
-        layers[priority].bmp.blt(32 * (j % @width), 32 * ((j / @height).floor), bmp,
+        layers[priority].bmp.blt(32 * (j % @width), 32 * ((j / @width).floor), bmp,
             Rect.new(32 * (id % 8), 32 * ((id / 8).floor), 32, 32))
       end
     end

@@ -45,3 +45,4 @@ C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\PokemonEngine\obj\Debug\Po
 C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.SettingsForm.resources
 C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.csproj.GenerateResource.Cache
 C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.NewMap.resources
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\PokemonEngine\obj\Debug\PokemonEngine.ImportRMXPMap.resources

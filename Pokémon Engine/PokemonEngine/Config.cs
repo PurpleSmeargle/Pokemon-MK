@@ -17,6 +17,7 @@ namespace PokemonEngine
         public static int FixedFramerate { get; set; } = 0;
         public static bool F12SoftReset { get; set; } = true;
         public static string IconPath { get; set; } = null;
+        public static string WindowTitle { get; set; } = "Pokémon MK";
         // Not editable via the engine; have to be stored
         public static bool _DebugMode { get; set; } = false;
         public static bool _WinResizable { get; set; } = false;

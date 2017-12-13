@@ -73,6 +73,12 @@
             this.tileWhite = new System.Windows.Forms.PictureBox();
             this.tileBlack = new System.Windows.Forms.PictureBox();
             this.allMapsPanel = new System.Windows.Forms.Panel();
+            this.allMapsBoxPanel = new System.Windows.Forms.Panel();
+            this.allMaps = new System.Windows.Forms.TreeView();
+            this.allMapsMenu = new System.Windows.Forms.MenuStrip();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.allMapsWhite = new System.Windows.Forms.PictureBox();
             this.allMapsBlack = new System.Windows.Forms.PictureBox();
             this.tilesetPanel = new System.Windows.Forms.Panel();
@@ -89,12 +95,6 @@
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.save = new System.Windows.Forms.ToolStripButton();
             this.play = new System.Windows.Forms.ToolStripButton();
-            this.allMapsBoxPanel = new System.Windows.Forms.Panel();
-            this.allMapsMenu = new System.Windows.Forms.MenuStrip();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.allMaps = new System.Windows.Forms.TreeView();
             this.menuBar.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.mapsTab.SuspendLayout();
@@ -114,6 +114,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tileWhite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tileBlack)).BeginInit();
             this.allMapsPanel.SuspendLayout();
+            this.allMapsBoxPanel.SuspendLayout();
+            this.allMapsMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.allMapsWhite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.allMapsBlack)).BeginInit();
             this.tilesetPanel.SuspendLayout();
@@ -124,8 +126,6 @@
             this.scriptsTab.SuspendLayout();
             this.scriptsPanel.SuspendLayout();
             this.toolbar.SuspendLayout();
-            this.allMapsBoxPanel.SuspendLayout();
-            this.allMapsMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuBar
@@ -559,6 +559,58 @@
             this.allMapsPanel.Size = new System.Drawing.Size(180, 414);
             this.allMapsPanel.TabIndex = 0;
             // 
+            // allMapsBoxPanel
+            // 
+            this.allMapsBoxPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.allMapsBoxPanel.Controls.Add(this.allMaps);
+            this.allMapsBoxPanel.Controls.Add(this.allMapsMenu);
+            this.allMapsBoxPanel.Location = new System.Drawing.Point(2, 2);
+            this.allMapsBoxPanel.Name = "allMapsBoxPanel";
+            this.allMapsBoxPanel.Size = new System.Drawing.Size(163, 406);
+            this.allMapsBoxPanel.TabIndex = 2;
+            // 
+            // allMaps
+            // 
+            this.allMaps.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.allMaps.Location = new System.Drawing.Point(0, 24);
+            this.allMaps.Name = "allMaps";
+            this.allMaps.Size = new System.Drawing.Size(163, 382);
+            this.allMaps.TabIndex = 1;
+            this.allMaps.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.allMaps_AfterSelect);
+            // 
+            // allMapsMenu
+            // 
+            this.allMapsMenu.BackColor = System.Drawing.Color.Transparent;
+            this.allMapsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importToolStripMenuItem,
+            this.newToolStripMenuItem,
+            this.editStripMenuItem1});
+            this.allMapsMenu.Location = new System.Drawing.Point(0, 0);
+            this.allMapsMenu.Name = "allMapsMenu";
+            this.allMapsMenu.Size = new System.Drawing.Size(163, 24);
+            this.allMapsMenu.TabIndex = 0;
+            this.allMapsMenu.Text = "menuStrip1";
+            // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.importToolStripMenuItem.Text = "Import";
+            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
+            // 
+            // newToolStripMenuItem
+            // 
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            // 
+            // editStripMenuItem1
+            // 
+            this.editStripMenuItem1.Name = "editStripMenuItem1";
+            this.editStripMenuItem1.Size = new System.Drawing.Size(39, 20);
+            this.editStripMenuItem1.Text = "Edit";
+            // 
             // allMapsWhite
             // 
             this.allMapsWhite.BackColor = System.Drawing.SystemColors.Control;
@@ -717,57 +769,6 @@
             this.play.Text = "Play";
             this.play.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
-            // allMapsBoxPanel
-            // 
-            this.allMapsBoxPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.allMapsBoxPanel.Controls.Add(this.allMaps);
-            this.allMapsBoxPanel.Controls.Add(this.allMapsMenu);
-            this.allMapsBoxPanel.Location = new System.Drawing.Point(2, 2);
-            this.allMapsBoxPanel.Name = "allMapsBoxPanel";
-            this.allMapsBoxPanel.Size = new System.Drawing.Size(163, 406);
-            this.allMapsBoxPanel.TabIndex = 2;
-            // 
-            // allMapsMenu
-            // 
-            this.allMapsMenu.BackColor = System.Drawing.Color.Transparent;
-            this.allMapsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.importToolStripMenuItem,
-            this.newToolStripMenuItem,
-            this.editStripMenuItem1});
-            this.allMapsMenu.Location = new System.Drawing.Point(0, 0);
-            this.allMapsMenu.Name = "allMapsMenu";
-            this.allMapsMenu.Size = new System.Drawing.Size(163, 24);
-            this.allMapsMenu.TabIndex = 0;
-            this.allMapsMenu.Text = "menuStrip1";
-            // 
-            // importToolStripMenuItem
-            // 
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
-            this.importToolStripMenuItem.Text = "Import";
-            // 
-            // newToolStripMenuItem
-            // 
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.newToolStripMenuItem.Text = "New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
-            // 
-            // editStripMenuItem1
-            // 
-            this.editStripMenuItem1.Name = "editStripMenuItem1";
-            this.editStripMenuItem1.Size = new System.Drawing.Size(39, 20);
-            this.editStripMenuItem1.Text = "Edit";
-            // 
-            // allMaps
-            // 
-            this.allMaps.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.allMaps.Location = new System.Drawing.Point(0, 24);
-            this.allMaps.Name = "allMaps";
-            this.allMaps.Size = new System.Drawing.Size(163, 382);
-            this.allMaps.TabIndex = 1;
-            this.allMaps.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.allMaps_AfterSelect);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -808,6 +809,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.tileWhite)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tileBlack)).EndInit();
             this.allMapsPanel.ResumeLayout(false);
+            this.allMapsBoxPanel.ResumeLayout(false);
+            this.allMapsBoxPanel.PerformLayout();
+            this.allMapsMenu.ResumeLayout(false);
+            this.allMapsMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.allMapsWhite)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.allMapsBlack)).EndInit();
             this.tilesetPanel.ResumeLayout(false);
@@ -820,10 +825,6 @@
             this.scriptsPanel.PerformLayout();
             this.toolbar.ResumeLayout(false);
             this.toolbar.PerformLayout();
-            this.allMapsBoxPanel.ResumeLayout(false);
-            this.allMapsBoxPanel.PerformLayout();
-            this.allMapsMenu.ResumeLayout(false);
-            this.allMapsMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

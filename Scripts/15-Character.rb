@@ -43,15 +43,10 @@ class Character
   
   def update
     sprite.update
-    #if moving?
-    #  x = (@dir == :left ? @x - 1 : @dir == :right ? @x + 1 : @x) * 32
-    #  y = (@dir == :up ? @y - 1 : @dir == :down ? @y + 1 : @y) * 32
-    #  sprite.x = (sprite.x - @map.initial_x) % 32 + @map.x + x
-    #  sprite.y = (sprite.y - @map.initial_y) % 32 + 32 + @map.y + y
-    #else
-      sprite.x = @map.x + @x * 32
-      sprite.y = 32 + @map.y + @y * 32
-    #end
+    sprite.x = @map.x + (@x - (sprite.right_mov ? 1 : sprite.left_mov == :left ? -1 : 0)) * 32 + (sprite.x - @map.initial_x) % 32
+    sprite.y = 32 + @map.y + @y * 32
+    
+    #p sprite.x if moving?
   end
   
   def go_right
@@ -130,8 +125,8 @@ class Character
     @dir = :up
   end
   
-  def do_random
-    case rand(9)
+  def move_random
+    case rand(4)
     when 0
       go_right
     when 1
@@ -140,14 +135,19 @@ class Character
       go_down
     when 3
       go_up
-    when 4
+    end
+  end
+  
+  def turn_random
+    case rand(4)
+    when 0
       turn_right
-    when 5
-      turn_left
-    when 6
-      turn_down
-    when 7
-      turn_up
+    when 1
+      go_left
+    when 2
+      go_down
+    when 3
+      go_up
     end
   end
 end
