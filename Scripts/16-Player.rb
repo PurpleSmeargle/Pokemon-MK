@@ -18,6 +18,7 @@ class Player < Character
     @left_cooldown = 0
     @down_cooldown = 0
     @up_cooldown = 0
+    sprite.move_speed = @move_speed
   end
   
   # Called after being restored via Marshal.load
@@ -70,8 +71,8 @@ class Player < Character
     
     
     if sprite.right_mov
-      $Map.x -= (32.0 / (@move_speed * 2))
-      if sprite.right_mov % @move_speed == 0
+      $Map.x -= (32.0 / @move_speed)
+      if sprite.right_mov % (@move_speed / 2) == 0
         sprite.src_rect.x += sprite.bmp.width / 4
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end
@@ -79,8 +80,8 @@ class Player < Character
       sprite.right_mov = nil if sprite.right_mov == 0
     end
     if sprite.left_mov
-      $Map.x += (32.0 / (@move_speed * 2))
-      if sprite.left_mov % @move_speed == 0
+      $Map.x += (32.0 / @move_speed)
+      if sprite.left_mov % (@move_speed / 2) == 0
         sprite.src_rect.x += sprite.bmp.width / 4
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end
@@ -88,8 +89,8 @@ class Player < Character
       sprite.left_mov = nil if sprite.left_mov == 0
     end
     if sprite.down_mov
-      $Map.y -= (32.0 / (@move_speed * 2))
-      if sprite.down_mov % @move_speed == 0
+      $Map.y -= (32.0 / @move_speed)
+      if sprite.down_mov % (@move_speed / 2) == 0
         sprite.src_rect.x += sprite.bmp.width / 4
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end
@@ -97,8 +98,8 @@ class Player < Character
       sprite.down_mov = nil if sprite.down_mov == 0
     end
     if sprite.up_mov
-      $Map.y += (32.0 / (@move_speed * 2))
-      if sprite.up_mov % @move_speed == 0
+      $Map.y += (32.0 / @move_speed)
+      if sprite.up_mov % (@move_speed / 2) == 0
         sprite.src_rect.x += sprite.bmp.width / 4
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end

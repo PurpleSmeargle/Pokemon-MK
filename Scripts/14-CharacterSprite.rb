@@ -25,15 +25,15 @@ class CharacterSprite < Sprite
   def update_map_scroll
     # Adjustments to the sprite's x position to match with map scrolling
     if $Player.moving_left?
-      self.x += 2
+      self.x += (32.0 / $Player.move_speed)
     elsif $Player.moving_right?
-      self.x -= 2
+      self.x -= (32.0 / $Player.move_speed)
     end
     # Adjustments to the sprite's y position to match with map scrolling
     if $Player.moving_up?
-      self.y += 2
+      self.y += (32.0 / $Player.move_speed)
     elsif $Player.moving_down?
-      self.y -= 2
+      self.y -= (32.0 / $Player.move_speed)
     end
   end
   
@@ -42,7 +42,7 @@ class CharacterSprite < Sprite
     if @right_mov
       self.x += 2
       update_map_scroll
-      if @right_mov % @move_speed == 0
+      if @right_mov % (@move_speed / 2) == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
       end
@@ -52,7 +52,7 @@ class CharacterSprite < Sprite
     if @left_mov
       self.x -= 2
       update_map_scroll
-      if @left_mov % @move_speed == 0
+      if @left_mov % (@move_speed / 2) == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
       end
@@ -62,7 +62,7 @@ class CharacterSprite < Sprite
     if @down_mov
       self.y += 2
       update_map_scroll
-      if @down_mov % @move_speed == 0
+      if @down_mov % (@move_speed / 2) == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
       end
@@ -72,7 +72,7 @@ class CharacterSprite < Sprite
     if @up_mov
       self.y -= 2
       update_map_scroll
-      if @up_mov % @move_speed == 0
+      if @up_mov % (@move_speed / 2) == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
       end
@@ -83,25 +83,25 @@ class CharacterSprite < Sprite
   
   def go_right
     turn_right
-    @right_mov = @move_speed * 2
+    @right_mov = @move_speed
     return true
   end
   
   def go_left
     turn_left
-    @left_mov = @move_speed * 2
+    @left_mov = @move_speed
     return true
   end
   
   def go_down
     turn_down
-    @down_mov = @move_speed * 2
+    @down_mov = @move_speed
     return true
   end
   
   def go_up
     turn_up
-    @up_mov = @move_speed * 2
+    @up_mov = @move_speed
     return true
   end
   
