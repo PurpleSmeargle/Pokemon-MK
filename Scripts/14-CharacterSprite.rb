@@ -22,10 +22,26 @@ class CharacterSprite < Sprite
     @move_speed = 16
   end
   
+  def update_map_scroll
+    # Adjustments to the sprite's x position to match with map scrolling
+    if $Player.moving_left?
+      self.x += 2
+    elsif $Player.moving_right?
+      self.x -= 2
+    end
+    # Adjustments to the sprite's y position to match with map scrolling
+    if $Player.moving_up?
+      self.y += 2
+    elsif $Player.moving_down?
+      self.y -= 2
+    end
+  end
+  
   def update
     super
     if @right_mov
       self.x += 2
+      update_map_scroll
       if @right_mov % @move_speed == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
@@ -35,6 +51,7 @@ class CharacterSprite < Sprite
     end
     if @left_mov
       self.x -= 2
+      update_map_scroll
       if @left_mov % @move_speed == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
@@ -44,6 +61,7 @@ class CharacterSprite < Sprite
     end
     if @down_mov
       self.y += 2
+      update_map_scroll
       if @down_mov % @move_speed == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
@@ -53,6 +71,7 @@ class CharacterSprite < Sprite
     end
     if @up_mov
       self.y -= 2
+      update_map_scroll
       if @up_mov % @move_speed == 0
         self.src_rect.x += self.bmp.width / 4
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width

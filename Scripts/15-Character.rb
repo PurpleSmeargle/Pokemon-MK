@@ -1,6 +1,6 @@
 class Character
-  attr_reader :x
-  attr_reader :y
+  attr_accessor :x
+  attr_accessor :y
   attr_reader :id
   attr_accessor :name
   
@@ -26,6 +26,22 @@ class Character
     return false
   end
   
+  def moving_right?
+    return !sprite.right_mov.nil?
+  end
+  
+  def moving_left?
+    return !sprite.left_mov.nil?
+  end
+  
+  def moving_down?
+    return !sprite.down_mov.nil?
+  end
+  
+  def moving_up?
+    return !sprite.up_mov.nil?
+  end
+  
   def sprite
     return Graphics.maps[@map.id][:events][@spriteindex]
   end
@@ -43,8 +59,8 @@ class Character
   
   def update
     sprite.update
-    sprite.x = @map.x + (@x - (sprite.right_mov ? 1 : sprite.left_mov == :left ? -1 : 0)) * 32 + (sprite.x - @map.initial_x) % 32
-    sprite.y = 32 + @map.y + @y * 32
+    sprite.x = @map.x + @x * 32 unless moving?
+    sprite.y = 32 + @map.y + @y * 32 unless moving?
     
     #p sprite.x if moving?
   end

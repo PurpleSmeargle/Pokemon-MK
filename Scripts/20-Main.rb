@@ -23,10 +23,6 @@ $Map = Map.new(3)
 $Player = Player.new
 npc = Character.new(1)
 
-f = File.new("Maps/test.txt", "wb")
-f.write load_data("Maps/003.mkd").to_s
-f.close
-
 
 loop do
   begin
@@ -34,7 +30,7 @@ loop do
     Input.update
     $Player.update
     npc.update
-    npc.go_right if Input.trigger?(Input::C)
+    npc.move_random if Graphics.frame_count % 60 == 0
     $Map.update
   rescue
     System.show_formatted_error($!)
