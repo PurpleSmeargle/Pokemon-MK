@@ -21,8 +21,11 @@ $Viewports["main"] = Viewport.new(0,0,Graphics.width,Graphics.height)
 
 $Map = Map.new(3)
 $Player = Player.new
+$Player.x = 9
 npc = Character.new(1)
 
+# Instructions to follow.
+win = MessageWindow.new(8)
 
 loop do
   begin
