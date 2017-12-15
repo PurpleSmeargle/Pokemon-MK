@@ -218,8 +218,9 @@ namespace PokemonEngine
             LoadMap(null, true, true);
 
             scriptBox.SelectedIndex = 0;
+            scriptBox.KeyDown += scriptBox_KeyDown;
+            scriptBox.KeyPress += scriptBox_KeyPress;
 
-            
             Starting = false;
 
             MainForm_SizeChanged(sender, e);
@@ -708,11 +709,6 @@ namespace PokemonEngine
             scriptBinder.ResetBindings(false);
         }
 
-        private void scriptBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            // Implement right-click stuff
-        }
-
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Saving all scripts
@@ -1042,6 +1038,55 @@ f.close");
                 scriptBinder.ResetBindings(false);
                 scriptBox_SelectedIndexChanged(sender, e);
             }
+        }
+
+        bool ScriptBoxKeyHandled = false;
+        private void scriptBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (ScriptBoxKeyHandled)
+            {
+                ScriptBoxKeyHandled = false;
+                return;
+            }
+            if (e.KeyCode == Keys.Delete)
+            {
+                deleteSectionToolStripMenuItem_Click(sender, e);
+                e.Handled = true;
+                ScriptBoxKeyHandled = true;
+            }
+            if (e.Modifiers == Keys.Control)
+            {
+                if (e.KeyCode == Keys.X)
+                {
+                    cutSectionToolStripMenuItem_Click(sender, e);
+                    e.Handled = true;
+                    ScriptBoxKeyHandled = true;
+                }
+                else if (e.KeyCode == Keys.C)
+                {
+                    MessageBox.Show("Ctrl + C");
+                    copySectionToolStripMenuItem_Click(sender, e);
+                    e.Handled = true;
+                    ScriptBoxKeyHandled = true;
+                }
+                else if (e.KeyCode == Keys.V)
+                {
+                    pasteSectionToolStripMenuItem_Click(sender, e);
+                    e.Handled = true;
+                    ScriptBoxKeyHandled = true;
+                }
+                else if (e.KeyCode == Keys.N)
+                {
+                    newSectionToolStripMenuItem_Click(sender, e);
+                    e.Handled = true;
+                    ScriptBoxKeyHandled = true;
+                }
+            }
+        }
+
+        private void scriptBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (ScriptBoxKeyHandled) e.Handled = true;
         }
     }
 }
