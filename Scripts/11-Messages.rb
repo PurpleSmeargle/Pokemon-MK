@@ -10,10 +10,16 @@ MessageWindows = {
     5 => [4,4],
     6 => [4,4],
     7 => [4,4],
-    8 => [24,18,-22,-8],
-    9 => [4,4],
-    10 => [4,4],
-    11 => [4,4],
+    8 => [4,16,0,-6],
+    9 => [4,16,0,-6],
+    10 => [24,18,-22,-8],
+    11 => [24,16,-22,-6],
+    12 => [24,16,-22,-6],
+    13 => [22,14,-18,-4],
+    14 => [24,16,-16,-8],
+    15 => [16,4,-6],
+    16 => [4,4],
+    17 => [16,10,-6,-4],
 }
 
 class MessageWindow
@@ -23,12 +29,15 @@ class MessageWindow
   attr_accessor :yoffset
   attr_accessor :viewport
   
+  attr_accessor :letterbyletter
+  attr_reader :text
+  
   def height=(value)
     raise "Height (#{@height}) must be greater than 0" if @height <= 0
     @height = value
   end
   
-  def initialize(id, viewport = nil, height = 96)
+  def initialize(id = 1, viewport = nil, height = 96)
     @viewport = viewport
     @id = id
     @height = height
@@ -38,7 +47,28 @@ class MessageWindow
       @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
       @viewport.z = 999999
     end
+    @textsprite = Sprite.new(@viewport)
+    @textsprite.bmp(-1,-1)
+    @textsprite.z = 999999
+    @text_idx = 0
+    @timer = 0
+    @speed = 3
+    @text = ""
     refresh
+  end
+  
+  def text=(value)
+    @text_idx = 0
+    @text = value
+  end
+  
+  def update
+    @timer += 1
+    if @text && @text_idx < @text.size && @timer % @speed == 0
+      @textsprite.bmp(-1,-1)
+      @textsprite.draw(@text[0..@text_idx], 32, Graphics.height - @height - @yoffset + 20, 0, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR)
+      @text_idx += 1
+    end
   end
   
   def refresh
@@ -120,9 +150,13 @@ class MessageWindow
           Rect.new(top_right_rect_x, top_right_rect_height, top_right_rect_width, btm_left_rect_y - top_right_rect_height))
     end
     
-    @window.bmp.blt(top_left_x, top_left_y, bitmap, Rect.new(top_left_rect_x, top_left_rect_y, top_left_rect_width, top_left_rect_height))
-    @window.bmp.blt(btm_left_x, btm_left_y, bitmap, Rect.new(btm_left_rect_x, btm_left_rect_y, btm_left_rect_width, btm_left_rect_height))
-    @window.bmp.blt(top_right_x, top_right_y, bitmap, Rect.new(top_right_rect_x, top_right_rect_y, top_right_rect_width, top_right_rect_height))
-    @window.bmp.blt(btm_right_x, btm_right_y, bitmap, Rect.new(btm_right_rect_x, btm_right_rect_y, btm_right_rect_width, btm_right_rect_height))
+    @window.bmp.blt(top_left_x, top_left_y, bitmap,
+        Rect.new(top_left_rect_x, top_left_rect_y, top_left_rect_width, top_left_rect_height))
+    @window.bmp.blt(btm_left_x, btm_left_y, bitmap,
+        Rect.new(btm_left_rect_x, btm_left_rect_y, btm_left_rect_width, btm_left_rect_height))
+    @window.bmp.blt(top_right_x, top_right_y, bitmap,
+        Rect.new(top_right_rect_x, top_right_rect_y, top_right_rect_width, top_right_rect_height))
+    @window.bmp.blt(btm_right_x, btm_right_y, bitmap,
+        Rect.new(btm_right_rect_x, btm_right_rect_y, btm_right_rect_width, btm_right_rect_height))
   end
 end

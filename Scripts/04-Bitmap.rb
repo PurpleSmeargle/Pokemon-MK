@@ -13,7 +13,8 @@ class Bitmap
   # shadow_color : The color of shadow/outline text.
   # outline : If true, draws an outline instead of a shadow.
   def draw(text, x, y, align, base_color = Color.new(255,255,255), shadow_color = nil, outline = false)
-    y -= self.height / 2 - 6 # Getting rid of the vertical alignment and adding an offset of 8
+    y -= self.height / 2 - 6 # Getting rid of the vertical alignment and adding an offset of 6
+    y += (self.text_size(text).height % 20) / 2
     old_color = self.font.color
     text = text.to_s
     if shadow_color || outline
@@ -38,4 +39,12 @@ class Bitmap
     self.draw_text(x, y, self.width, self.height, text, align)
     self.font.color = old_color
   end
+  
+  #def draw_multiline(text, x, y, width, lines = -1, base_color = Color.new(255,255,255), shadow_color = nil)
+    # Each entry in this array is one line.
+    #new = []
+    #loop do
+      
+    #end
+  #end
 end

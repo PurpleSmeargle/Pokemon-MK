@@ -25,7 +25,8 @@ $Player.x = 9
 npc = Character.new(1)
 
 # Instructions to follow.
-win = MessageWindow.new(8)
+win = MessageWindow.new(1)
+win.text = "Hello! I am here to announce your death."
 
 loop do
   begin
@@ -34,6 +35,7 @@ loop do
     $Player.update
     npc.update
     npc.move_random if Graphics.frame_count % 60 == 0
+    win.update
     $Map.update
   rescue
     System.show_formatted_error($!)

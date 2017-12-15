@@ -292,7 +292,7 @@ namespace PokemonEngine
                 if (e.LineText.Contains($"{Char} ") || e.LineText.Contains($"{Char}("))
                 {
                     string Left = e.LineText.Split(new string[] { Char }, StringSplitOptions.None)[0];
-                    if (Empty(Left) || Left.EndsWith("\n") || Left.EndsWith("\r") || Left.EndsWith("\r\n") || Left.Contains("  "))
+                    if (Empty(Left) || Left.EndsWith("\n") || Left.EndsWith("\r") || Left.EndsWith("\r\n") || Left.EndsWith("  "))
                     {
                         e.ShiftNextLines = e.TabLength;
                         return;
@@ -302,7 +302,7 @@ namespace PokemonEngine
             if (e.LineText.Contains("rescue"))
             {
                 string Left = e.LineText.Split(new string[] { "rescue" }, StringSplitOptions.None)[0];
-                if (Empty(Left) || Left.EndsWith("\n") || Left.EndsWith("\r") || Left.EndsWith("\r\n") || Left.Contains("  "))
+                if (Empty(Left) || Left.EndsWith("\n") || Left.EndsWith("\r") || Left.EndsWith("\r\n") || Left.EndsWith("  "))
                 {
                     e.ShiftNextLines = e.TabLength;
                     return;
@@ -319,11 +319,9 @@ namespace PokemonEngine
 
         private void scriptEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
-            FastColoredTextBox box = (FastColoredTextBox)sender;
-            // Only the changed text
-            Range range = e.ChangedRange;
-
-            range.ClearStyle(Keyword, Comment, Method, Operator, Integer);
+            FastColoredTextBox box = (FastColoredTextBox) sender;
+            Range range = box.Range;
+            range.ClearStyle(Keyword, Method, Operator, Integer, String, Comment);
 
             // Keywords
             range.SetStyle(Keyword, @"\b(alias|and|begin|break|case|class|def|do|else|elsif|end|ensure|false|for|if|in|module|" +
@@ -332,18 +330,10 @@ namespace PokemonEngine
             // Special keywords
             range.SetStyle(Method, @"\b(BEGIN|END|_ENCODING_|_LINE_|_FILE_|defined?|_END_)\b", RegexOptions.Multiline);
 
-            // Character Symbol
-            range.SetStyle(Operator, @"(=|\*|&|-|\+|%|/|!|\||~|<|>|\b|\?|:|::|;|{|})", RegexOptions.Multiline);
-
             // Integer and Hex
-            range.SetStyle(Integer, @"\b(\d+|\d+x[0123456789ABCDEF]*)\b|", RegexOptions.Multiline);
+            range.SetStyle(Integer, @"\b([\d+_]|(\d+|\d+x[0123456789ABCDEF]*))+\b", RegexOptions.Multiline);
 
-            range = ((FastColoredTextBox)sender).Range;
-
-            range.ClearStyle(String);
-
-            range.SetStyle(Comment, "=begin.*?=end", RegexOptions.Singleline);
-            range.SetStyle(Operator, @"(\[|\]|\(|\)|\,|\.)", RegexOptions.Multiline);
+            range.SetStyle(Operator, @"(=|\*|\/|\(|\)|\[|\]|-|:|;|>|<|\.|\+|%|\?|!|{|}|\||~|&|\\|,)", RegexOptions.Multiline);
 
             List<Range> StringMatches = range.GetRanges("(\"\"|\"+(.*?((?<!\\\\)+\")|.*?\n|.*$)|''|'+(.*?(?<!\\\\)+'|.*?\n|.*$))",
                 RegexOptions.Multiline).ToList();
@@ -355,6 +345,13 @@ namespace PokemonEngine
 
             List<Range> CommentMatches = range.GetRanges(@"#[^{].*$", RegexOptions.Multiline).ToList();
             foreach (Range r in CommentMatches)
+            {
+                r.ClearStyle(Keyword, Method, Operator, Integer, String);
+                r.SetStyle(Comment);
+            }
+
+            List<Range> MultilineComments = range.GetRanges(@"=begin.*?=end", RegexOptions.Singleline).ToList();
+            foreach (Range r in MultilineComments)
             {
                 r.ClearStyle(Keyword, Method, Operator, Integer, String);
                 r.SetStyle(Comment);
