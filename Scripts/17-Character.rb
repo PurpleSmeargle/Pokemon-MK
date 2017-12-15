@@ -4,6 +4,7 @@ class Character
   attr_reader :id
   attr_accessor :name
   attr_reader :move_speed
+  attr_reader :dir
   
   def initialize(id, map = $Map, name = "")
     @id = id
@@ -20,6 +21,20 @@ class Character
     sprite.y = 32 + @map.y
     sprite.move_speed = @move_speed
     sprite.update
+  end
+  
+  def can_move?
+    return false if moving?
+    return false if @frozen
+    return true
+  end
+  
+  def freeze
+    @frozen = true
+  end
+  
+  def unfreeze
+    @frozen = false
   end
   
   # Returns whether or not this character is moving at all.
@@ -84,7 +99,7 @@ class Character
   
   # Makes this character move right.
   def go_right
-    if !moving?
+    if can_move?
       if @x < @map.width - 1 && @map.passable?(@x, @y) && @map.passable?(@x + 1, @y)
         sprite.go_right
         @x += 1
@@ -99,7 +114,7 @@ class Character
   
   # Makes this character move left.
   def go_left
-    if !moving?
+    if can_move?
       if @x > 0 && @map.passable?(@x, @y) && @map.passable?(@x - 1, @y)
         sprite.go_left
         @x -= 1
@@ -114,7 +129,7 @@ class Character
   
   # Makes this character move down.
   def go_down
-    if !moving?
+    if can_move?
       if @y < @map.height - 1 && @map.passable?(@x, @y) && @map.passable?(@x, @y + 1)
         sprite.go_down
         @y += 1
@@ -129,7 +144,7 @@ class Character
   
   # Makes this character move up.
   def go_up
-    if !moving?
+    if can_move?
       if @y > 0 && @map.passable?(@x, @y) && @map.passable?(@x, @y - 1)
         sprite.go_up
         @y -= 1

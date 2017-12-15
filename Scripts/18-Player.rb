@@ -18,6 +18,7 @@ class Player < Character
     @left_cooldown = 0
     @down_cooldown = 0
     @up_cooldown = 0
+    @frozen = false
     sprite.move_speed = @move_speed
   end
   
@@ -36,39 +37,40 @@ class Player < Character
     @left_cooldown -= 1 if @left_cooldown > 0
     @down_cooldown -= 1 if @down_cooldown > 0
     @up_cooldown -= 1 if @up_cooldown > 0
-    if Input.press?(Input::RIGHT) && !moving?
-      if @dir != :right
-        turn_right
-        @right_cooldown = 4
-      elsif @right_cooldown == 0
-        go_right
+    if can_move?
+      if Input.press?(Input::RIGHT)
+        if @dir != :right
+          turn_right
+          @right_cooldown = 4
+        elsif @right_cooldown == 0
+          go_right
+        end
+      end
+      if Input.press?(Input::LEFT)
+        if @dir != :left
+          turn_left
+          @left_cooldown = 4
+        elsif @left_cooldown == 0
+          go_left
+        end
+      end
+      if Input.press?(Input::DOWN)
+        if @dir != :down
+          turn_down
+          @down_cooldown = 4
+        elsif @down_cooldown == 0
+          go_down
+        end
+      end
+      if Input.press?(Input::UP)
+        if @dir != :up
+          turn_up
+          @up_cooldown = 4
+        elsif @up_cooldown == 0
+          go_up
+        end
       end
     end
-    if Input.press?(Input::LEFT) && !moving?
-      if @dir != :left
-        turn_left
-        @left_cooldown = 4
-      elsif @left_cooldown == 0
-        go_left
-      end
-    end
-    if Input.press?(Input::DOWN) && !moving?
-      if @dir != :down
-        turn_down
-        @down_cooldown = 4
-      elsif @down_cooldown == 0
-        go_down
-      end
-    end
-    if Input.press?(Input::UP) && !moving?
-      if @dir != :up
-        turn_up
-        @up_cooldown = 4
-      elsif @up_cooldown == 0
-        go_up
-      end
-    end
-    
     
     if sprite.right_mov
       $Map.x -= (32.0 / @move_speed)

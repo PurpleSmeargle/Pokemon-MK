@@ -1,3 +1,10 @@
+def wait(n)
+  n.times do
+    Graphics.update
+    Input.update
+  end
+end
+
 module System
   # Prepares the system for usage.
   def self.initialize

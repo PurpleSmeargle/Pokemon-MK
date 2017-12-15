@@ -52,7 +52,7 @@ class MessageWindow
     @textsprite.z = 999999
     @text_idx = 0
     @timer = 0
-    @speed = 3
+    @speed = 2
     @text = ""
     refresh
   end
@@ -60,13 +60,15 @@ class MessageWindow
   def text=(value)
     @text_idx = 0
     @text = value
+    #@textsprite.draw_multi(value, 32, 32, 240, -1, Color.new(255,255,255), Color.new(0,0,0), true)
   end
   
   def update
     @timer += 1
     if @text && @text_idx < @text.size && @timer % @speed == 0
-      @textsprite.bmp(-1,-1)
-      @textsprite.draw(@text[0..@text_idx], 32, Graphics.height - @height - @yoffset + 20, 0, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR)
+      @textsprite.bmp.clear
+      #                       text,                x,                               y,              width,     lines = -1, base_color = Color.new(255,255,255), shadow_color = nil
+      @textsprite.draw_multi(@text[0..@text_idx], 32, Graphics.height - @height - @yoffset + 22, Graphics.width - 88, 2, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, false, 32)
       @text_idx += 1
     end
   end

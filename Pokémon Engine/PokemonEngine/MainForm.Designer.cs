@@ -95,6 +95,16 @@
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.save = new System.Windows.Forms.ToolStripButton();
             this.play = new System.Windows.Forms.ToolStripButton();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.moreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copySectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cutSectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteSectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteSectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importSectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.newSectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBar.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.mapsTab.SuspendLayout();
@@ -126,6 +136,7 @@
             this.scriptsTab.SuspendLayout();
             this.scriptsPanel.SuspendLayout();
             this.toolbar.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuBar
@@ -703,6 +714,7 @@
             this.scriptsPanel.Controls.Add(this.scriptNameBox);
             this.scriptsPanel.Controls.Add(this.scriptNameLabel);
             this.scriptsPanel.Controls.Add(this.scriptBox);
+            this.scriptsPanel.Controls.Add(this.menuStrip1);
             this.scriptsPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.scriptsPanel.Location = new System.Drawing.Point(3, 3);
             this.scriptsPanel.Name = "scriptsPanel";
@@ -730,7 +742,7 @@
             // 
             this.scriptBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.scriptBox.FormattingEnabled = true;
-            this.scriptBox.Location = new System.Drawing.Point(0, 0);
+            this.scriptBox.Location = new System.Drawing.Point(0, 24);
             this.scriptBox.Name = "scriptBox";
             this.scriptBox.Size = new System.Drawing.Size(173, 693);
             this.scriptBox.TabIndex = 0;
@@ -768,6 +780,83 @@
             this.play.Size = new System.Drawing.Size(23, 22);
             this.play.Text = "Play";
             this.play.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.moreToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(173, 24);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // moreToolStripMenuItem
+            // 
+            this.moreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newSectionToolStripMenuItem,
+            this.importSectionToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.copySectionToolStripMenuItem,
+            this.cutSectionToolStripMenuItem,
+            this.pasteSectionToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.deleteSectionToolStripMenuItem});
+            this.moreToolStripMenuItem.Name = "moreToolStripMenuItem";
+            this.moreToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.moreToolStripMenuItem.Text = "More...";
+            // 
+            // copySectionToolStripMenuItem
+            // 
+            this.copySectionToolStripMenuItem.Name = "copySectionToolStripMenuItem";
+            this.copySectionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.copySectionToolStripMenuItem.Text = "Copy section";
+            this.copySectionToolStripMenuItem.Click += new System.EventHandler(this.copySectionToolStripMenuItem_Click);
+            // 
+            // cutSectionToolStripMenuItem
+            // 
+            this.cutSectionToolStripMenuItem.Name = "cutSectionToolStripMenuItem";
+            this.cutSectionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cutSectionToolStripMenuItem.Text = "Cut section";
+            this.cutSectionToolStripMenuItem.Click += new System.EventHandler(this.cutSectionToolStripMenuItem_Click);
+            // 
+            // pasteSectionToolStripMenuItem
+            // 
+            this.pasteSectionToolStripMenuItem.Name = "pasteSectionToolStripMenuItem";
+            this.pasteSectionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pasteSectionToolStripMenuItem.Text = "Paste section";
+            this.pasteSectionToolStripMenuItem.Click += new System.EventHandler(this.pasteSectionToolStripMenuItem_Click);
+            // 
+            // deleteSectionToolStripMenuItem
+            // 
+            this.deleteSectionToolStripMenuItem.Name = "deleteSectionToolStripMenuItem";
+            this.deleteSectionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteSectionToolStripMenuItem.Text = "Delete section";
+            this.deleteSectionToolStripMenuItem.Click += new System.EventHandler(this.deleteSectionToolStripMenuItem_Click);
+            // 
+            // importSectionToolStripMenuItem
+            // 
+            this.importSectionToolStripMenuItem.Name = "importSectionToolStripMenuItem";
+            this.importSectionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.importSectionToolStripMenuItem.Text = "Import script";
+            this.importSectionToolStripMenuItem.Click += new System.EventHandler(this.importSectionToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            // 
+            // newSectionToolStripMenuItem
+            // 
+            this.newSectionToolStripMenuItem.Name = "newSectionToolStripMenuItem";
+            this.newSectionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newSectionToolStripMenuItem.Text = "New section";
+            this.newSectionToolStripMenuItem.Click += new System.EventHandler(this.newSectionToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -825,6 +914,8 @@
             this.scriptsPanel.PerformLayout();
             this.toolbar.ResumeLayout(false);
             this.toolbar.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -897,6 +988,16 @@
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editStripMenuItem1;
         private System.Windows.Forms.TreeView allMaps;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem moreToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importSectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem copySectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cutSectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pasteSectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem deleteSectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newSectionToolStripMenuItem;
     }
 }
 

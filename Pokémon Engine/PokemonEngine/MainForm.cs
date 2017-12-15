@@ -25,6 +25,8 @@ namespace PokemonEngine
         PictureBox MapBox;
         Map CurrentMap;
 
+        Script ScriptClipboard;
+
         int CurrentLayer = 1;
         int CursorX = 0;
         int CursorY = 0;
@@ -400,7 +402,7 @@ namespace PokemonEngine
             txt.Size = new Size(Width - scriptEditorPanel.Location.X - 20, Height - mainTabControl.Location.Y - scriptEditorPanel.Location.Y - 68);
             scriptNameBox.Location = new Point(scriptNameBox.Location.X, Height - 148);
             scriptNameLabel.Location = new Point(scriptNameLabel.Location.X, Height - 166);
-            scriptBox.Size = new Size(scriptBox.Size.Width, Height - mainTabControl.Location.Y - 118);
+            scriptBox.Size = new Size(scriptBox.Size.Width, Height - mainTabControl.Location.Y - 140);
         }
 
         /// <summary>
@@ -971,6 +973,74 @@ f.close");
                 Map Map = MapInterpreter.Parse(ID);
                 Maps.Add(Map);
                 allMaps.Nodes.Add(Map.Name);
+            }
+        }
+
+        private void newSectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Scripts.Insert(scriptBox.SelectedIndex, new Script("", ""));
+            scriptBinder.ResetBindings(false);
+            scriptBox_SelectedIndexChanged(sender, e);
+        }
+
+        private void copySectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ScriptClipboard = new Script(Scripts[scriptBox.SelectedIndex].Name, Scripts[scriptBox.SelectedIndex].Code);
+        }
+
+        private void cutSectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ScriptClipboard = new Script(Scripts[scriptBox.SelectedIndex].Name, Scripts[scriptBox.SelectedIndex].Code);
+            Scripts.RemoveAt(scriptBox.SelectedIndex);
+            scriptBox_SelectedIndexChanged(sender, e);
+        }
+
+        private void pasteSectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Empty(ScriptClipboard))
+            {
+                Scripts.Insert(scriptBox.SelectedIndex, new Script(ScriptClipboard.Name, ScriptClipboard.Code));
+                scriptBinder.ResetBindings(false);
+                scriptBox_SelectedIndexChanged(sender, e);
+            }
+        }
+
+        private void deleteSectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Scripts.RemoveAt(scriptBox.SelectedIndex);
+            scriptBinder.ResetBindings(false);
+            scriptBox_SelectedIndexChanged(sender, e);
+        }
+
+        private void importSectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Ruby Files (*.rb)|*.rb|All Files (*.*)|*.*";
+            ofd.Title = "Choose a file to import to a new section";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                string Filename = ofd.FileName;
+                Filename = Filename.Split('\\').Last();
+                if (Regex.IsMatch(Filename, @"^\d+-.*?\.rb", RegexOptions.None))
+                {
+                    List<string> Tmp = Filename.Split('-').ToList();
+                    string Res = null;
+                    for (int i = 1; i < Tmp.Count; i++) { Res += Tmp[i]; if (i != Tmp.Count - 1) Res += "-"; }
+                    Filename = Res;
+                }
+                if (Filename.Contains("."))
+                {
+                    List<string> Tmp = Filename.Split('.').ToList();
+                    string Res = null;
+                    for (int i = 0; i < Tmp.Count - 1; i++) { Res += Tmp[i]; if (i != Tmp.Count - 2) Res += "."; }
+                    Filename = Res;
+                }
+                StreamReader sr = new StreamReader(File.OpenRead(ofd.FileName));
+                string Code = sr.ReadToEnd();
+                sr.Close();
+                Scripts.Insert(scriptBox.SelectedIndex, new Script(Filename, Code));
+                scriptBinder.ResetBindings(false);
+                scriptBox_SelectedIndexChanged(sender, e);
             }
         }
     }

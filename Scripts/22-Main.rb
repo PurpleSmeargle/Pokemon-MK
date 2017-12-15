@@ -22,11 +22,14 @@ $Viewports["main"] = Viewport.new(0,0,Graphics.width,Graphics.height)
 $Map = Map.new(3)
 $Player = Player.new
 $Player.x = 9
+$Player.y = 4
 npc = Character.new(1)
+npc.x = 9
+npc.y = 2
 
 # Instructions to follow.
 win = MessageWindow.new(1)
-win.text = "Hello! I am here to announce your death."
+win.text = "Hello! I am here to tell you that you will die tomorrow."
 
 loop do
   begin

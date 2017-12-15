@@ -40,11 +40,42 @@ class Bitmap
     self.font.color = old_color
   end
   
-  #def draw_multiline(text, x, y, width, lines = -1, base_color = Color.new(255,255,255), shadow_color = nil)
+  # text : See Bitmap#draw.
+  # x : See Bitmap#draw.
+  # y : See Bitmap#draw.
+  # width : The maximum width one line of text may take up. If this width is exceeded, it continues on a new line.
+  # lines : The maximum amount of lines that may be drawn.
+  # base_color : See Bitmap#draw.
+  # shadow_color : See Bitmap#draw.
+  # outline : See Bitmap#draw.
+  # y_line_diff : When a new line should be drawn, this is the height that is in between the new line and the previous line.
+  # allow_split_in_words : If false, it can only break to a new line per new word. If true, it can split words wherever needed to break to a new line.
+  def draw_multi(text, x, y, width, lines = -1, base_color = Color.new(255,255,255), shadow_color = nil,
+    outline = false, y_line_diff = 24, allow_split_in_words = false)
     # Each entry in this array is one line.
-    #new = []
-    #loop do
-      
-    #end
-  #end
+    new = []
+    idx = 0
+    loop do
+      Input.update
+      idx += 1
+      break if idx >= text.size
+      if self.text_size(text[0..idx]).width > width
+        if allow_split_in_words
+          new << text[0..idx]
+          text = text[(idx + 1)..-1]
+        else
+          idx_last_space = text[0..idx].reverse.index(' ')
+          idx_last_space = text[0..idx].size - idx_last_space
+          new << text[0...(idx_last_space - 1)]
+          text = text[idx_last_space..-1]
+        end
+        idx = 0
+      end
+    end
+    new << text # Remaining text
+    new = new[0...lines] if lines > -1
+    for i in 0...new.size
+      self.draw(new[i], x, y + y_line_diff * i, 0, base_color, shadow_color, outline)
+    end
+  end
 end
