@@ -52,27 +52,7 @@ class Bitmap
   # allow_split_in_words : If false, it can only break to a new line per new word. If true, it can split words wherever needed to break to a new line.
   def draw_multi(text, x, y, width, lines = -1, base_color = Color.new(255,255,255), shadow_color = nil,
     outline = false, y_line_diff = 24, allow_split_in_words = false)
-    # Each entry in this array is one line.
-    new = []
-    idx = 0
-    loop do
-      Input.update
-      idx += 1
-      break if idx >= text.size
-      if self.text_size(text[0..idx]).width > width
-        if allow_split_in_words
-          new << text[0..idx]
-          text = text[(idx + 1)..-1]
-        else
-          idx_last_space = text[0..idx].reverse.index(' ')
-          idx_last_space = text[0..idx].size - idx_last_space
-          new << text[0...(idx_last_space - 1)]
-          text = text[idx_last_space..-1]
-        end
-        idx = 0
-      end
-    end
-    new << text # Remaining text
+    new = get_text_chunks(self, text, width, allow_split_in_words)
     new = new[0...lines] if lines > -1
     for i in 0...new.size
       self.draw(new[i], x, y + y_line_diff * i, 0, base_color, shadow_color, outline)

@@ -22,6 +22,49 @@ MessageWindows = {
     17 => [16,10,-6,-4],
 }
 
+def hex_to_rgb(hex)
+  hex = hex[1..-1] if hex[0] == "#"
+  r = hex[0...2].to_i(16)
+  g = hex[2...4].to_i(16)
+  b = hex[4...6].to_i(16)
+  return Color.new(r, g, b)
+end
+
+def rgb_to_hex(r, g = nil, b = nil)
+  values = [r.red, r.green, r.blue] if r.is_a?(Color)
+  values =[r[0], r[1], r[2]] if r.is_a?(Array)
+  values ||= [r, g, b]
+  ret = ""
+  values.each { |e| ret += "0123456789ABCDEF"[(e - (e % 16)) / 16] + "0123456789ABCDEF"[e % 16] }
+  return ret
+end
+
+def get_text_chunks(bitmap, text, width, allow_split_in_words = false)
+  bitmap = bitmap.bitmap if bitmap.is_a?(Sprite)
+  # Each entry in this array is one line.
+  new = []
+  idx = 0
+  loop do
+    Input.update
+    idx += 1
+    break if idx >= text.size
+    if bitmap.text_size(text[0..idx]).width > width
+      if allow_split_in_words
+        new << text[0..idx]
+        text = text[(idx + 1)..-1]
+      else
+        idx_last_space = text[0..idx].reverse.index(' ')
+        idx_last_space = text[0..idx].size - idx_last_space
+        new << text[0...(idx_last_space - 1)]
+        text = text[idx_last_space..-1]
+      end
+      idx = 0
+    end
+  end
+  new << text # Remaining text
+  return new
+end
+
 class MessageWindow
   attr_accessor :id
   attr_reader :height
@@ -37,20 +80,19 @@ class MessageWindow
     @height = value
   end
   
-  def initialize(id = 1, viewport = nil, height = 96)
-    @viewport = viewport
+  def initialize(id = 1, height = 96)
     @id = id
     @height = height
     @xoffset = 4
     @yoffset = 4
-    unless @viewport
-      @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
-      @viewport.z = 999999
-    end
-    @textsprite = Sprite.new(@viewport)
+    @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
+    @viewport.z = 999999
+    @textviewport = Viewport.new(@xoffset, Graphics.height - @yoffset - @height + 10, Graphics.width - 2 * @xoffset, @height)
+    @textviewport.z = 999999
+    @textsprite = Sprite.new(@textviewport)
     @textsprite.bmp(-1,-1)
-    @textsprite.z = 999999
     @text_idx = 0
+    @chunk_idx = 0
     @timer = 0
     @speed = 2
     @text = ""
@@ -60,15 +102,14 @@ class MessageWindow
   def text=(value)
     @text_idx = 0
     @text = value
-    #@textsprite.draw_multi(value, 32, 32, 240, -1, Color.new(255,255,255), Color.new(0,0,0), true)
+    @chunks = get_text_chunks(@textsprite.bmp, @text, Graphics.width - 88)
   end
   
   def update
     @timer += 1
     if @text && @text_idx < @text.size && @timer % @speed == 0
       @textsprite.bmp.clear
-      #                       text,                x,                               y,              width,     lines = -1, base_color = Color.new(255,255,255), shadow_color = nil
-      @textsprite.draw_multi(@text[0..@text_idx], 32, Graphics.height - @height - @yoffset + 22, Graphics.width - 88, 2, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, false, 32)
+      @textsprite.draw_multi(@text[0..@text_idx], 28, 12, Graphics.width - 88, 2, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, false, 32)
       @text_idx += 1
     end
   end

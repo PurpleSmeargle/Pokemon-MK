@@ -170,6 +170,7 @@
     <None Include="bin\Debug\layer1.png" />
     <None Include="bin\Debug\layer2.png" />
     <None Include="bin\Debug\settings.png" />
+    <None Include="bin\Debug\cut.PNG" />
     <Content Include="mk.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -220,6 +220,19 @@ namespace PokemonEngine
             scriptBox.SelectedIndex = 0;
             scriptBox.KeyDown += scriptBox_KeyDown;
             scriptBox.KeyPress += scriptBox_KeyPress;
+            scriptBox.KeyUp += ScriptBox_KeyUp;
+
+            if (File.Exists(Application.StartupPath + @"\config.txt"))
+            {
+                StreamReader sr = new StreamReader(File.OpenRead(Application.StartupPath + @"\config.txt"));
+                string Data = sr.ReadToEnd();
+                while (Data.Contains("\r")) { Data = Data.Replace("\r", ""); }
+                sr.Close();
+                Config.LastMainTab = Convert.ToInt32(Data.Split(new string[] { "LastMainTab=" }, StringSplitOptions.None)[1].Split('\n')[0]);
+                Config.LastScriptIndex = Convert.ToInt32(Data.Split(new string[] { "LastScriptIndex=" }, StringSplitOptions.None)[1].Split('\n')[0]);
+                mainTabControl.SelectedIndex = Config.LastMainTab;
+                scriptBox.SelectedIndex = Config.LastScriptIndex;
+            }
 
             Starting = false;
 
@@ -832,6 +845,14 @@ f.close");
                     e.Cancel = true;
                 }
             }
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                if (File.Exists(Application.StartupPath + @"\config.txt")) File.Delete(Application.StartupPath + @"\config.txt");
+                StreamWriter sw = new StreamWriter(File.OpenWrite(Application.StartupPath + @"\config.txt"));
+                sw.WriteLine($"LastMainTab={Config.LastMainTab}");
+                sw.WriteLine($"LastScriptIndex={Config.LastScriptIndex}");
+                sw.Close();
+            }
         }
 
         private void playToolStripMenuItem_Click(object sender, EventArgs e)
@@ -860,6 +881,7 @@ f.close");
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             MainForm_SizeChanged(sender, e);
+            Config.LastMainTab = mainTabControl.SelectedIndex;
         }
 
         private void SetLayer(int n)
@@ -1043,11 +1065,7 @@ f.close");
         bool ScriptBoxKeyHandled = false;
         private void scriptBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (ScriptBoxKeyHandled)
-            {
-                ScriptBoxKeyHandled = false;
-                return;
-            }
+            if (ScriptBoxKeyHandled) { return; }
             if (e.KeyCode == Keys.Delete)
             {
                 deleteSectionToolStripMenuItem_Click(sender, e);
@@ -1086,7 +1104,12 @@ f.close");
 
         private void scriptBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (ScriptBoxKeyHandled) e.Handled = true;
+            if (ScriptBoxKeyHandled) { e.Handled = true; }
+        }
+
+        private void ScriptBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            ScriptBoxKeyHandled = false;
         }
     }
 }
