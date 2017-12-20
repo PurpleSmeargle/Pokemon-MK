@@ -1,4 +1,4 @@
-class CharacterSprite < Sprite
+class EventSprite < Sprite
   # Internal
   attr_accessor :sprite
   attr_accessor :right_mov
@@ -6,9 +6,11 @@ class CharacterSprite < Sprite
   attr_accessor :down_mov
   attr_accessor :up_mov
   
+  attr_reader :event
+  
   attr_accessor :move_speed
   
-  def initialize(id = 0)
+  def initialize(id = 0, event = nil)
     super($Viewports["main"])
     self.bmp("Graphics/Characters/#{id.to_digits}")
     self.src_rect.width = self.bmp.width / 4
@@ -19,6 +21,7 @@ class CharacterSprite < Sprite
     @left_mov = nil
     @down_mov = nil
     @up_mov = nil
+    @event = event
     @move_speed = 16
   end
   
@@ -47,7 +50,9 @@ class CharacterSprite < Sprite
         self.src_rect.x = 0 if self.src_rect.x >= self.bmp.width
       end
       @right_mov -= 1
-      @right_mov = nil if @right_mov == 0
+      if @right_mov == 0
+        @right_mov = nil
+      end
     end
     if @left_mov
       self.x -= 2

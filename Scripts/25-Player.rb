@@ -1,4 +1,4 @@
-class Player < Character
+class Player < Event
   attr_accessor :party
   attr_reader :gender
   
@@ -79,7 +79,10 @@ class Player < Character
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end
       sprite.right_mov -= 1
-      sprite.right_mov = nil if sprite.right_mov == 0
+      if sprite.right_mov == 0
+        sprite.right_mov = nil
+        Events.on_step_taken.call(:right)
+      end
     end
     if sprite.left_mov
       $Map.x += (32.0 / @move_speed)
@@ -88,7 +91,10 @@ class Player < Character
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end
       sprite.left_mov -= 1
-      sprite.left_mov = nil if sprite.left_mov == 0
+      if sprite.left_mov == 0
+        sprite.left_mov = nil
+        Events.on_step_taken.call(:left)
+      end
     end
     if sprite.down_mov
       $Map.y -= (32.0 / @move_speed)
@@ -97,7 +103,10 @@ class Player < Character
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end
       sprite.down_mov -= 1
-      sprite.down_mov = nil if sprite.down_mov == 0
+      if sprite.down_mov == 0
+        sprite.down_mov = nil
+        Events.on_step_taken.call(:down)
+      end
     end
     if sprite.up_mov
       $Map.y += (32.0 / @move_speed)
@@ -106,7 +115,10 @@ class Player < Character
         sprite.src_rect.x = 0 if sprite.src_rect.x >= sprite.bmp.width
       end
       sprite.up_mov -= 1
-      sprite.up_mov = nil if sprite.up_mov == 0
+      if sprite.up_mov == 0
+        sprite.up_mov = nil
+        Events.on_step_taken.call(:up)
+      end
     end
   end
   

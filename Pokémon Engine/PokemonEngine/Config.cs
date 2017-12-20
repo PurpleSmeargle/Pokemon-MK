@@ -52,6 +52,7 @@ namespace PokemonEngine
         public static bool DebugMode { get; set; } = true;
         public static bool HideLowerLayers { get; set; } = true;
         public static bool ShowGrid { get; set; } = false;
+        public static int LastLayer { get; set; } = 1;
         public static int GridWidth { get; set; } = 1;
         public static int GridHeight { get; set; } = 1;
         public static System.Drawing.Color GridColor { get; set; } = System.Drawing.Color.FromArgb(96, 0, 0, 0);

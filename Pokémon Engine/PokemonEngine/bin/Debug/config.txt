@@ -1,2 +1,8 @@
 LastMainTab=1
-LastScriptIndex=16
+LastScriptIndex=15
+GridWidth=1
+GridHeight=1
+GridColor=0,0,0,96
+ShowGrid=True
+LastLayer=2
+HideLowerLayers=True

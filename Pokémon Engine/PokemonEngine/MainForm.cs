@@ -34,7 +34,6 @@ namespace PokemonEngine
         bool RightMouse = false;
         bool MiddleMouse = false;
 
-        List<Bitmap> Layers = new List<Bitmap>();
         Bitmap Black;
         Bitmap Grid;
         Bitmap Overlay;
@@ -74,6 +73,7 @@ namespace PokemonEngine
 
             TilesetCursor = new PictureBox();
             TilesetCursor.Location = new Point(0, 0);
+            
             TilesetCursor.Image = Properties.Resources.cursor;
             TilesetCursor.Width = TilesetCursor.Image.Width;
             TilesetCursor.Height = TilesetCursor.Image.Height;
@@ -89,8 +89,6 @@ namespace PokemonEngine
             txt.AutoIndentNeeded += scriptEditor_AutoIndentNeeded;
             txt.TabLength = 2;
             txt.KeyDown += Txt_KeyDown;
-            DocumentMap DocumentMap = new DocumentMap();
-            DocumentMap.Target = txt;
             scriptEditorPanel.Controls.Add(txt);
             #endregion
 
@@ -198,7 +196,7 @@ namespace PokemonEngine
                 if (!Regex.IsMatch(File, @"Maps\\\d+.mkd")) continue;
                 Map Map = MapInterpreter.Parse(Convert.ToInt32(File.Split('\\').Last().Split('.').First()));
                 Maps.Add(Map);
-                allMaps.Nodes.Add(Map.Name);
+                allMaps.Nodes.Add(new MapTreeNode(Map.ID, Map.Name));
             }
             CurrentMap = Maps[0];
             #endregion
@@ -215,13 +213,8 @@ namespace PokemonEngine
             mapBoxPanel.Controls.Add(Cursor);
             Cursor.Refresh();
 
-            LoadMap(null, true, true);
-
-            scriptBox.SelectedIndex = 0;
-            scriptBox.KeyDown += scriptBox_KeyDown;
-            scriptBox.KeyPress += scriptBox_KeyPress;
-            scriptBox.KeyUp += ScriptBox_KeyUp;
-
+            // Load Engine Config
+            #region Load Engine Config
             if (File.Exists(Application.StartupPath + @"\config.txt"))
             {
                 StreamReader sr = new StreamReader(File.OpenRead(Application.StartupPath + @"\config.txt"));
@@ -230,15 +223,32 @@ namespace PokemonEngine
                 sr.Close();
                 Config.LastMainTab = Convert.ToInt32(Data.Split(new string[] { "LastMainTab=" }, StringSplitOptions.None)[1].Split('\n')[0]);
                 Config.LastScriptIndex = Convert.ToInt32(Data.Split(new string[] { "LastScriptIndex=" }, StringSplitOptions.None)[1].Split('\n')[0]);
-                mainTabControl.SelectedIndex = Config.LastMainTab;
+                Config.GridWidth = Convert.ToInt32(Data.Split(new string[] { "GridWidth=" }, StringSplitOptions.None)[1].Split('\n')[0]);
+                Config.GridHeight = Convert.ToInt32(Data.Split(new string[] { "GridHeight=" }, StringSplitOptions.None)[1].Split('\n')[0]);
+                List<string> Values = Data.Split(new string[] { "GridColor=" }, StringSplitOptions.None)[1].Split('\n')[0].Split(',').ToList();
+                Config.GridColor = Color.FromArgb(
+                    Convert.ToInt32(Values[3]), Convert.ToInt32(Values[0]), Convert.ToInt32(Values[1]), Convert.ToInt32(Values[2]));
+                Config.ShowGrid = Convert.ToBoolean(Data.Split(new string[] { "ShowGrid=" }, StringSplitOptions.None)[1].Split('\n')[0]);
+                Config.LastLayer = Convert.ToInt32(Data.Split(new string[] { "LastLayer=" }, StringSplitOptions.None)[1].Split('\n')[0]);
+                Config.HideLowerLayers = Convert.ToBoolean(Data.Split(new string[] { "HideLowerLayers=" }, StringSplitOptions.None)[1].Split('\n')[0]);
                 scriptBox.SelectedIndex = Config.LastScriptIndex;
             }
+            #endregion
+            showGridToolStripMenuItem.Checked = Config.ShowGrid;
+            hideLowerLayersToolStripMenuItem.Checked = Config.HideLowerLayers;
+
+            LoadMap(null, true, true);
+
+            scriptBox.SelectedIndex = Config.LastScriptIndex;
+            scriptBox.KeyDown += scriptBox_KeyDown;
+            scriptBox.KeyPress += scriptBox_KeyPress;
+            scriptBox.KeyUp += ScriptBox_KeyUp;
 
             Starting = false;
 
-            MainForm_SizeChanged(sender, e);
+            mainTabControl.SelectedIndex = Config.LastMainTab;
 
-            SetLayer(1);
+            SetLayer(Config.LastLayer);
 
             scriptBox_SelectedIndexChanged(sender, e);
         }
@@ -428,23 +438,29 @@ namespace PokemonEngine
 
             if (!Empty(MapBox)) MapBox.UseWaitCursor = true;
 
-            if (RedrawLayers)
+            if (Empty(Map.VisualLayers))
             {
-                foreach (Bitmap Bmp in Layers) { Bmp.Dispose(); }
-                Layers.Clear();
+                RedrawLayers = true;
+                Map.VisualLayers = new List<Bitmap>();
+            }
+
+            if (RedrawLayers && !Empty(Map.VisualLayers))
+            {
+                foreach (Bitmap Bmp in Map.VisualLayers) { Bmp.Dispose(); }
+                Map.VisualLayers.Clear();
             }
 
             CurrentMap = Map;
 
-            if (TilesetPath != CurrentMap.Tileset)
+            if (TilesetPath != Map.Tileset)
             {
                 if (!Empty(Tileset)) Tileset.Dispose();
 
-                FileStream fs = new FileStream($@"Graphics\Tilesets\{CurrentMap.Tileset}.png", FileMode.Open);
+                FileStream fs = new FileStream($@"Graphics\Tilesets\{Map.Tileset}.png", FileMode.Open);
                 Tileset = new Bitmap(fs);
                 fs.Close();
 
-                tilesetBox.Image = (Bitmap)Tileset.Clone();
+                tilesetBox.Image = Tileset;
                 tilesetBox.Width = Tileset.Width;
                 tilesetBox.Height = Tileset.Height;
                 tilesetBox.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -452,11 +468,11 @@ namespace PokemonEngine
                 tilesetBlack.Width = Tileset.Width + 20;
                 tilesetWhite.Width = Tileset.Width + 18;
                 tilesetBoxPanel.Width = Tileset.Width + 17;
-                TilesetPath = CurrentMap.Tileset;
+                TilesetPath = Map.Tileset;
             }
 
-            int Width = CurrentMap.Width;
-            int Height = CurrentMap.Height;
+            int Width = Map.Width;
+            int Height = Map.Height;
 
             if (RedrawLayers || UpdateBounds)
             {
@@ -467,13 +483,13 @@ namespace PokemonEngine
 
             if (RedrawLayers)
             {
-                for (int i = 0; i < CurrentMap.Layers.Count; i++)
+                for (int i = 0; i < Map.Layers.Count; i++)
                 {
                     Bitmap Layer = new Bitmap(Width * 32, Height * 32);
                     Graphics gr = Graphics.FromImage(Layer);
-                    for (int k = 0; k < CurrentMap.Layers[i].Count; k++)
+                    for (int k = 0; k < Map.Layers[i].Count; k++)
                     {
-                        object Tile = CurrentMap.Layers[i][k];
+                        object Tile = Map.Layers[i][k];
                         int TileID = 0;
                         if (Tile is int)
                         {
@@ -498,14 +514,14 @@ namespace PokemonEngine
                             }
                         }
                     }
-                    Layers.Add(Layer);
+                    Map.VisualLayers.Add(Layer);
                 }
-                for (int i = CurrentMap.Layers.Count; i < 7; i++)
+                for (int i = Map.Layers.Count; i < 7; i++)
                 {
                     List<dynamic> Tiles = new List<dynamic>();
                     for (int t = 0; t < Width + Height * Width; t++) Tiles.Add(0);
-                    CurrentMap.Layers.Add(Tiles);
-                    Layers.Add(new Bitmap(Width * 32, Height * 32));
+                    Map.Layers.Add(Tiles);
+                    Map.VisualLayers.Add(new Bitmap(Width * 32, Height * 32));
                 }
             }
 
@@ -520,10 +536,10 @@ namespace PokemonEngine
 
             if (UpdateBounds)
             {
-                if (!Empty(CurrentMap)) mapBoxPanel.Size = new Size(Math.Min(mapBlack.Size.Width - 4, 32 * CurrentMap.Width),
-                Math.Min(mapBlack.Size.Height - 4, 32 * CurrentMap.Height));
-                mapBoxPanel.Size = new Size(Math.Min(mapBlack.Size.Width - 4, 32 * CurrentMap.Width),
-                    Math.Min(mapBlack.Size.Height - 4, 32 * CurrentMap.Height));
+                if (!Empty(Map)) mapBoxPanel.Size = new Size(Math.Min(mapBlack.Size.Width - 4, 32 * Map.Width),
+                Math.Min(mapBlack.Size.Height - 4, 32 * Map.Height));
+                mapBoxPanel.Size = new Size(Math.Min(mapBlack.Size.Width - 4, 32 * Map.Width),
+                    Math.Min(mapBlack.Size.Height - 4, 32 * Map.Height));
                 if (mapBoxPanel.VerticalScroll.Visible) { mapBoxPanel.Width -= 17; }
                 if (mapBoxPanel.HorizontalScroll.Visible) { mapBoxPanel.Height -= 17; }
             }
@@ -561,9 +577,9 @@ namespace PokemonEngine
         {
             Graphics g = e.Graphics;
             g.DrawImage(Black, 0, 0); // Black background
-            for (int i = 0; i < Layers.Count; i++) // Layers
+            for (int i = 0; i < CurrentMap.VisualLayers.Count; i++) // Layers
             {
-                g.DrawImage(Layers[i], 0, 0);
+                g.DrawImage(CurrentMap.VisualLayers[i], 0, 0);
                 if (Config.HideLowerLayers && i == CurrentLayer - 2) { g.DrawImage(Overlay, 0, 0); }
             }
             if (Config.ShowGrid) g.DrawImage(Grid, 0, 0); // Grid
@@ -616,12 +632,12 @@ namespace PokemonEngine
             {
                 return false;
             }
-            Graphics g = Graphics.FromImage(Layers[Layer - 1]);
+            Graphics g = Graphics.FromImage(CurrentMap.VisualLayers[Layer - 1]);
             for (int x = X * 32; x < X * 32 + 32; x++)
             {
                 for (int y = Y * 32; y < Y * 32 + 32; y++)
                 {
-                    Layers[Layer - 1].SetPixel(x, y, Color.FromArgb(0, 0, 0, 0));
+                    CurrentMap.VisualLayers[Layer - 1].SetPixel(x, y, Color.FromArgb(0, 0, 0, 0));
                 }
             }
 
@@ -631,7 +647,7 @@ namespace PokemonEngine
                 {
                     for (int y = Y * 32; y < Y * 32 + 32; y++)
                     {
-                        Layers[Layer - 1].SetPixel(x, y, Tileset.GetPixel((32 * (TileID % 8)) + (x - X * 32), ((int)(32 * Math.Floor((double)TileID / 8)) + (y - Y * 32))));
+                        CurrentMap.VisualLayers[Layer - 1].SetPixel(x, y, Tileset.GetPixel((32 * (TileID % 8)) + (x - X * 32), ((int)(32 * Math.Floor((double)TileID / 8)) + (y - Y * 32))));
                     }
                 }
             }
@@ -851,6 +867,12 @@ f.close");
                 StreamWriter sw = new StreamWriter(File.OpenWrite(Application.StartupPath + @"\config.txt"));
                 sw.WriteLine($"LastMainTab={Config.LastMainTab}");
                 sw.WriteLine($"LastScriptIndex={Config.LastScriptIndex}");
+                sw.WriteLine($"GridWidth={Config.GridWidth}");
+                sw.WriteLine($"GridHeight={Config.GridHeight}");
+                sw.WriteLine($"GridColor={Config.GridColor.R},{Config.GridColor.G},{Config.GridColor.B},{Config.GridColor.A}");
+                sw.WriteLine($"ShowGrid={Config.ShowGrid}");
+                sw.WriteLine($"LastLayer={Config.LastLayer}");
+                sw.WriteLine($"HideLowerLayers={Config.HideLowerLayers}");
                 sw.Close();
             }
         }
@@ -895,6 +917,7 @@ f.close");
             layer6ToolStripMenuItem.Checked = (n == 6);
             layer7ToolStripMenuItem.Checked = (n == 7);
             CurrentLayer = n;
+            Config.LastLayer = n;
             MapBox.Refresh();
         }
 
@@ -920,9 +943,16 @@ f.close");
             MapForm mf = new MapForm(CurrentMap, MapBox);
             mf.ShowDialog();
             // If width/height changed and it needs to be redrawn
-            if (mf.ShouldUpdate)
+            if (mf.UpdateMap)
             {
                 LoadMap(null, true, true);
+            }
+            if (mf.UpdateName)
+            {
+                foreach (MapTreeNode node in allMaps.Nodes)
+                {
+                    node.Text = Maps.Find(map => map.ID == node.ID).Name;
+                }
             }
         }
 
@@ -965,7 +995,7 @@ f.close");
                 CurrentMap = CreateNewMap.Map;
                 Maps.Add(CreateNewMap.Map);
                 LoadMap(CreateNewMap.Map, true, true);
-                allMaps.Nodes.Add(CreateNewMap.Map.Name);
+                allMaps.Nodes.Add(new MapTreeNode(CreateNewMap.Map.ID, CreateNewMap.Map.Name));
             }
         }
 
@@ -973,9 +1003,9 @@ f.close");
         {
             foreach (Map M in Maps)
             {
-                if (M.Name == allMaps.SelectedNode.Text)
+                if (M.ID == ((MapTreeNode) allMaps.SelectedNode).ID)
                 {
-                    LoadMap(M, true, true);
+                    LoadMap(M, false, true);
                 }
             }
         }
@@ -990,7 +1020,7 @@ f.close");
                 File.Move(ofd.FileName, $@"Maps\{Digits(ID)}.mkd");
                 Map Map = MapInterpreter.Parse(ID);
                 Maps.Add(Map);
-                allMaps.Nodes.Add(Map.Name);
+                allMaps.Nodes.Add(new MapTreeNode(Map.ID, Map.Name));
             }
         }
 
@@ -1110,6 +1140,13 @@ f.close");
         private void ScriptBox_KeyUp(object sender, KeyEventArgs e)
         {
             ScriptBoxKeyHandled = false;
+        }
+
+        private void configureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConfigureGrid cg = new ConfigureGrid();
+            cg.ShowDialog();
+            if (cg.Update) { LoadMap(null, false, true); }
         }
     }
 }

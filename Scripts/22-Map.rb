@@ -62,6 +62,8 @@ class Map
     Graphics.maps[@id] = BetterHash.new
     Graphics.maps[@id][:layers] = layers
     Graphics.maps[@id][:events] = []
+    
+    Events.on_map_created.call(self)
   end
   
   def layers

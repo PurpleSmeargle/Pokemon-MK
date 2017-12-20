@@ -13,7 +13,8 @@ namespace PokemonEngine
 {
     public partial class MapForm : Form
     {
-        public bool ShouldUpdate = false;
+        public bool UpdateMap = false;
+        public bool UpdateName = false;
         PictureBox MapBox;
 
         Map CurrentMap;
@@ -97,8 +98,10 @@ namespace PokemonEngine
 
         private void button2_Click(object sender, EventArgs e)
         {
+            ActiveControl = button2;
             MapBox.UseWaitCursor = true;
-            ShouldUpdate = CurrentMap.Update(OldWidth, OldHeight);
+            UpdateMap = CurrentMap.Update(OldWidth, OldHeight);
+            UpdateName = (OldName != CurrentMap.Name);
             MapBox.UseWaitCursor = false;
             Close();
         }

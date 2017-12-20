@@ -1,4 +1,4 @@
-class Character
+class Event
   attr_accessor :x
   attr_accessor :y
   attr_reader :id
@@ -14,13 +14,14 @@ class Character
     @dir = :down
     @map = map
     @move_speed = 16
-    _sprite = CharacterSprite.new(id)
+    _sprite = EventSprite.new(id, self)
     Graphics.maps[@map.id][:events] << _sprite
     @spriteindex = Graphics.maps[@map.id][:events].index(_sprite)
     sprite.x = @map.x
     sprite.y = 32 + @map.y
     sprite.move_speed = @move_speed
     sprite.update
+    Events.on_event_created.call(self)
   end
   
   def can_move?
@@ -37,29 +38,29 @@ class Character
     @frozen = false
   end
   
-  # Returns whether or not this character is moving at all.
+  # Returns whether or not this event is moving at all.
   def moving?
     return true if sprite.right_mov || sprite.left_mov ||
                    sprite.down_mov || sprite.up_mov
     return false
   end
   
-  # Returns whether or not this character is moving right.
+  # Returns whether or not this event is moving right.
   def moving_right?
     return !sprite.right_mov.nil?
   end
   
-  # Returns whether or not this character is moving left.
+  # Returns whether or not this event is moving left.
   def moving_left?
     return !sprite.left_mov.nil?
   end
   
-  # Returns whether or not this character is moving down.
+  # Returns whether or not this event is moving down.
   def moving_down?
     return !sprite.down_mov.nil?
   end
   
-  # Returns whether or not this character is moving up.
+  # Returns whether or not this event is moving up.
   def moving_up?
     return !sprite.up_mov.nil?
   end
@@ -69,12 +70,12 @@ class Character
     sprite.move_speed = value
   end
   
-  # Returns this character's sprite object.
+  # Returns this event's sprite object.
   def sprite
     return Graphics.maps[@map.id][:events][@spriteindex]
   end
   
-  # Changes the direction this character is facing.
+  # Changes the direction this event is facing.
   def dir=(value)
     value = [:still,:down_left,:down,:down_right,:left,:still,
              :right,:up_left,:up,:up_right][value] if value.is_a?(Numeric)
@@ -90,98 +91,102 @@ class Character
     turn_up if @dir == :up
   end
   
-  # Updates this character's sprite and coordinates.
+  # Updates this event's sprite and coordinates.
   def update
     sprite.update
     sprite.x = @map.x + @x * 32 unless moving?
     sprite.y = 32 + @map.y + @y * 32 unless moving?
   end
   
-  # Makes this character move right.
+  # Makes this event move right.
   def go_right
     if can_move?
+      @dir = :right
       if @x < @map.width - 1 && @map.passable?(@x, @y) && @map.passable?(@x + 1, @y)
         sprite.go_right
         @x += 1
+        return true
       else
         turn_right
       end
-      @dir = :right
-      return true
     end
+    Events.on_step_impassable.call(@dir, @x + 1, @y) if self == $Player
     return false
   end
   
-  # Makes this character move left.
+  # Makes this event move left.
   def go_left
     if can_move?
+      @dir = :left
       if @x > 0 && @map.passable?(@x, @y) && @map.passable?(@x - 1, @y)
         sprite.go_left
         @x -= 1
+        return true
       else
         turn_left
       end
-      @dir = :left
-      return true
     end
+    Events.on_step_impassable.call(@dir, @x - 1, @y) if self == $Player
     return false
   end
   
-  # Makes this character move down.
+  # Makes this event move down.
   def go_down
     if can_move?
+      @dir = :down
       if @y < @map.height - 1 && @map.passable?(@x, @y) && @map.passable?(@x, @y + 1)
         sprite.go_down
         @y += 1
+        return true
       else
         turn_down
       end
-      @dir = :down
-      return true
     end
+    Events.on_step_impassable.call(@dir, @x, @y + 1) if self == $Player
     return false
   end
   
-  # Makes this character move up.
+  # Makes this event move up.
   def go_up
     if can_move?
+      @dir = :up
       if @y > 0 && @map.passable?(@x, @y) && @map.passable?(@x, @y - 1)
         sprite.go_up
         @y -= 1
+        return true
       else
         turn_up
       end
-      @dir = :up
-      return true
     end
+    Events.on_step_impassable.call(@dir, @x, @y - 1) if self == $Player
     return false
   end
   
-  # Makes this character face right.
+  # Makes this event face right.
   def turn_right
     sprite.turn_right
     @dir = :right
   end
   
-  # Makes this character face left.
+  # Makes this event face left.
   def turn_left
     sprite.turn_left
     @dir = :left
   end
   
-  # Makes this character face down.
+  # Makes this event face down.
   def turn_down
     sprite.turn_down
     @dir = :down
   end
   
-  # Makes this character face up.
+  # Makes this event face up.
   def turn_up
     sprite.turn_up
     @dir = :up
   end
   
-  # Moves this character in a random direction.
+  # Moves this event in a random direction.
   def move_random
     case rand(4)
     when 0
@@ -195,7 +200,7 @@ class Character
     end
   end
   
-  # Turns this character in a random direction.
+  # Turns this event in a random direction.
   def turn_random
     case rand(4)
     when 0

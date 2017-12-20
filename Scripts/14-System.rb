@@ -23,6 +23,8 @@ module System
     Marshal.dump($Player, f)
     
     f.close
+    
+    Events.on_save.call
   end
   
   def self.load
@@ -32,9 +34,13 @@ module System
       $Player.refresh
       
     end
+    
+    Events.on_load.call
   end
   
   def self.show_formatted_error(e)
+    Events.on_error.call(e)
+    
     msg = "Pokémon MK v1.0"
     msg += "\n\n"
     msg += e.class.to_s

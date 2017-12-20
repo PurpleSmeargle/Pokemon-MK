@@ -70,6 +70,7 @@ return [Data[0],Data[1..-1]]");
         /// </summary>
         public int ID { get; set; }
         public List<List<dynamic>> Layers { get; set; }
+        public List<System.Drawing.Bitmap> VisualLayers { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public string Tileset { get; set; }
@@ -114,7 +115,7 @@ return [Data[0],Data[1..-1]]");
                 NewLayers.Add(NewLayer);
             }
             // Whether or not the map should be redrawn
-            bool ret = (Layers[0].Count != NewLayers.Count);
+            bool ret = (Layers[0].Count != NewLayers[0].Count);
             Layers = NewLayers;
             return ret;
         }

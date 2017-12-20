@@ -23,7 +23,7 @@ $Map = Map.new(3)
 $Player = Player.new
 $Player.x = 9
 $Player.y = 4
-npc = Character.new(1)
+npc = Event.new(1)
 npc.x = 9
 npc.y = 2
 
