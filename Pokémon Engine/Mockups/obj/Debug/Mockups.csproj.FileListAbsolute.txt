@@ -1,0 +1,9 @@
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\bin\Debug\Mockups.exe.config
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\bin\Debug\Mockups.exe
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\bin\Debug\Mockups.pdb
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.csprojResolveAssemblyReference.cache
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.Properties.Resources.resources
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.csproj.GenerateResource.Cache
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.exe
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.pdb
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.Form1.resources
