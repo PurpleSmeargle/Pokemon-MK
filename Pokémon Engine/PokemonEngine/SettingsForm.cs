@@ -150,5 +150,15 @@ namespace PokemonEngine
         {
             Config.WindowTitle = windowTitle.Text;
         }
+
+        private void engineStoreMapsInMemory_MouseHover(object sender, EventArgs e)
+        {
+            storeMapsInMemory.SetToolTip(engineStoreMapsInMemory, "Enabling this setting will keep a Map's Bitmaps stored in Memory when switching between maps.\r\nThis will make loading maps much faster, but it will be quite costly for your memory.");
+        }
+
+        private void engineStoreMapsInMemory_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

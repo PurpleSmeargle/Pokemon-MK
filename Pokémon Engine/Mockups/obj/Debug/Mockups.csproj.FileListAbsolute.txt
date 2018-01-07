@@ -6,4 +6,6 @@ C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.
 C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.csproj.GenerateResource.Cache
 C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.exe
 C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.pdb
-C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.Form1.resources
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.MapProperties.resources
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.Condition.resources
+C:\Users\Eigenaar\Desktop\Pokémon MK\Pokémon Engine\Mockups\obj\Debug\Mockups.ClassicEvent.resources

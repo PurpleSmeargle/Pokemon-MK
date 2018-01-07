@@ -40,6 +40,20 @@
             this.mainMapPanel = new System.Windows.Forms.Panel();
             this.mapPanel = new System.Windows.Forms.Panel();
             this.mapToolbar = new System.Windows.Forms.Panel();
+            this.mapMenu = new System.Windows.Forms.MenuStrip();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.activeLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer6ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layer7ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideLowerLayersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mappingTools = new System.Windows.Forms.ToolStrip();
             this.mapGrid = new System.Windows.Forms.ToolStripButton();
             this.layerBtn1 = new System.Windows.Forms.ToolStripButton();
@@ -93,26 +107,13 @@
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.save = new System.Windows.Forms.ToolStripButton();
             this.play = new System.Windows.Forms.ToolStripButton();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.configureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.activeLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer6ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layer7ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hideLowerLayersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mapMenu = new System.Windows.Forms.MenuStrip();
             this.menuBar.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.mapsTab.SuspendLayout();
             this.mainMapPanel.SuspendLayout();
             this.mapPanel.SuspendLayout();
             this.mapToolbar.SuspendLayout();
+            this.mapMenu.SuspendLayout();
             this.mappingTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapWhite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapBlack)).BeginInit();
@@ -138,7 +139,6 @@
             this.scriptsPanel.SuspendLayout();
             this.sectionsBar.SuspendLayout();
             this.toolbar.SuspendLayout();
-            this.mapMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuBar
@@ -247,6 +247,128 @@
             this.mapToolbar.Name = "mapToolbar";
             this.mapToolbar.Size = new System.Drawing.Size(52, 26);
             this.mapToolbar.TabIndex = 4;
+            // 
+            // mapMenu
+            // 
+            this.mapMenu.BackColor = System.Drawing.Color.Transparent;
+            this.mapMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewToolStripMenuItem});
+            this.mapMenu.Location = new System.Drawing.Point(0, 0);
+            this.mapMenu.Name = "mapMenu";
+            this.mapMenu.Size = new System.Drawing.Size(52, 24);
+            this.mapMenu.TabIndex = 0;
+            this.mapMenu.Text = "menuStrip1";
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showGridToolStripMenuItem,
+            this.activeLayerToolStripMenuItem,
+            this.hideLowerLayersToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // showGridToolStripMenuItem
+            // 
+            this.showGridToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showToolStripMenuItem,
+            this.configureToolStripMenuItem});
+            this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
+            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.showGridToolStripMenuItem.Text = "Grid";
+            // 
+            // showToolStripMenuItem
+            // 
+            this.showToolStripMenuItem.Name = "showToolStripMenuItem";
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.showToolStripMenuItem.Text = "Show";
+            this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+            // 
+            // configureToolStripMenuItem
+            // 
+            this.configureToolStripMenuItem.Name = "configureToolStripMenuItem";
+            this.configureToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.configureToolStripMenuItem.Text = "Configure";
+            this.configureToolStripMenuItem.Click += new System.EventHandler(this.configureToolStripMenuItem_Click);
+            // 
+            // activeLayerToolStripMenuItem
+            // 
+            this.activeLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.layer1ToolStripMenuItem,
+            this.layer2ToolStripMenuItem,
+            this.layer3ToolStripMenuItem,
+            this.layer4ToolStripMenuItem,
+            this.layer5ToolStripMenuItem,
+            this.layer6ToolStripMenuItem,
+            this.layer7ToolStripMenuItem});
+            this.activeLayerToolStripMenuItem.Name = "activeLayerToolStripMenuItem";
+            this.activeLayerToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.activeLayerToolStripMenuItem.Text = "Active Layer";
+            // 
+            // layer1ToolStripMenuItem
+            // 
+            this.layer1ToolStripMenuItem.CheckOnClick = true;
+            this.layer1ToolStripMenuItem.Name = "layer1ToolStripMenuItem";
+            this.layer1ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer1ToolStripMenuItem.Text = "Layer 1";
+            this.layer1ToolStripMenuItem.Click += new System.EventHandler(this.layer1ToolStripMenuItem_Click);
+            // 
+            // layer2ToolStripMenuItem
+            // 
+            this.layer2ToolStripMenuItem.CheckOnClick = true;
+            this.layer2ToolStripMenuItem.Name = "layer2ToolStripMenuItem";
+            this.layer2ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer2ToolStripMenuItem.Text = "Layer 2";
+            this.layer2ToolStripMenuItem.Click += new System.EventHandler(this.layer2ToolStripMenuItem_Click);
+            // 
+            // layer3ToolStripMenuItem
+            // 
+            this.layer3ToolStripMenuItem.CheckOnClick = true;
+            this.layer3ToolStripMenuItem.Name = "layer3ToolStripMenuItem";
+            this.layer3ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer3ToolStripMenuItem.Text = "Layer 3";
+            this.layer3ToolStripMenuItem.Click += new System.EventHandler(this.layer3ToolStripMenuItem_Click);
+            // 
+            // layer4ToolStripMenuItem
+            // 
+            this.layer4ToolStripMenuItem.CheckOnClick = true;
+            this.layer4ToolStripMenuItem.Name = "layer4ToolStripMenuItem";
+            this.layer4ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer4ToolStripMenuItem.Text = "Layer 4";
+            this.layer4ToolStripMenuItem.Click += new System.EventHandler(this.layer4ToolStripMenuItem_Click);
+            // 
+            // layer5ToolStripMenuItem
+            // 
+            this.layer5ToolStripMenuItem.CheckOnClick = true;
+            this.layer5ToolStripMenuItem.Name = "layer5ToolStripMenuItem";
+            this.layer5ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer5ToolStripMenuItem.Text = "Layer 5";
+            this.layer5ToolStripMenuItem.Click += new System.EventHandler(this.layer5ToolStripMenuItem_Click);
+            // 
+            // layer6ToolStripMenuItem
+            // 
+            this.layer6ToolStripMenuItem.CheckOnClick = true;
+            this.layer6ToolStripMenuItem.Name = "layer6ToolStripMenuItem";
+            this.layer6ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer6ToolStripMenuItem.Text = "Layer 6";
+            this.layer6ToolStripMenuItem.Click += new System.EventHandler(this.layer6ToolStripMenuItem_Click);
+            // 
+            // layer7ToolStripMenuItem
+            // 
+            this.layer7ToolStripMenuItem.CheckOnClick = true;
+            this.layer7ToolStripMenuItem.Name = "layer7ToolStripMenuItem";
+            this.layer7ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.layer7ToolStripMenuItem.Text = "Layer 7";
+            this.layer7ToolStripMenuItem.Click += new System.EventHandler(this.layer7ToolStripMenuItem_Click);
+            // 
+            // hideLowerLayersToolStripMenuItem
+            // 
+            this.hideLowerLayersToolStripMenuItem.CheckOnClick = true;
+            this.hideLowerLayersToolStripMenuItem.Name = "hideLowerLayersToolStripMenuItem";
+            this.hideLowerLayersToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.hideLowerLayersToolStripMenuItem.Text = "Hide lower layers";
+            this.hideLowerLayersToolStripMenuItem.Click += new System.EventHandler(this.hideLowerLayersToolStripMenuItem_Click);
             // 
             // mappingTools
             // 
@@ -768,128 +890,6 @@
             this.play.Text = "Play";
             this.play.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
-            // viewToolStripMenuItem
-            // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showGridToolStripMenuItem,
-            this.activeLayerToolStripMenuItem,
-            this.hideLowerLayersToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "View";
-            // 
-            // showGridToolStripMenuItem
-            // 
-            this.showGridToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showToolStripMenuItem,
-            this.configureToolStripMenuItem});
-            this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
-            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.showGridToolStripMenuItem.Text = "Grid";
-            // 
-            // showToolStripMenuItem
-            // 
-            this.showToolStripMenuItem.Name = "showToolStripMenuItem";
-            this.showToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.showToolStripMenuItem.Text = "Show";
-            this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
-            // 
-            // configureToolStripMenuItem
-            // 
-            this.configureToolStripMenuItem.Name = "configureToolStripMenuItem";
-            this.configureToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.configureToolStripMenuItem.Text = "Configure";
-            this.configureToolStripMenuItem.Click += new System.EventHandler(this.configureToolStripMenuItem_Click);
-            // 
-            // activeLayerToolStripMenuItem
-            // 
-            this.activeLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.layer1ToolStripMenuItem,
-            this.layer2ToolStripMenuItem,
-            this.layer3ToolStripMenuItem,
-            this.layer4ToolStripMenuItem,
-            this.layer5ToolStripMenuItem,
-            this.layer6ToolStripMenuItem,
-            this.layer7ToolStripMenuItem});
-            this.activeLayerToolStripMenuItem.Name = "activeLayerToolStripMenuItem";
-            this.activeLayerToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.activeLayerToolStripMenuItem.Text = "Active Layer";
-            // 
-            // layer1ToolStripMenuItem
-            // 
-            this.layer1ToolStripMenuItem.CheckOnClick = true;
-            this.layer1ToolStripMenuItem.Name = "layer1ToolStripMenuItem";
-            this.layer1ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
-            this.layer1ToolStripMenuItem.Text = "Layer 1";
-            this.layer1ToolStripMenuItem.Click += new System.EventHandler(this.layer1ToolStripMenuItem_Click);
-            // 
-            // layer2ToolStripMenuItem
-            // 
-            this.layer2ToolStripMenuItem.CheckOnClick = true;
-            this.layer2ToolStripMenuItem.Name = "layer2ToolStripMenuItem";
-            this.layer2ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
-            this.layer2ToolStripMenuItem.Text = "Layer 2";
-            this.layer2ToolStripMenuItem.Click += new System.EventHandler(this.layer2ToolStripMenuItem_Click);
-            // 
-            // layer3ToolStripMenuItem
-            // 
-            this.layer3ToolStripMenuItem.CheckOnClick = true;
-            this.layer3ToolStripMenuItem.Name = "layer3ToolStripMenuItem";
-            this.layer3ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
-            this.layer3ToolStripMenuItem.Text = "Layer 3";
-            this.layer3ToolStripMenuItem.Click += new System.EventHandler(this.layer3ToolStripMenuItem_Click);
-            // 
-            // layer4ToolStripMenuItem
-            // 
-            this.layer4ToolStripMenuItem.CheckOnClick = true;
-            this.layer4ToolStripMenuItem.Name = "layer4ToolStripMenuItem";
-            this.layer4ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
-            this.layer4ToolStripMenuItem.Text = "Layer 4";
-            this.layer4ToolStripMenuItem.Click += new System.EventHandler(this.layer4ToolStripMenuItem_Click);
-            // 
-            // layer5ToolStripMenuItem
-            // 
-            this.layer5ToolStripMenuItem.CheckOnClick = true;
-            this.layer5ToolStripMenuItem.Name = "layer5ToolStripMenuItem";
-            this.layer5ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
-            this.layer5ToolStripMenuItem.Text = "Layer 5";
-            this.layer5ToolStripMenuItem.Click += new System.EventHandler(this.layer5ToolStripMenuItem_Click);
-            // 
-            // layer6ToolStripMenuItem
-            // 
-            this.layer6ToolStripMenuItem.CheckOnClick = true;
-            this.layer6ToolStripMenuItem.Name = "layer6ToolStripMenuItem";
-            this.layer6ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
-            this.layer6ToolStripMenuItem.Text = "Layer 6";
-            this.layer6ToolStripMenuItem.Click += new System.EventHandler(this.layer6ToolStripMenuItem_Click);
-            // 
-            // layer7ToolStripMenuItem
-            // 
-            this.layer7ToolStripMenuItem.CheckOnClick = true;
-            this.layer7ToolStripMenuItem.Name = "layer7ToolStripMenuItem";
-            this.layer7ToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
-            this.layer7ToolStripMenuItem.Text = "Layer 7";
-            this.layer7ToolStripMenuItem.Click += new System.EventHandler(this.layer7ToolStripMenuItem_Click);
-            // 
-            // hideLowerLayersToolStripMenuItem
-            // 
-            this.hideLowerLayersToolStripMenuItem.CheckOnClick = true;
-            this.hideLowerLayersToolStripMenuItem.Name = "hideLowerLayersToolStripMenuItem";
-            this.hideLowerLayersToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.hideLowerLayersToolStripMenuItem.Text = "Hide lower layers";
-            this.hideLowerLayersToolStripMenuItem.Click += new System.EventHandler(this.hideLowerLayersToolStripMenuItem_Click);
-            // 
-            // mapMenu
-            // 
-            this.mapMenu.BackColor = System.Drawing.Color.Transparent;
-            this.mapMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewToolStripMenuItem});
-            this.mapMenu.Location = new System.Drawing.Point(0, 0);
-            this.mapMenu.Name = "mapMenu";
-            this.mapMenu.Size = new System.Drawing.Size(52, 24);
-            this.mapMenu.TabIndex = 0;
-            this.mapMenu.Text = "menuStrip1";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -915,6 +915,8 @@
             this.mapPanel.PerformLayout();
             this.mapToolbar.ResumeLayout(false);
             this.mapToolbar.PerformLayout();
+            this.mapMenu.ResumeLayout(false);
+            this.mapMenu.PerformLayout();
             this.mappingTools.ResumeLayout(false);
             this.mappingTools.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapWhite)).EndInit();
@@ -946,8 +948,6 @@
             this.sectionsBar.PerformLayout();
             this.toolbar.ResumeLayout(false);
             this.toolbar.PerformLayout();
-            this.mapMenu.ResumeLayout(false);
-            this.mapMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

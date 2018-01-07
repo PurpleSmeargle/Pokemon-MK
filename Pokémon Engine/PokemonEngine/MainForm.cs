@@ -25,8 +25,6 @@ namespace PokemonEngine
         PictureBox MapBox;
         Map CurrentMap;
 
-        Script ScriptClipboard;
-
         int CurrentLayer = 1;
         int CursorX = 0;
         int CursorY = 0;
@@ -34,9 +32,9 @@ namespace PokemonEngine
         bool RightMouse = false;
         bool MiddleMouse = false;
 
-        Bitmap Black;
-        Bitmap Grid;
-        Bitmap Overlay;
+        DirectBitmap Black;
+        DirectBitmap Grid;
+        DirectBitmap Overlay;
 
         List<Map> Maps = new List<Map>();
 
@@ -239,10 +237,49 @@ namespace PokemonEngine
 
             LoadMap(null, true, true);
 
+            #region ScriptBox Events
             scriptBox.SelectedIndex = Config.LastScriptIndex;
             scriptBox.KeyDown += scriptBox_KeyDown;
             scriptBox.KeyPress += scriptBox_KeyPress;
             scriptBox.KeyUp += ScriptBox_KeyUp;
+            ContextMenuStrip scriptContext = new ContextMenuStrip();
+            ToolStripMenuItem scNew = new ToolStripMenuItem();
+            ToolStripMenuItem scImport = new ToolStripMenuItem();
+            ToolStripSeparator scSep1 = new ToolStripSeparator();
+            ToolStripMenuItem scCopy = new ToolStripMenuItem();
+            ToolStripMenuItem scCut = new ToolStripMenuItem();
+            ToolStripMenuItem scPaste = new ToolStripMenuItem();
+            ToolStripSeparator scSep2 = new ToolStripSeparator();
+            ToolStripMenuItem scDelete = new ToolStripMenuItem();
+            scNew.Text = "New Section";
+            scImport.Text = "Import Section";
+            scCopy.Text = "Copy Section";
+            scCut.Text = "Cut Section";
+            scPaste.Text = "Paste Section";
+            scDelete.Text = "Delete Section";
+            scNew.Click += newSectionToolStripMenuItem_Click;
+            scImport.Click += importSectionToolStripMenuItem_Click;
+            scCopy.Click += copySectionToolStripMenuItem_Click;
+            scCut.Click += cutSectionToolStripMenuItem_Click;
+            scPaste.Click += pasteSectionToolStripMenuItem_Click;
+            scDelete.Click += deleteSectionToolStripMenuItem_Click;
+            scNew.Image = Properties.Resources._new;
+            scImport.Image = Properties.Resources.import;
+            scCopy.Image = Properties.Resources.copy;
+            scCut.Image = Properties.Resources.cut;
+            scPaste.Image = Properties.Resources.paste;
+            scDelete.Image = Properties.Resources.delete;
+            scriptContext.Items.Add(scNew);
+            scriptContext.Items.Add(scImport);
+            scriptContext.Items.Add(scSep1);
+            scriptContext.Items.Add(scCopy);
+            scriptContext.Items.Add(scCut);
+            scriptContext.Items.Add(scPaste);
+            scriptContext.Items.Add(scSep2);
+            scriptContext.Items.Add(scDelete);
+
+            scriptBox.ContextMenuStrip = scriptContext;
+            #endregion
 
             Starting = false;
 
@@ -441,12 +478,12 @@ namespace PokemonEngine
             if (Empty(Map.VisualLayers))
             {
                 RedrawLayers = true;
-                Map.VisualLayers = new List<Bitmap>();
+                Map.VisualLayers = new List<DirectBitmap>();
             }
 
             if (RedrawLayers && !Empty(Map.VisualLayers))
             {
-                foreach (Bitmap Bmp in Map.VisualLayers) { Bmp.Dispose(); }
+                foreach (DirectBitmap Bmp in Map.VisualLayers) { Bmp.Dispose(); }
                 Map.VisualLayers.Clear();
             }
 
@@ -485,26 +522,25 @@ namespace PokemonEngine
             {
                 for (int i = 0; i < Map.Layers.Count; i++)
                 {
-                    Bitmap Layer = new Bitmap(Width * 32, Height * 32);
-                    Graphics gr = Graphics.FromImage(Layer);
+                    DirectBitmap Layer = new DirectBitmap(Width * 32, Height * 32);
                     for (int k = 0; k < Map.Layers[i].Count; k++)
                     {
                         object Tile = Map.Layers[i][k];
                         int TileID = 0;
                         if (Tile is int)
                         {
-                            TileID = (int)Tile;
+                            TileID = (int) Tile;
                         }
                         else
                         {
 
-                            TileID = (int)((List<dynamic>)Tile)[0];
+                            TileID = (int) ((List<dynamic>) Tile)[0];
                         }
                         if (TileID == 0) continue;
                         int RealTilesetX = (TileID % 8) * 32;
-                        int RealTilesetY = (int)Math.Floor((double)TileID / 8) * 32;
+                        int RealTilesetY = (int) Math.Floor((double) TileID / 8) * 32;
                         int RealX = (k % Width) * 32;
-                        int RealY = (int)Math.Floor((double)k / Width) * 32;
+                        int RealY = (int) Math.Floor((double) k / Width) * 32;
                         for (int x = RealX; x < RealX + 32; x++)
                         {
                             for (int y = RealY; y < RealY + 32; y++)
@@ -521,7 +557,7 @@ namespace PokemonEngine
                     List<dynamic> Tiles = new List<dynamic>();
                     for (int t = 0; t < Width + Height * Width; t++) Tiles.Add(0);
                     Map.Layers.Add(Tiles);
-                    Map.VisualLayers.Add(new Bitmap(Width * 32, Height * 32));
+                    Map.VisualLayers.Add(new DirectBitmap(Width * 32, Height * 32));
                 }
             }
 
@@ -576,13 +612,13 @@ namespace PokemonEngine
         private void MapBox_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            g.DrawImage(Black, 0, 0); // Black background
+            g.DrawImage(Black.Bitmap, 0, 0); // Black background
             for (int i = 0; i < CurrentMap.VisualLayers.Count; i++) // Layers
             {
-                g.DrawImage(CurrentMap.VisualLayers[i], 0, 0);
-                if (Config.HideLowerLayers && i == CurrentLayer - 2) { g.DrawImage(Overlay, 0, 0); }
+                g.DrawImage(CurrentMap.VisualLayers[i].Bitmap, 0, 0);
+                if (Config.HideLowerLayers && i == CurrentLayer - 2) { g.DrawImage(Overlay.Bitmap, 0, 0); }
             }
-            if (Config.ShowGrid) g.DrawImage(Grid, 0, 0); // Grid
+            if (Config.ShowGrid) g.DrawImage(Grid.Bitmap, 0, 0); // Grid
         }
 
         private void MapBox_MouseDown(object sender, MouseEventArgs e)
@@ -593,8 +629,8 @@ namespace PokemonEngine
             if (LeftMouse)
             {
                 if (SetTile(CurrentLayer, CursorX, CursorY,
-                    (int) Math.Floor((double)TilesetCursor.Location.X / 32) +
-                    (int) Math.Floor((double)TilesetCursor.Location.Y / 32) * 8))
+                    (int) Math.Floor((double) TilesetCursor.Location.X / 32) +
+                    (int) Math.Floor((double) TilesetCursor.Location.Y / 32) * 8))
                 {
                     MapBox.Refresh();
                 }
@@ -611,14 +647,40 @@ namespace PokemonEngine
         {
             int OldX = CursorX;
             int OldY = CursorY;
-            CursorX = Math.Max(0, Math.Min(CurrentMap.Width - 1, (int)Math.Floor((double)e.X / 32)));
-            CursorY = Math.Max(0, Math.Min(CurrentMap.Height - 1, (int)Math.Floor((double)e.Y / 32)));
+            CursorX = Math.Max(0, Math.Min(CurrentMap.Width - 1, (int) Math.Floor((double) e.X / 32)));
+            CursorY = Math.Max(0, Math.Min(CurrentMap.Height - 1, (int) Math.Floor((double) e.Y / 32)));
             if (CursorX != OldX || CursorY != OldY) Cursor.Refresh();
             if (LeftMouse)
             {
-                SetTile(CurrentLayer, CursorX, CursorY,
-                    (int)Math.Floor((double)TilesetCursor.Location.X / 32) +
-                    (int)Math.Floor((double)TilesetCursor.Location.Y / 32) * 8);
+                // This small SetTile portion is not required for it to function, but to avoid a "Flickering" effect, I've kept it in.
+                if (SetTile(CurrentLayer, CursorX, CursorY,
+                    (int) Math.Floor((double) TilesetCursor.Location.X / 32) +
+                    (int) Math.Floor((double) TilesetCursor.Location.Y / 32) * 8))
+                {
+                    MapBox.Refresh();
+                }
+                for (int x = Math.Min(OldX,CursorX) * 32; x < Math.Max(OldX,CursorX) * 32; x++)
+                {
+                    double Percentage = (double) (x - OldX * 32) / (CursorX * 32 - OldX * 32);
+                    double Real_X = x;
+                    double Real_Y = OldY * 32 + ((CursorY * 32 - OldY * 32) * Percentage);
+                    int Tile_X = (int) Math.Floor(Real_X / 32);
+                    int Tile_Y = (int) Math.Floor(Real_Y / 32);
+                    SetTile(CurrentLayer, Tile_X, Tile_Y,
+                        (int) Math.Floor((double) TilesetCursor.Location.X / 32) +
+                        (int) Math.Floor((double) TilesetCursor.Location.Y / 32) * 8);
+                }
+                for (int y = Math.Min(OldY,CursorY) * 32; y < Math.Max(OldY,CursorY) * 32; y++)
+                {
+                    double Percentage = (double) (y - OldY * 32) / (CursorY * 32 - OldY * 32);
+                    double Real_X = OldX * 32 + ((CursorX * 32 - OldX * 32) * Percentage);
+                    double Real_Y = y;
+                    int Tile_X = (int) Math.Floor(Real_X / 32);
+                    int Tile_Y = (int) Math.Floor(Real_Y / 32);
+                    SetTile(CurrentLayer, Tile_X, Tile_Y,
+                        (int) Math.Floor((double) TilesetCursor.Location.X / 32) +
+                        (int) Math.Floor((double) TilesetCursor.Location.Y / 32) * 8);
+                }
                 MapBox.Refresh();
             }
         }
@@ -632,7 +694,7 @@ namespace PokemonEngine
             {
                 return false;
             }
-            Graphics g = Graphics.FromImage(CurrentMap.VisualLayers[Layer - 1]);
+            Graphics g = Graphics.FromImage(CurrentMap.VisualLayers[Layer - 1].Bitmap);
             for (int x = X * 32; x < X * 32 + 32; x++)
             {
                 for (int y = Y * 32; y < Y * 32 + 32; y++)
@@ -647,7 +709,7 @@ namespace PokemonEngine
                 {
                     for (int y = Y * 32; y < Y * 32 + 32; y++)
                     {
-                        CurrentMap.VisualLayers[Layer - 1].SetPixel(x, y, Tileset.GetPixel((32 * (TileID % 8)) + (x - X * 32), ((int)(32 * Math.Floor((double)TileID / 8)) + (y - Y * 32))));
+                        CurrentMap.VisualLayers[Layer - 1].SetPixel(x, y, Tileset.GetPixel((32 * (TileID % 8)) + (x - X * 32), ((int) (32 * Math.Floor((double) TileID / 8)) + (y - Y * 32))));
                     }
                 }
             }
@@ -665,7 +727,7 @@ namespace PokemonEngine
         private void CreateOverlay()
         {
             if (!Empty(Overlay)) Overlay.Dispose();
-            Overlay = new Bitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
+            Overlay = new DirectBitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
             for (int x = 0; x < CurrentMap.Width * 32; x++)
             {
                 for (int y = 0; y < CurrentMap.Height * 32; y++)
@@ -678,16 +740,17 @@ namespace PokemonEngine
         private void CreateBlack()
         {
             if (!Empty(Black)) Black.Dispose();
-            Black = new Bitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
-            Graphics g = Graphics.FromImage(Black);
+            Black = new DirectBitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
+            Graphics g = Graphics.FromImage(Black.Bitmap);
             g.FillRectangle(Brushes.Black, 0, 0, CurrentMap.Width * 32, CurrentMap.Height * 32);
             g.Dispose();
         }
 
         private void CreateGrid()
         {
+            DateTime start = DateTime.Now;
             if (!Empty(Grid)) Grid.Dispose();
-            Grid = new Bitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
+            Grid = new DirectBitmap(CurrentMap.Width * 32, CurrentMap.Height * 32);
             for (int x = 0; x < Grid.Width; x++)
             {
                 for (int y = 0; y < Grid.Height; y++)
@@ -703,7 +766,7 @@ namespace PokemonEngine
 
         private void tilesetBox_MouseDown(object sender, MouseEventArgs e)
         {
-            TilesetCursor.Location = new Point(32 * (int)Math.Floor((double)e.X / 32), 32 * (int)Math.Floor((double)e.Y / 32));
+            TilesetCursor.Location = new Point(32 * (int) Math.Floor((double) e.X / 32), 32 * (int) Math.Floor((double) e.Y / 32));
         }
 
         public int GetTileID()
@@ -740,7 +803,7 @@ namespace PokemonEngine
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Saving all scripts
+            // Saving all Scripts
             #region Scripts
             if (!Directory.Exists("Scripts")) Directory.CreateDirectory("Scripts");
             foreach (string file in Directory.GetFiles("Scripts")) { File.Delete(file); }
@@ -806,8 +869,8 @@ Dir.glob(""Scripts/*.rb"") {{ |f| require f }}");
             sw.Close();
             #endregion
 
-            // Saving all maps
-            #region maps
+            // Saving all Maps
+            #region Maps
             ScriptEngine Engine = Ruby.CreateEngine();
             foreach (Map m in Maps)
             {
@@ -1033,24 +1096,31 @@ f.close");
 
         private void copySectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ScriptClipboard = new Script(Scripts[scriptBox.SelectedIndex].Name, Scripts[scriptBox.SelectedIndex].Code);
+            Clipboard.SetText($"{Scripts[scriptBox.SelectedIndex].Name}-[|<=>|<=>|]-{Scripts[scriptBox.SelectedIndex].Code}");
         }
 
         private void cutSectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ScriptClipboard = new Script(Scripts[scriptBox.SelectedIndex].Name, Scripts[scriptBox.SelectedIndex].Code);
+            Clipboard.SetText($"{Scripts[scriptBox.SelectedIndex].Name}-[|<=>|<=>|]-{Scripts[scriptBox.SelectedIndex].Code}");
             Scripts.RemoveAt(scriptBox.SelectedIndex);
             scriptBox_SelectedIndexChanged(sender, e);
         }
 
         private void pasteSectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Empty(ScriptClipboard))
+            List<string> part = Clipboard.GetText().Split(new string[] { "-[|<=>|<=>|]-" }, StringSplitOptions.None).ToList();
+            if (part.Count < 2) return;
+            string Name = part[0];
+            string Code = null;
+            for (int i = 1; i < part.Count; i++)
             {
-                Scripts.Insert(scriptBox.SelectedIndex, new Script(ScriptClipboard.Name, ScriptClipboard.Code));
-                scriptBinder.ResetBindings(false);
-                scriptBox_SelectedIndexChanged(sender, e);
+                Code += part[i];
+                if (i != part.Count - 1) Code += "-[|<=>|<=>|]-";
             }
+            Script Script = new Script(Name, Code);
+            Scripts.Insert(scriptBox.SelectedIndex, new Script(Script.Name, Script.Code));
+            scriptBinder.ResetBindings(false);
+            scriptBox_SelectedIndexChanged(sender, e);
         }
 
         private void deleteSectionToolStripMenuItem_Click(object sender, EventArgs e)

@@ -16,7 +16,7 @@ namespace Mockups
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MapProperties());
+            Application.Run(new ClassicEvent());
         }
     }
 }

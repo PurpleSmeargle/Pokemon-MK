@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.windowTitle = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.fixedFramerate = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
@@ -47,18 +50,22 @@
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.windowTitle = new System.Windows.Forms.TextBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.engineStoreMapsInMemory = new System.Windows.Forms.CheckBox();
+            this.storeMapsInMemory = new System.Windows.Forms.ToolTip(this.components);
+            this.label8 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fixedFramerate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.screenHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.screenWidth)).BeginInit();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Location = new System.Drawing.Point(4, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -91,6 +98,23 @@
             this.tabPage2.Size = new System.Drawing.Size(304, 227);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Game";
+            // 
+            // windowTitle
+            // 
+            this.windowTitle.Location = new System.Drawing.Point(118, 4);
+            this.windowTitle.Name = "windowTitle";
+            this.windowTitle.Size = new System.Drawing.Size(120, 20);
+            this.windowTitle.TabIndex = 16;
+            this.windowTitle.TextChanged += new System.EventHandler(this.windowTitle_TextChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(50, 6);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(61, 13);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "Game Title:";
             // 
             // label6
             // 
@@ -280,22 +304,44 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label7
+            // tabPage1
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(50, 6);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(61, 13);
-            this.label7.TabIndex = 15;
-            this.label7.Text = "Game Title:";
+            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.label8);
+            this.tabPage1.Controls.Add(this.engineStoreMapsInMemory);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(304, 227);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Engine";
             // 
-            // windowTitle
+            // engineStoreMapsInMemory
             // 
-            this.windowTitle.Location = new System.Drawing.Point(118, 4);
-            this.windowTitle.Name = "windowTitle";
-            this.windowTitle.Size = new System.Drawing.Size(120, 20);
-            this.windowTitle.TabIndex = 16;
-            this.windowTitle.TextChanged += new System.EventHandler(this.windowTitle_TextChanged);
+            this.engineStoreMapsInMemory.AutoSize = true;
+            this.engineStoreMapsInMemory.Location = new System.Drawing.Point(6, 6);
+            this.engineStoreMapsInMemory.Name = "engineStoreMapsInMemory";
+            this.engineStoreMapsInMemory.Size = new System.Drawing.Size(129, 17);
+            this.engineStoreMapsInMemory.TabIndex = 0;
+            this.engineStoreMapsInMemory.Text = "Store maps in memory";
+            this.engineStoreMapsInMemory.UseVisualStyleBackColor = true;
+            this.engineStoreMapsInMemory.CheckedChanged += new System.EventHandler(this.engineStoreMapsInMemory_CheckedChanged);
+            this.engineStoreMapsInMemory.MouseHover += new System.EventHandler(this.engineStoreMapsInMemory_MouseHover);
+            // 
+            // storeMapsInMemory
+            // 
+            this.storeMapsInMemory.AutoPopDelay = 999999999;
+            this.storeMapsInMemory.InitialDelay = 50;
+            this.storeMapsInMemory.ReshowDelay = 50;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(18, 36);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(126, 13);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "does not do anything yet!";
             // 
             // SettingsForm
             // 
@@ -319,6 +365,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.fixedFramerate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.screenHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.screenWidth)).EndInit();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -346,5 +394,9 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox windowTitle;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.CheckBox engineStoreMapsInMemory;
+        private System.Windows.Forms.ToolTip storeMapsInMemory;
+        private System.Windows.Forms.Label label8;
     }
 }
